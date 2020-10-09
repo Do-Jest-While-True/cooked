@@ -1,7 +1,7 @@
 export default {
 	// ⬇ app theme ⬇
 	light: '#66b3ff',
-	medium: 'tomato',
+	medium: 'cornflowerblue',
 	dark: '#2650c9',
 	// ⬆ app theme ⬆
 

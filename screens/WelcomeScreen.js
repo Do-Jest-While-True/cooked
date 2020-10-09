@@ -4,6 +4,7 @@ import { AppLoading } from 'expo';
 import { CoveredByYourGrace_400Regular, useFonts } from '@expo-google-fonts/covered-by-your-grace';
 
 import NavBar from '../components/NavBar';
+import TestRecipe from '../components/TestRecipe'
 
 import colors from '../config/colors';
 
@@ -20,6 +21,7 @@ const WelcomeScreen = ({ navigation }) => {
 					<Text style={styles.welcomeHeadingText}>Cook'd</Text>
 				</View>
 				<Image source={require('../assets/img/frost-kitchen-1.jpeg')} style={styles.welcomeImg} />
+				<TestRecipe />
 				<NavBar style={styles.navbar} nav={navigation} />
 			</SafeAreaView>
 		);
