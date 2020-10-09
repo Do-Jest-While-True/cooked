@@ -17,7 +17,7 @@ const WelcomeScreen = ({ navigation }) => {
 		return (
 			<SafeAreaView style={styles.welcomeView}>
 				<View style={styles.welcomeHeadingView}>
-					<Text style={styles.welcomeHeadingText}>Ryan's Recipes!</Text>
+					<Text style={styles.welcomeHeadingText}>Cook'd</Text>
 				</View>
 				<Image source={require('../assets/img/frost-kitchen-1.jpeg')} style={styles.welcomeImg} />
 				<NavBar style={styles.navbar} nav={navigation} />
