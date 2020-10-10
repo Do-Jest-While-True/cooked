@@ -1,8 +1,7 @@
-import React from 'react';
-import { StyleSheet, Image, View, Text, FlatList } from 'react-native';
-import {connect} from 'react-redux'
-import { getRecipeTest } from '../redux/recipes';
-
+import React from 'react'
+import { StyleSheet, Image, View, Text, FlatList } from 'react-native'
+import { connect } from 'react-redux'
+import { getRecipeTest } from '../redux/recipes'
 
 class TestRecipe extends React.Component {
   constructor() {
@@ -13,18 +12,16 @@ class TestRecipe extends React.Component {
     console.log(this.props.recipes)
   }
   render() {
-    return (
-      <Text>Test</Text>
-    )
+    return <Text>Test</Text>
   }
 }
 
-const mapState = state => ({
-  recipes: state.recipes
+const mapState = (state) => ({
+  recipes: state.recipes,
 })
 
-const mapDispatch = dispatch => ({
-  getRecipeTest: () => dispatch(getRecipeTest())
+const mapDispatch = (dispatch) => ({
+  getRecipeTest: () => dispatch(getRecipeTest()),
 })
 
 export default connect(mapState, mapDispatch)(TestRecipe)
