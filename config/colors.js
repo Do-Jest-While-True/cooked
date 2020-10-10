@@ -1,8 +1,8 @@
 export default {
 	// ⬇ app theme ⬇
-	light: '#66b3ff',
-	medium: 'cornflowerblue',
-	dark: '#2650c9',
+	light: '#ffa190',
+	medium: '#ff826b',
+	dark: '#ff6347',
 	// ⬆ app theme ⬆
 
 	white: '#fff',

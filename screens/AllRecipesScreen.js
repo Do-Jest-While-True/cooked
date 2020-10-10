@@ -10,31 +10,33 @@ import { getRecipes } from '../redux/recipes';
 
 import colors from '../config/colors';
 
-const AllRecipesScreen = ({ navigation, getRecipes, getRecipeTest, recipes }) => {
+const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
 	useEffect(() => {
-		getRecipes();
-	});
+		(async () => await getRecipes())();
+	}, []);
 
 	return (
 		<SafeAreaView style={styles.allRecipesView}>
-			<FlatList
-				data={recipes}
-				keyExtractor={(recipe) => recipe.id.toString()}
-				renderItem={({ item }) => (
-					<Swipeable
-						renderRightActions={() => <SwipeDeleteBtn id={item.id} />}
-						onSwipeableRightOpen={() => console.log('delete opened')}
-					>
-						<RecipeListItem
-							name={item.name}
-							image={item.image}
-							time={item.time}
-							id={item.id}
-							nav={navigation}
-						/>
-					</Swipeable>
-				)}
-			/>
+			{recipes && (
+				<FlatList
+					data={recipes}
+					keyExtractor={(recipe) => recipe.id.toString()}
+					renderItem={({ item }) => (
+						<Swipeable
+							renderRightActions={() => <SwipeDeleteBtn id={item.id} />}
+							onSwipeableRightOpen={() => console.log('delete opened')}
+						>
+							<RecipeListItem
+								name={item.name}
+								// image={item.image}
+								time={item.time}
+								id={item.id}
+								nav={navigation}
+							/>
+						</Swipeable>
+					)}
+				/>
+			)}
 			<NavBar nav={navigation} />
 		</SafeAreaView>
 	);
