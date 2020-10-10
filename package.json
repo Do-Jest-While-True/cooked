@@ -22,8 +22,7 @@
 			"git add"
 		],
 		"*.{css,scss,json,md}": [
-			"prettier --write",
-			"git add"
+			"prettier --write"
 		]
 	},
 	"dependencies": {
