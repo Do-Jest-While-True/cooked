@@ -1,7 +1,7 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import thunkMiddleware from 'redux-thunk';
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
 
-import { recipesReducer } from './recipes';
+import { recipesReducer } from './recipes'
 
 // STATE:
 // {
@@ -9,7 +9,7 @@ import { recipesReducer } from './recipes';
 // }
 
 const appReducer = combineReducers({
-	recipes: recipesReducer
-});
+  recipes: recipesReducer,
+})
 
-export const store = createStore(appReducer, applyMiddleware(thunkMiddleware));
+export const store = createStore(appReducer, applyMiddleware(thunkMiddleware))

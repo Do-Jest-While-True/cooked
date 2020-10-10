@@ -43,19 +43,19 @@ const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
 };
 
 const styles = StyleSheet.create({
-	allRecipesView: {
-		flex: 1,
-		backgroundColor: colors.medium,
-		justifyContent: 'space-between'
-	}
-});
+  allRecipesView: {
+    flex: 1,
+    backgroundColor: colors.medium,
+    justifyContent: 'space-between',
+  },
+})
 
 const mapState = (state) => ({
-	recipes: state.recipes
-});
+  recipes: state.recipes,
+})
 
 const mapDispatch = (dispatch) => ({
-	getRecipes: () => dispatch(getRecipes())
-});
+  getRecipes: () => dispatch(getRecipes()),
+})
 
-export default connect(mapState, mapDispatch)(AllRecipesScreen);
+export default connect(mapState, mapDispatch)(AllRecipesScreen)

@@ -1,0 +1,9 @@
+{
+  "root": true,
+  "extends": ["prettier", "prettier/react", "@react-native-community"],
+  "plugins": ["react", "react-native"],
+  "rules": {
+    "semi": 0,
+    "no-shadow": "off"
+  }
+}

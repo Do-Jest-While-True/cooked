@@ -14,15 +14,15 @@ const gotRecipes = (recipes) => ({
 
 // needs to be refactored w/ thunks
 export const addRecipe = (recipe) => ({
-	type: ADD_RECIPE,
-	recipe
-});
+  type: ADD_RECIPE,
+  recipe,
+})
 
 // needs to be refactored w/ thunks
 export const deleteRecipe = (id) => ({
-	type: DELETE_RECIPE,
-	id
-});
+  type: DELETE_RECIPE,
+  id,
+})
 
 // THUNK CREATORS
 export const getRecipes = () => async (dispatch) => {
