@@ -13,7 +13,7 @@ import {
   useFonts,
 } from '@expo-google-fonts/covered-by-your-grace'
 
-import NavBar from '../components/NavBar';
+import NavBar from '../components/NavBar'
 
 import colors from '../config/colors'
 
@@ -22,19 +22,23 @@ const WelcomeScreen = ({ navigation }) => {
     CoveredByYourGrace_400Regular,
   })
 
-	if (!fontsLoaded) return <AppLoading />;
-	else {
-		return (
-			<SafeAreaView style={styles.welcomeView}>
-				<View style={styles.welcomeHeadingView}>
-					<Text style={styles.welcomeHeadingText}>Cook'd</Text>
-				</View>
-				<Image source={require('../assets/img/frost-kitchen-1.jpeg')} style={styles.welcomeImg} />
-				<NavBar style={styles.navbar} nav={navigation} />
-			</SafeAreaView>
-		);
-	}
-};
+  if (!fontsLoaded) {
+    return <AppLoading />
+  } else {
+    return (
+      <SafeAreaView style={styles.welcomeView}>
+        <View style={styles.welcomeHeadingView}>
+          <Text style={styles.welcomeHeadingText}>Cook'd</Text>
+        </View>
+        <Image
+          source={require('../assets/img/frost-kitchen-1.jpeg')}
+          style={styles.welcomeImg}
+        />
+        <NavBar style={styles.navbar} nav={navigation} />
+      </SafeAreaView>
+    )
+  }
+}
 
 const welcomeHeaderHeight = Dimensions.get('screen').height / 10
 const welcomeImgHeight = Dimensions.get('screen').height / 1.335

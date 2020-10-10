@@ -1,9 +1,9 @@
 export default {
-	// ⬇ app theme ⬇
-	light: '#ffa190',
-	medium: '#ff826b',
-	dark: '#ff6347',
-	// ⬆ app theme ⬆
+  // ⬇ app theme ⬇
+  light: '#ffa190',
+  medium: '#ff826b',
+  dark: '#ff6347',
+  // ⬆ app theme ⬆
 
   white: '#fff',
   mediumGray: '#303030',
