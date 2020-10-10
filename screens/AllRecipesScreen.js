@@ -11,8 +11,8 @@ import colors from '../config/colors'
 
 const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
   useEffect(() => {
-    ;(async () => await getRecipes())()
-  }, [getRecipes])
+    (async () => await getRecipes())()
+  }, [])
 
   return (
     <SafeAreaView style={styles.allRecipesView}>

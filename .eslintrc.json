@@ -2,8 +2,16 @@
   "root": true,
   "extends": ["prettier", "prettier/react", "@react-native-community"],
   "plugins": ["react", "react-native"],
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "env": {
+    "es6": true
+  },
   "rules": {
-    "semi": 0,
-    "no-shadow": "off"
+    "semi": [0, "never"],
+    "no-shadow": "off",
+    "no-extra-semi": "off",
+    "react-hooks/exhaustive-deps": "off"
   }
 }
