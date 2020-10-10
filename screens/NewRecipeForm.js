@@ -3,7 +3,6 @@ import { StyleSheet, SafeAreaView, ScrollView, View, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 
-import NavBar from '../components/NavBar'
 import SubFormRecipeName from '../components/SubFormRecipeName'
 import SubFormIngredients from '../components/SubFormIngredients'
 import SubFormDirections from '../components/SubFormDirections'
@@ -28,6 +27,8 @@ const NewRecipeForm = ({ navigation, recipes, addRecipe }) => {
       // refactor once add from camera roll is implemented
       image: require('../assets/img/default.jpg'),
     })
+    // id needs to be refactored to work with DB
+    // the second arg here is passed down to the component on a "route" obj
     navigation.navigate('Recipe', { id: recipes.length + 1 })
   }
 
@@ -55,7 +56,6 @@ const NewRecipeForm = ({ navigation, recipes, addRecipe }) => {
       <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>
         <Text style={styles.submitBtnText}>Submit</Text>
       </TouchableOpacity>
-      <NavBar nav={navigation} />
     </SafeAreaView>
   )
 }
