@@ -12,7 +12,7 @@ import colors from '../config/colors'
 
 const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
   useEffect(() => {
-    ;(async () => await getRecipes)()
+    (async () => await getRecipes())()
   }, [])
 
   return (
