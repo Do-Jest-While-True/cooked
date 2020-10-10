@@ -13,11 +13,9 @@ import {
   useFonts,
 } from '@expo-google-fonts/covered-by-your-grace'
 
-import NavBar from '../components/NavBar'
-
 import colors from '../config/colors'
 
-const WelcomeScreen = ({ navigation }) => {
+const WelcomeScreen = () => {
   let [fontsLoaded] = useFonts({
     CoveredByYourGrace_400Regular,
   })
@@ -34,14 +32,13 @@ const WelcomeScreen = ({ navigation }) => {
           source={require('../assets/img/frost-kitchen-1.jpeg')}
           style={styles.welcomeImg}
         />
-        <NavBar style={styles.navbar} nav={navigation} />
       </SafeAreaView>
     )
   }
 }
 
-const welcomeHeaderHeight = Dimensions.get('screen').height / 10
-const welcomeImgHeight = Dimensions.get('screen').height / 1.335
+const welcomeHeaderHeight = Dimensions.get('screen').height / 12
+const welcomeImgHeight = Dimensions.get('screen').height / 1.28
 // would need to set navbar height by dimensions for super consistent results on WelcomeScreen
 
 const styles = StyleSheet.create({

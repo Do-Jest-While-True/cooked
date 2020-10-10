@@ -15,11 +15,9 @@ import {
 } from '@expo-google-fonts/covered-by-your-grace'
 import { MaterialIcons } from '@expo/vector-icons'
 
-import NavBar from '../components/NavBar'
-
 import colors from '../config/colors'
 
-const RecipeScreen = ({ navigation, route, recipes, getRecipeTest }) => {
+const RecipeScreen = ({ route, recipes }) => {
   let [fontsLoaded] = useFonts({
     CoveredByYourGrace_400Regular,
   })
@@ -69,7 +67,6 @@ const RecipeScreen = ({ navigation, route, recipes, getRecipeTest }) => {
             </View>
           </View>
         </ScrollView>
-        <NavBar nav={navigation} />
       </SafeAreaView>
     )
   }

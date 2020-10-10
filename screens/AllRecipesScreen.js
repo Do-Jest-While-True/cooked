@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 
 import RecipeListItem from '../components/RecipeListItem'
 import SwipeDeleteBtn from '../components/SwipeDeleteBtn'
-import NavBar from '../components/NavBar'
 import { getRecipes } from '../redux/recipes'
 
 import colors from '../config/colors'
@@ -37,7 +36,6 @@ const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
           )}
         />
       )}
-      <NavBar nav={navigation} />
     </SafeAreaView>
   )
 }
