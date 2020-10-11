@@ -13,7 +13,7 @@ export default RecipeGridItem
 
 const styles = StyleSheet.create({
   gridImg: {
-    width: '100%',
-    height: '100%',
+    // use Dimension const declared in parent
+    height: 125,
   },
 })

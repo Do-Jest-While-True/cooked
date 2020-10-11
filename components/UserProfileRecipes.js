@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import GridList from 'react-native-grid-list'
+import GridList from 'react-native-grid-list' // remove all including from package.json
+import { FlatGrid } from 'react-native-super-grid'
 
 import { getRecipes } from '../redux/recipes'
 import RecipeGridItem from './RecipeGridItem'
@@ -12,11 +13,13 @@ const UserProfileRecipes = ({ recipes, getRecipes, nav }) => {
   }, [])
 
   return (
+    // refactor to another grid library:
     recipes && (
-      <GridList
-        showSeparator
+      <FlatGrid
+        // use Dimensions to get 33% of screen width
+        itemDimension={125}
+        spacing={0}
         data={recipes}
-        numColumns={3}
         renderItem={({ item }) => {
           // refactor img:
           return <RecipeGridItem nav={nav} id={item.id} imageUrl={tempImgUrl} />

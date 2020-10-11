@@ -46,6 +46,7 @@
 		"react-native-reanimated": "~1.13.0",
 		"react-native-safe-area-context": "3.1.4",
 		"react-native-screens": "~2.10.1",
+		"react-native-super-grid": "^4.0.3",
 		"react-native-web": "^0.13.18",
 		"react-redux": "^7.2.1",
 		"redux": "^4.0.5",
