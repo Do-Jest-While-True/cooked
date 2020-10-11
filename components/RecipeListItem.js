@@ -23,6 +23,8 @@ const RecipeListItem = ({ id, name, imageUrl, time, nav }) => {
   )
 }
 
+export default RecipeListItem
+
 const styles = StyleSheet.create({
   listItemView: {
     flex: 1,
@@ -51,5 +53,3 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 })
-
-export default RecipeListItem
