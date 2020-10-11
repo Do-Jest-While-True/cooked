@@ -7,6 +7,17 @@ const defaultStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.medium,
   },
+  largeText: {
+    fontSize: 25,
+    marginBottom: 20,
+    textAlign: 'center',
+    letterSpacing: 2,
+    color: colors.white,
+  },
+  text: {
+    fontSize: 20,
+    color: colors.white,
+  },
 })
 
 export default defaultStyles
