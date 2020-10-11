@@ -1,21 +1,18 @@
 import React from 'react'
-import { StyleSheet, SafeAreaView } from 'react-native'
+import { SafeAreaView } from 'react-native'
 
 import UserProfileInfo from '../components/UserProfileInfo'
 import UserProfileRecipes from '../components/UserProfileRecipes'
 
-import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const UserProfileScreen = () => {
+const UserProfileScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={defaultStyles.container}>
       <UserProfileInfo />
-      <UserProfileRecipes />
+      <UserProfileRecipes nav={navigation} />
     </SafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({})
 
 export default UserProfileScreen

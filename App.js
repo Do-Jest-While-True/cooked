@@ -50,7 +50,7 @@ const TabNavigator = () => (
       }}
     />
     <Tab.Screen
-      name="Recipe"
+      name="Explore"
       component={StackNavigator}
       options={{
         tabBarIcon: () => <Entypo name="bowl" size={35} color={colors.white} />,
