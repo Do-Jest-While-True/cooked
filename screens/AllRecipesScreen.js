@@ -41,8 +41,6 @@ const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
   )
 }
 
-const styles = StyleSheet.create({})
-
 const mapState = (state) => ({
   recipes: state.recipes,
 })
@@ -52,3 +50,5 @@ const mapDispatch = (dispatch) => ({
 })
 
 export default connect(mapState, mapDispatch)(AllRecipesScreen)
+
+const styles = StyleSheet.create({})
