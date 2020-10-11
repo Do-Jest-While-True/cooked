@@ -14,6 +14,7 @@ import {
 } from '@expo-google-fonts/covered-by-your-grace'
 
 import colors from '../config/colors'
+import defaultStyles from '../config/defaultStyles'
 
 const WelcomeScreen = () => {
   let [fontsLoaded] = useFonts({
@@ -24,7 +25,7 @@ const WelcomeScreen = () => {
     return <AppLoading />
   } else {
     return (
-      <SafeAreaView style={styles.welcomeView}>
+      <SafeAreaView style={defaultStyles.container}>
         <View style={styles.welcomeHeadingView}>
           <Text style={styles.welcomeHeadingText}>Cook'd</Text>
         </View>
@@ -42,11 +43,6 @@ const welcomeImgHeight = Dimensions.get('screen').height / 1.28
 // would need to set navbar height by dimensions for super consistent results on WelcomeScreen
 
 const styles = StyleSheet.create({
-  welcomeView: {
-    flex: 1,
-    backgroundColor: colors.medium,
-    justifyContent: 'space-between',
-  },
   welcomeHeadingView: {
     height: welcomeHeaderHeight,
     justifyContent: 'center',

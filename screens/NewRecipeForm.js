@@ -10,6 +10,7 @@ import SubFormTime from '../components/SubFormTime'
 import { addRecipe } from '../redux/recipes'
 
 import colors from '../config/colors'
+import defaultStyles from '../config/defaultStyles'
 
 const NewRecipeForm = ({ navigation, recipes, addRecipe }) => {
   const [recipeName, setRecipeName] = useState('')
@@ -33,7 +34,7 @@ const NewRecipeForm = ({ navigation, recipes, addRecipe }) => {
   }
 
   return (
-    <SafeAreaView style={styles.recipeFormView}>
+    <SafeAreaView style={defaultStyles.container}>
       <ScrollView>
         <Text style={styles.header}>Enter your Recipe Details here!</Text>
 
@@ -61,15 +62,10 @@ const NewRecipeForm = ({ navigation, recipes, addRecipe }) => {
 }
 
 const styles = StyleSheet.create({
-  recipeFormView: {
-    flex: 1,
-    backgroundColor: colors.medium,
-    justifyContent: 'space-between',
-  },
   recipeForm: {
     margin: 15,
     alignItems: 'center',
-    minHeight: 1000,
+    minHeight: 1000, // this is for UX with keyboard open
   },
   header: {
     color: colors.white,

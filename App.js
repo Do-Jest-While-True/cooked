@@ -5,12 +5,14 @@ import { NavigationContainer } from '@react-navigation/native'
 import { Provider } from 'react-redux'
 import { LogBox, StyleSheet } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
+import { AntDesign } from '@expo/vector-icons'
 
 import { store } from './redux/store'
 import WelcomeScreen from './screens/WelcomeScreen'
 import AllRecipesScreen from './screens/AllRecipesScreen'
 import NewRecipeForm from './screens/NewRecipeForm'
 import RecipeScreen from './screens/RecipeScreen'
+import UserProfileScreen from './screens/UserProfileScreen'
 
 import colors from './config/colors'
 
@@ -59,6 +61,15 @@ const TabNavigator = () => (
       component={NewRecipeForm}
       options={{
         tabBarIcon: () => <Entypo name="plus" size={35} color={colors.white} />,
+      }}
+    />
+    <Tab.Screen
+      name="User Profile"
+      component={UserProfileScreen}
+      options={{
+        tabBarIcon: () => (
+          <AntDesign name="user" size={35} color={colors.white} />
+        ),
       }}
     />
   </Tab.Navigator>

@@ -8,6 +8,7 @@ import SwipeDeleteBtn from '../components/SwipeDeleteBtn'
 import { getRecipes } from '../redux/recipes'
 
 import colors from '../config/colors'
+import defaultStyles from '../config/defaultStyles'
 
 const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
   useEffect(() => {
@@ -15,7 +16,7 @@ const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
   }, [])
 
   return (
-    <SafeAreaView style={styles.allRecipesView}>
+    <SafeAreaView style={defaultStyles.container}>
       {recipes && (
         <FlatList
           data={recipes}
@@ -40,13 +41,7 @@ const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
   )
 }
 
-const styles = StyleSheet.create({
-  allRecipesView: {
-    flex: 1,
-    backgroundColor: colors.medium,
-    justifyContent: 'space-between',
-  },
-})
+const styles = StyleSheet.create({})
 
 const mapState = (state) => ({
   recipes: state.recipes,

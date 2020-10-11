@@ -16,6 +16,7 @@ import {
 import { MaterialIcons } from '@expo/vector-icons'
 
 import colors from '../config/colors'
+import defaultStyles from '../config/defaultStyles'
 
 const RecipeScreen = ({ route, recipes }) => {
   let [fontsLoaded] = useFonts({
@@ -28,7 +29,7 @@ const RecipeScreen = ({ route, recipes }) => {
     return <AppLoading />
   } else {
     return (
-      <SafeAreaView style={styles.recipeView}>
+      <SafeAreaView style={defaultStyles.container}>
         <ScrollView>
           {/* Recipe Image: */}
           <Image source={{ uri: recipe.imageUrl }} style={styles.img} />
@@ -73,11 +74,6 @@ const RecipeScreen = ({ route, recipes }) => {
 }
 
 const styles = StyleSheet.create({
-  recipeView: {
-    flex: 1,
-    backgroundColor: colors.medium,
-    justifyContent: 'space-between',
-  },
   img: {
     height: 400,
     width: '100%',

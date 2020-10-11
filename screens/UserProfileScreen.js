@@ -1,8 +1,19 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, SafeAreaView } from 'react-native'
+
+import UserProfileInfo from '../components/UserProfileInfo'
+import UserProfileRecipes from '../components/UserProfileRecipes'
+
+import colors from '../config/colors'
+import defaultStyles from '../config/defaultStyles'
 
 const UserProfileScreen = () => {
-  return <View />
+  return (
+    <SafeAreaView style={defaultStyles.container}>
+      <UserProfileInfo />
+      <UserProfileRecipes />
+    </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({})
