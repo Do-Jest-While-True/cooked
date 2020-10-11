@@ -31,7 +31,7 @@ const RecipeScreen = ({ route, recipes }) => {
       <SafeAreaView style={styles.recipeView}>
         <ScrollView>
           {/* Recipe Image: */}
-          <Image source={recipe.image} style={styles.img} />
+          <Image source={{ uri: recipe.imageUrl }} style={styles.img} />
           <View style={styles.recipeContent}>
             {/* Recipe Name: */}
             <Text style={[styles.recipesHeadings, styles.recipeTitle]}>

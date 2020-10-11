@@ -11,7 +11,7 @@ import colors from '../config/colors'
 
 const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
   useEffect(() => {
-    (async () => await getRecipes())()
+    ;(async () => await getRecipes())()
   }, [])
 
   return (
@@ -27,7 +27,7 @@ const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
             >
               <RecipeListItem
                 name={item.name}
-                // image={item.image}
+                imageUrl={item.imageUrl}
                 time={item.time}
                 id={item.id}
                 nav={navigation}
