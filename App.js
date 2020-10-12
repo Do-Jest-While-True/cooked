@@ -20,7 +20,7 @@ const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
 // Stack Navigators to be nested in Tab Navigator
-// figure out how to always navigate to root on click of Tab
+// need to figure out how to always navigate to root of these stacks onPress of Tab
 const ExploreAndSingleRecipeStack = () => (
   <Stack.Navigator>
     <Stack.Screen
@@ -108,7 +108,7 @@ export default function App() {
   )
 }
 
-// styles ====================================
+// navbar & header styles ====================
 const headerStyle = {
   headerStyle: { backgroundColor: colors.medium },
   headerTintColor: colors.black,
