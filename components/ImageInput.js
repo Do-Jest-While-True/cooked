@@ -15,7 +15,6 @@ const uploadPreset = 'atmiftkx'
 // add a remove image option later on
 const ImageInput = ({ postImageUrl }) => {
   const [localImageUri, setLocalImageUri] = useState()
-  const [image, setImage] = useState()
 
   const requestPermission = async () => {
     const result = await ImagePicker.requestCameraRollPermissionsAsync()
@@ -25,10 +24,8 @@ const ImageInput = ({ postImageUrl }) => {
   }
 
   const selectImage = async () => {
-    // NOTE: we have access to a result.base64 method -- may come in hand later!
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
-        // this object passed here is optional but allows to config restrictions on upload
         // images only -- no video
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         // reformat for cloudinary
@@ -45,7 +42,7 @@ const ImageInput = ({ postImageUrl }) => {
           upload_preset: uploadPreset,
         }
 
-        // refactor to trycatch
+        // refactor to try-catch
         fetch(CLOUDINARY_URL, {
           body: JSON.stringify(data),
           headers: {
@@ -55,16 +52,13 @@ const ImageInput = ({ postImageUrl }) => {
         })
           .then(async (r) => {
             let data = await r.json()
-
-            // sets the cloudinary uri into "image" state var
-            await setImage(data.url)
-            // console.log("cloud uri on state-->", image)
+            // post cloudinary uri to the DB ⬇️
+            // currently hard-coding which recipe to post the uri to...
+            // once the forms in good shape, we'll use a different thunk creator that makes NEW post with ALL post data and the recipeId arg will not be necessary
             postImageUrl(3, data.url)
           })
           .catch((err) => console.log(err))
       }
-
-      // console.log('URI in React being sent in-->', result)
     } catch (error) {
       console.log('Error Reading Image')
     }
