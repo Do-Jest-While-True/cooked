@@ -1,9 +1,16 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, Image } from 'react-native'
 
+import { oneThirdScreenWidth } from '../config/dimensions'
+
 const RecipeGridItem = ({ id, imageUrl, nav }) => {
   return (
-    <TouchableOpacity onPress={() => nav.navigate('Recipe', { id })}>
+    // 'Explore' is the root of the nested Stack.Screens, 'Recipe' is the target Stack.Screen and 'id' is just being passed down through route.params.id (because RecipeScreen expects & requires it)
+    <TouchableOpacity
+      onPress={() =>
+        nav.navigate('User Profile', { screen: 'Recipe', params: { id } })
+      }
+    >
       <Image source={{ uri: imageUrl }} style={styles.gridImg} />
     </TouchableOpacity>
   )
@@ -13,7 +20,7 @@ export default RecipeGridItem
 
 const styles = StyleSheet.create({
   gridImg: {
-    // use Dimension const declared in parent
-    height: 125,
+    width: '100%',
+    height: oneThirdScreenWidth,
   },
 })

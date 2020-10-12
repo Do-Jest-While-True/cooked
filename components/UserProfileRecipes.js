@@ -1,23 +1,23 @@
 import React, { useEffect } from 'react'
+import { Dimensions } from 'react-native'
 import { connect } from 'react-redux'
-import GridList from 'react-native-grid-list' // remove all including from package.json
 import { FlatGrid } from 'react-native-super-grid'
 
 import { getRecipes } from '../redux/recipes'
 import RecipeGridItem from './RecipeGridItem'
+import { oneThirdScreenWidth } from '../config/dimensions'
 
-// refactor to class ???
 const UserProfileRecipes = ({ recipes, getRecipes, nav }) => {
   useEffect(() => {
     ;(async () => await getRecipes())()
   }, [])
 
   return (
-    // refactor to another grid library:
     recipes && (
       <FlatGrid
-        // use Dimensions to get 33% of screen width
-        itemDimension={125}
+        // this # is determining how many grid elements can fit in one row:
+        // actual width and height can overflow, those are determined their component style
+        itemDimension={oneThirdScreenWidth}
         spacing={0}
         data={recipes}
         renderItem={({ item }) => {

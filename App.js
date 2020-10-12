@@ -19,10 +19,11 @@ import colors from './config/colors'
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
-const StackNavigator = () => (
+// Stack Navigators to be nested in Tab Navigator
+const ExploreAndSingleRecipeStack = () => (
   <Stack.Navigator>
     <Stack.Screen
-      name="Explore"
+      name="All Recipes"
       component={AllRecipesScreen}
       options={headerStyle}
     />
@@ -34,6 +35,24 @@ const StackNavigator = () => (
   </Stack.Navigator>
 )
 
+// turn off header in profile
+const ProfileAndPostStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Profile"
+      component={UserProfileScreen}
+      options={headerStyle}
+    />
+    <Stack.Screen
+      name="Recipe"
+      component={RecipeScreen}
+      options={headerStyle}
+    />
+  </Stack.Navigator>
+)
+// =============================================
+
+// Bottom NavBar ===============================
 const TabNavigator = () => (
   <Tab.Navigator
     tabBarOptions={{
@@ -51,7 +70,7 @@ const TabNavigator = () => (
     />
     <Tab.Screen
       name="Explore"
-      component={StackNavigator}
+      component={ExploreAndSingleRecipeStack}
       options={{
         tabBarIcon: () => <Entypo name="bowl" size={35} color={colors.white} />,
       }}
@@ -65,7 +84,7 @@ const TabNavigator = () => (
     />
     <Tab.Screen
       name="User Profile"
-      component={UserProfileScreen}
+      component={ProfileAndPostStack}
       options={{
         tabBarIcon: () => (
           <AntDesign name="user" size={35} color={colors.white} />
@@ -75,6 +94,7 @@ const TabNavigator = () => (
   </Tab.Navigator>
 )
 
+// App =======================================
 export default function App() {
   LogBox.ignoreLogs(['Warning: ...']) // Ignore log notification by message
   LogBox.ignoreAllLogs() // Ignore all log notifications
@@ -88,6 +108,7 @@ export default function App() {
   )
 }
 
+// styles ====================================
 const headerStyle = {
   headerStyle: { backgroundColor: colors.medium },
   headerTintColor: colors.black,
