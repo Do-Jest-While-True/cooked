@@ -2,13 +2,13 @@ import axios from 'axios'
 import { URL } from './url'
 
 // ACTION TYPES
-const GET_RECIPES = 'GET_RECIPES'
+const GOT_RECIPES = 'GOT_RECIPES'
 const ADD_RECIPE = 'ADD_RECIPE'
 const DELETE_RECIPE = 'DELETE_RECIPE'
 
 // ACTION CREATORS
-const gotRecipes = (recipes) => ({
-  type: GET_RECIPES,
+export const gotRecipes = (recipes) => ({
+  type: GOT_RECIPES,
   recipes,
 })
 
@@ -38,9 +38,9 @@ export const getRecipes = () => async (dispatch) => {
 const initialState = []
 
 // REDUCER
-export const recipesReducer = (state = initialState, action) => {
+export default function (state = initialState, action) {
   switch (action.type) {
-    case GET_RECIPES:
+    case GOT_RECIPES:
       // currently not recollecting existing state
       return action.recipes
     case ADD_RECIPE:
