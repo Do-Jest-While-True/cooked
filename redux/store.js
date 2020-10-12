@@ -3,7 +3,7 @@ import thunkMiddleware from 'redux-thunk'
 
 import { recipesReducer } from './recipes'
 
-// STATE:
+// INITIAL STATE:
 // {
 //	recipes: []
 // }

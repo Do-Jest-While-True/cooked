@@ -15,6 +15,8 @@ import {
 } from '@expo-google-fonts/covered-by-your-grace'
 import { MaterialIcons } from '@expo/vector-icons'
 
+import ImageInput from '../components/ImageInput'
+
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
@@ -31,9 +33,11 @@ const RecipeScreen = ({ route, recipes }) => {
     return (
       <SafeAreaView style={defaultStyles.container}>
         <ScrollView>
+          {/* ImageInput TESTING */}
+          <ImageInput />
           {/* Recipe Image: */}
           {/* refactor img: */}
-          <Image source={{ uri: tempImgUrl }} style={styles.img} />
+          {/* <Image source={{ uri: tempImgUrl }} style={styles.img} /> */}
           <View style={styles.recipeContent}>
             {/* Recipe Name: */}
             <Text style={[styles.recipesHeadings, styles.recipeTitle]}>
@@ -81,12 +85,12 @@ const mapState = (state) => ({
 export default connect(mapState)(RecipeScreen)
 
 const styles = StyleSheet.create({
-  img: {
-    height: 400,
-    width: '100%',
-    resizeMode: 'cover',
-    opacity: 0.75,
-  },
+  // img: {
+  //   height: 400,
+  //   width: '100%',
+  //   resizeMode: 'cover',
+  //   opacity: 0.75,
+  // },
   recipeContent: {
     margin: 20,
   },
