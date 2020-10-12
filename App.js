@@ -5,22 +5,26 @@ import { NavigationContainer } from '@react-navigation/native'
 import { Provider } from 'react-redux'
 import { LogBox, StyleSheet } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
+import { AntDesign } from '@expo/vector-icons'
 
 import { store } from './redux/store'
 import WelcomeScreen from './screens/WelcomeScreen'
 import AllRecipesScreen from './screens/AllRecipesScreen'
 import NewRecipeForm from './screens/NewRecipeForm'
 import RecipeScreen from './screens/RecipeScreen'
+import UserProfileScreen from './screens/UserProfileScreen'
 
 import colors from './config/colors'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
-const StackNavigator = () => (
+// Stack Navigators to be nested in Tab Navigator
+// need to figure out how to always navigate to root of these stacks onPress of Tab
+const ExploreAndSingleRecipeStack = () => (
   <Stack.Navigator>
     <Stack.Screen
-      name="Explore"
+      name="All Recipes"
       component={AllRecipesScreen}
       options={headerStyle}
     />
@@ -32,6 +36,23 @@ const StackNavigator = () => (
   </Stack.Navigator>
 )
 
+const ProfileAndPostStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Profile"
+      component={UserProfileScreen}
+      options={{ ...headerStyle, headerShown: false }}
+    />
+    <Stack.Screen
+      name="Recipe"
+      component={RecipeScreen}
+      options={headerStyle}
+    />
+  </Stack.Navigator>
+)
+// =============================================
+
+// Bottom NavBar ===============================
 const TabNavigator = () => (
   <Tab.Navigator
     tabBarOptions={{
@@ -48,8 +69,8 @@ const TabNavigator = () => (
       }}
     />
     <Tab.Screen
-      name="Recipe"
-      component={StackNavigator}
+      name="Explore"
+      component={ExploreAndSingleRecipeStack}
       options={{
         tabBarIcon: () => <Entypo name="bowl" size={35} color={colors.white} />,
       }}
@@ -61,9 +82,19 @@ const TabNavigator = () => (
         tabBarIcon: () => <Entypo name="plus" size={35} color={colors.white} />,
       }}
     />
+    <Tab.Screen
+      name="User Profile"
+      component={ProfileAndPostStack}
+      options={{
+        tabBarIcon: () => (
+          <AntDesign name="user" size={35} color={colors.white} />
+        ),
+      }}
+    />
   </Tab.Navigator>
 )
 
+// App =======================================
 export default function App() {
   LogBox.ignoreLogs(['Warning: ...']) // Ignore log notification by message
   LogBox.ignoreAllLogs() // Ignore all log notifications
@@ -77,6 +108,7 @@ export default function App() {
   )
 }
 
+// navbar & header styles ====================
 const headerStyle = {
   headerStyle: { backgroundColor: colors.medium },
   headerTintColor: colors.black,

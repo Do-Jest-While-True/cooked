@@ -5,13 +5,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import colors from '../config/colors'
 
-const RecipeListItem = ({ id, name, image, time, nav }) => {
+const RecipeListItem = ({ id, name, imageUrl, time, nav }) => {
   return (
     <TouchableOpacity
       style={styles.listItemView}
       onPress={() => nav.navigate('Recipe', { id })}
     >
-      <Image source={image} style={styles.listItemImg} />
+      <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
       <View>
         <Text style={styles.listItemName}>{name}</Text>
         <View style={styles.timeView}>
@@ -22,6 +22,8 @@ const RecipeListItem = ({ id, name, image, time, nav }) => {
     </TouchableOpacity>
   )
 }
+
+export default RecipeListItem
 
 const styles = StyleSheet.create({
   listItemView: {
@@ -51,5 +53,3 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 })
-
-export default RecipeListItem

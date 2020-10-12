@@ -16,6 +16,7 @@ import {
 import { MaterialIcons } from '@expo/vector-icons'
 
 import colors from '../config/colors'
+import defaultStyles from '../config/defaultStyles'
 
 const RecipeScreen = ({ route, recipes }) => {
   let [fontsLoaded] = useFonts({
@@ -28,10 +29,11 @@ const RecipeScreen = ({ route, recipes }) => {
     return <AppLoading />
   } else {
     return (
-      <SafeAreaView style={styles.recipeView}>
+      <SafeAreaView style={defaultStyles.container}>
         <ScrollView>
           {/* Recipe Image: */}
-          <Image source={recipe.image} style={styles.img} />
+          {/* refactor img: */}
+          <Image source={{ uri: tempImgUrl }} style={styles.img} />
           <View style={styles.recipeContent}>
             {/* Recipe Name: */}
             <Text style={[styles.recipesHeadings, styles.recipeTitle]}>
@@ -72,12 +74,13 @@ const RecipeScreen = ({ route, recipes }) => {
   }
 }
 
+const mapState = (state) => ({
+  recipes: state.recipes,
+})
+
+export default connect(mapState)(RecipeScreen)
+
 const styles = StyleSheet.create({
-  recipeView: {
-    flex: 1,
-    backgroundColor: colors.medium,
-    justifyContent: 'space-between',
-  },
   img: {
     height: 400,
     width: '100%',
@@ -123,8 +126,5 @@ const styles = StyleSheet.create({
   },
 })
 
-const mapState = (state) => ({
-  recipes: state.recipes,
-})
-
-export default connect(mapState)(RecipeScreen)
+const tempImgUrl =
+  'https://images.squarespace-cdn.com/content/v1/57879a6cbebafb879f256735/1579721909133-R2KSZ8VGDGBI90DYATBK/ke17ZwdGBToddI8pDm48kLkXF2pIyv_F2eUT9F60jBl7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z4YTzHvnKhyp6Da-NYroOW3ZGjoBKy3azqku80C789l0iyqMbMesKd95J-X4EagrgU9L3Sa3U8cogeb0tjXbfawd0urKshkc5MgdBeJmALQKw/header4.jpg?format=2500w'
