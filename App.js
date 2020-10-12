@@ -20,6 +20,7 @@ const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
 // Stack Navigators to be nested in Tab Navigator
+// figure out how to always navigate to root on click of Tab
 const ExploreAndSingleRecipeStack = () => (
   <Stack.Navigator>
     <Stack.Screen
@@ -35,13 +36,12 @@ const ExploreAndSingleRecipeStack = () => (
   </Stack.Navigator>
 )
 
-// turn off header in profile
 const ProfileAndPostStack = () => (
   <Stack.Navigator>
     <Stack.Screen
       name="Profile"
       component={UserProfileScreen}
-      options={headerStyle}
+      options={{ ...headerStyle, headerShown: false }}
     />
     <Stack.Screen
       name="Recipe"
