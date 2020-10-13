@@ -18,7 +18,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { MaterialIcons } from '@expo/vector-icons'
 
 import ImageInput from '../components/ImageInput'
-import { postRecipe, removeImageUrl } from '../redux/recipe' // refactor to /redux
+import { postRecipe, removeImageUrl } from '../redux'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
@@ -59,7 +59,7 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
     removeImageUrl()
 
     // navigate to All Recipes View after posting:
-    // (need to add pull to refresh and reverse - cron ordering)
+    // (need to add pull to refresh and also sort All Recipes to be reverse-cron)
     navigation.navigate('Explore')
   }
 

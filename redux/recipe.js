@@ -1,6 +1,12 @@
 import axios from 'axios'
 import { URL } from './url'
 
+// this entire reducer should only be used for managing state on RecipePostForm for a single recipe object. When the form is submitted, the thunk creator postRecipe is used to actually post that single recipe object to the DB.
+
+// all other recipe needs should be handled in recipes.js
+
+// all managing
+
 // ACTION TYPES
 const ADD_IMAGE_URL = 'ADD_IMAGE_URL'
 const REMOVE_IMAGE_URL = 'REMOVE_IMAGE_URL'

@@ -4,7 +4,7 @@ import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
 
-import { addImageUrl } from '../redux/recipe'
+import { addImageUrl } from '../redux'
 
 import colors from '../config/colors'
 
