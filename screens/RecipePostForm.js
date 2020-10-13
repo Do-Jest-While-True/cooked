@@ -22,6 +22,7 @@ import { postRecipe, removeImageUrl } from '../redux'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
+import recipes from '../redux/recipes'
 
 const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   const [recipeName, setRecipeName] = useState('')
@@ -165,7 +166,11 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
                   />
                 </TouchableOpacity>
               </View>
-              {/* render list of ingredients here */}
+              {/* render list of ingredients inputted */}
+              {/* {recipe.ingredients.map((item) => {
+							console.log('map hit -------------------');
+							return <Text key={i}>{item}</Text>;
+						})} */}
             </View>
             {/* Directions: ________________________________________*/}
             {directionsFieldWarning && (
@@ -194,7 +199,7 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
                   />
                 </TouchableOpacity>
               </View>
-              {/* render list of directions here */}
+              {/* render list of directions inputted */}
             </View>
             {/* Post Button ____________________________________*/}
             <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
