@@ -4,7 +4,7 @@ import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
 
-import { postImageUrl } from '../redux/recipes'
+import { addImageUrl } from '../redux/recipe'
 
 import colors from '../config/colors'
 
@@ -13,7 +13,7 @@ const CLOUDINARY_URL =
 const uploadPreset = 'atmiftkx'
 
 // add a remove image option later on
-const ImageInput = ({ postImageUrl }) => {
+const ImageInput = ({ addImageUrl }) => {
   const [localImageUri, setLocalImageUri] = useState()
 
   const requestPermission = async () => {
@@ -52,10 +52,8 @@ const ImageInput = ({ postImageUrl }) => {
         })
           .then(async (r) => {
             let data = await r.json()
-            // post cloudinary uri to the DB ⬇️
-            // currently hard-coding which recipe to post the uri to...
-            // once the forms in good shape, we'll use a different thunk creator that makes NEW post with ALL post data and the recipeId arg will not be necessary
-            postImageUrl(3, data.url)
+            // put cloudinary uri onto state ⬇️
+            addImageUrl(data.url)
           })
           .catch((err) => console.log(err))
       }
@@ -88,14 +86,11 @@ const ImageInput = ({ postImageUrl }) => {
   )
 }
 
-const mapState = (state) => ({})
-
 const mapDispatch = (dispatch) => ({
-  postImageUrl: (recipeId, imageUrl) =>
-    dispatch(postImageUrl(recipeId, imageUrl)),
+  addImageUrl: (imageUrl) => dispatch(addImageUrl(imageUrl)),
 })
 
-export default connect(mapState, mapDispatch)(ImageInput)
+export default connect(null, mapDispatch)(ImageInput)
 
 const styles = StyleSheet.create({
   container: {

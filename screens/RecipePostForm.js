@@ -1,27 +1,50 @@
 import React, { useState } from 'react'
-import { StyleSheet, SafeAreaView, ScrollView, View, Text } from 'react-native'
+import {
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native'
 import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
 import {
   CoveredByYourGrace_400Regular,
   useFonts,
 } from '@expo-google-fonts/covered-by-your-grace'
-import { MaterialIcons } from '@expo/vector-icons'
 
 import ImageInput from '../components/ImageInput'
-import SubFormRecipeName from '../components/SubFormRecipeName'
 import SubFormIngredients from '../components/SubFormIngredients'
 import SubFormDirections from '../components/SubFormDirections'
-import SubFormTime from '../components/SubFormTime'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
+import { postRecipe } from '../redux/recipe'
 
-const RecipePostForm = () => {
+const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
   const [recipeName, setRecipeName] = useState('')
   const [time, setTime] = useState(0)
   const [ingredients, setIngredients] = useState([])
   const [directions, setDirections] = useState([])
+
+  const handlePost = async () => {
+    await postRecipe({
+      imageUrl: recipe.imageUrl,
+      name: recipeName,
+      time: time,
+      ingredients: ingredients,
+      directions: directions,
+    })
+    // reset fields / local state
+    setRecipeName('')
+    setTime('')
+    setIngredients([])
+    setDirections([])
+    // navigate to single recipe
+    navigation.navigate('Recipe', { id: recipe.id })
+  }
 
   let [fontsLoaded] = useFonts({
     CoveredByYourGrace_400Regular,
@@ -37,59 +60,75 @@ const RecipePostForm = () => {
           <ImageInput />
           <View style={styles.recipeContent}>
             {/* Recipe Name: */}
-            <SubFormRecipeName
-              recipeName={recipeName}
-              setRecipeName={setRecipeName}
+            <TextInput
+              placeholder="Enter Recipe Name"
+              style={[styles.formInput, styles.formInputFullWidth]}
+              clearButtonMode="always"
+              onChangeText={(val) => setRecipeName(val)}
+              value={recipeName}
             />
             {/* Cook Time */}
-            <SubFormTime time={time} setTime={setTime} />
+            <TextInput
+              placeholder="Enter Cook Time: '5 minutes'"
+              style={[styles.formInput, styles.formInputFullWidth]}
+              clearButtonMode="always"
+              onChangeText={(val) => setTime(val)}
+              value={time}
+            />
             {/* Ingredients: */}
-            <View style={styles.recipesContentSection}>
+            <View style={{}}>
               <SubFormIngredients
                 ingredients={ingredients}
                 setIngredients={setIngredients}
               />
             </View>
             {/* Directions: */}
-            <View style={styles.recipesContentSection}>
+            <View style={{}}>
               <SubFormDirections
                 directions={directions}
                 setDirections={setDirections}
               />
             </View>
           </View>
+          <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
+            <Text style={styles.postBtnText}>Post!</Text>
+          </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
     )
   }
 }
 
-const mapState = (state) => ({})
+const mapState = (state) => ({
+  recipe: state.recipe,
+})
 
-export default connect(mapState)(RecipePostForm)
+const mapDispatch = (dispatch) => ({
+  postRecipe: (recipeData) => dispatch(postRecipe(recipeData)),
+})
+
+export default connect(mapState, mapDispatch)(RecipePostForm)
 
 const styles = StyleSheet.create({
   recipeContent: {
     margin: 20,
   },
-  recipesContentSection: {
-    marginBottom: 20,
-  },
-  recipeTitle: {
-    fontFamily: 'CoveredByYourGrace_400Regular',
-    letterSpacing: 3,
-    fontSize: 25,
-    marginBottom: 18,
-  },
-  recipesHeadings: {
-    color: colors.white,
-    fontWeight: 'bold',
-    fontSize: 20,
-    letterSpacing: 2,
-  },
   singleIngredient: {
     marginTop: 10,
     fontSize: 15,
+  },
+  formInput: {
+    backgroundColor: colors.light,
+    borderRadius: 25,
+    height: 50,
+    width: '88%',
+    paddingHorizontal: 20,
+    marginVertical: 20,
+    marginRight: 15,
+    fontSize: 20,
+  },
+  formInputFullWidth: {
+    width: '100%',
   },
   singleDirectionView: {
     flexDirection: 'row',
@@ -98,12 +137,16 @@ const styles = StyleSheet.create({
   singleDirection: {
     fontSize: 15,
   },
-  timeView: {
-    flexDirection: 'row',
-    marginBottom: 22,
+  postBtn: {
+    backgroundColor: colors.dark,
+    borderRadius: 25,
+    margin: 20,
+    padding: 12,
   },
-  time: {
+  postBtnText: {
+    textAlign: 'center',
     color: colors.white,
-    marginLeft: 5,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 })
