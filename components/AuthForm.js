@@ -12,6 +12,7 @@ const AuthForm = ({ name, getUser, nav, user }) => {
   const onSubmit = () => {
     const values = getValues()
     getUser(values, name)
+    console.log('does this fire once?')
   }
   return (
     <View style={styles.formInputView}>
