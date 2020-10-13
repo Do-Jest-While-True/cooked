@@ -7,11 +7,13 @@ import {
   Image,
   Dimensions,
 } from 'react-native'
+import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
 import {
   CoveredByYourGrace_400Regular,
   useFonts,
 } from '@expo-google-fonts/covered-by-your-grace'
+import AuthForm from '../components/AuthForm'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
@@ -29,14 +31,27 @@ const WelcomeScreen = () => {
         <View style={styles.welcomeHeadingView}>
           <Text style={styles.welcomeHeadingText}>Cook'd</Text>
         </View>
-        <Image
+        {/* <Image
           source={require('../assets/img/frost-kitchen-1.jpeg')}
           style={styles.welcomeImg}
-        />
+        /> */}
+        <AuthForm />
       </SafeAreaView>
     )
   }
 }
+
+// const mapState = (state) => {
+//   return {
+//     isLoggedIn: !!state.user.id,
+//   }
+// }
+
+// const mapDispatch = (dispatch) => ({
+
+// })
+
+export default connect(null, null)(WelcomeScreen)
 
 const welcomeHeaderHeight = Dimensions.get('screen').height / 12
 const welcomeImgHeight = Dimensions.get('screen').height / 1.28
@@ -65,5 +80,3 @@ const styles = StyleSheet.create({
     bottom: 40,
   },
 })
-
-export default WelcomeScreen

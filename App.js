@@ -7,7 +7,7 @@ import { LogBox, StyleSheet } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
 
-import { store } from './redux/store'
+import store from './redux'
 import WelcomeScreen from './screens/WelcomeScreen'
 import AllRecipesScreen from './screens/AllRecipesScreen'
 import RecipePostForm from './screens/RecipePostForm'

@@ -42,7 +42,7 @@ const initialState = {
 }
 
 // REDUCER
-export const recipeReducer = (state = initialState, action) => {
+export default function (state = initialState, action) {
   switch (action.type) {
     case ADD_IMAGE_URL:
       return { ...state, imageUrl: action.imageUrl }

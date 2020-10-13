@@ -5,15 +5,14 @@ import { connect } from 'react-redux'
 
 import RecipeListItem from '../components/RecipeListItem'
 import SwipeDeleteBtn from '../components/SwipeDeleteBtn'
-import { getRecipes } from '../redux/recipes'
+import { getRecipes } from '../redux'
 
 import defaultStyles from '../config/defaultStyles'
 
 const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
   useEffect(() => {
-    ;(async () => await getRecipes())()
+    getRecipes()
   }, [])
-
   return (
     <SafeAreaView style={defaultStyles.container}>
       {recipes && (
