@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { FlatGrid } from 'react-native-super-grid'
 
-import { getRecipes } from '../redux/recipe'
+import { getRecipes } from '../redux/recipes'
 import RecipeGridItem from './RecipeGridItem'
 import { oneThirdScreenWidth } from '../config/dimensions'
 

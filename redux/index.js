@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 
-import recipes from './recipe'
+import recipes from './recipes'
 import user from './user'
 
 const appReducer = combineReducers({
@@ -12,4 +12,4 @@ const appReducer = combineReducers({
 const store = createStore(appReducer, applyMiddleware(thunkMiddleware))
 export default store
 export * from './user'
-export * from './recipe'
+export * from './recipes'
