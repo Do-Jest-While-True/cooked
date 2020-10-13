@@ -7,12 +7,11 @@ import { connect } from 'react-redux'
 import { auth } from '../redux'
 import colors from '../config/colors'
 
-const AuthForm = ({ name, getUser, nav, user }) => {
+const AuthForm = ({ name, getUser }) => {
   const { control, handleSubmit, getValues } = useForm()
   const onSubmit = () => {
     const values = getValues()
     getUser(values, name)
-    console.log('does this fire once?')
   }
   return (
     <View style={styles.formInputView}>

@@ -41,19 +41,15 @@ export const auth = (payload, method) => async (dispatch) => {
 
   try {
     dispatch(getUser(res.data))
-    // createBrowserHistory().push()
-    // history().push('/')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
 }
 
-//Needs work, cannot get past line 54
 export const logout = () => async (dispatch) => {
   try {
     await axios.post(`${URL}/auth/logout`)
     dispatch(removeUser())
-    // history.push('/login')
   } catch (err) {
     console.error(err)
   }

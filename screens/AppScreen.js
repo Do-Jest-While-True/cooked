@@ -1,17 +1,12 @@
 import React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import { Provider } from 'react-redux'
-import { TabNavigator } from '../components/LoggedInScreen'
+import { TabNavigator } from '../components/LoggedInView'
 import { connect } from 'react-redux'
 import { Login, Signup } from '../components/AuthForm'
 import WelcomeScreen from './WelcomeScreen'
 import colors from '../config/colors'
-import { LogBox, StyleSheet } from 'react-native'
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
 
-const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
 export const LoginSignup = () => (
@@ -40,10 +35,3 @@ const headerStyle = {
   headerStyle: { backgroundColor: colors.medium },
   headerTintColor: colors.black,
 }
-
-const styles = StyleSheet.create({
-  navbar: {
-    backgroundColor: colors.medium,
-    height: '9%',
-  },
-})

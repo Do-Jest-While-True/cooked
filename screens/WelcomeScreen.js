@@ -1,19 +1,10 @@
 import React from 'react'
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  Text,
-  Image,
-  Dimensions,
-} from 'react-native'
-import { connect } from 'react-redux'
+import { StyleSheet, SafeAreaView, View, Text, Dimensions } from 'react-native'
 import { AppLoading } from 'expo'
 import {
   CoveredByYourGrace_400Regular,
   useFonts,
 } from '@expo-google-fonts/covered-by-your-grace'
-import { Login, Signup } from '../components/AuthForm'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import colors from '../config/colors'
@@ -32,10 +23,6 @@ const WelcomeScreen = ({ navigation }) => {
         <View style={styles.welcomeHeadingView}>
           <Text style={styles.welcomeHeadingText}>Cook'd</Text>
         </View>
-        {/* <Image
-          source={require('../assets/img/frost-kitchen-1.jpeg')}
-          style={styles.welcomeImg}
-        /> */}
         <View style={styles.center}>
           <TouchableOpacity
             onPress={() => navigation.navigate('Login')}
@@ -55,20 +42,9 @@ const WelcomeScreen = ({ navigation }) => {
   }
 }
 
-// const mapState = (state) => {
-//   return {
-//     isLoggedIn: !!state.user.id,
-//   }
-// }
-
-// const mapDispatch = (dispatch) => ({
-
-// })
-
-export default connect(null, null)(WelcomeScreen)
+export default WelcomeScreen
 
 const welcomeHeaderHeight = Dimensions.get('screen').height / 12
-const welcomeImgHeight = Dimensions.get('screen').height / 1.28
 // would need to set navbar height by dimensions for super consistent results on WelcomeScreen
 
 const styles = StyleSheet.create({
@@ -82,12 +58,6 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 30,
     textAlign: 'center',
-  },
-  welcomeImg: {
-    height: welcomeImgHeight,
-    width: '100%',
-    resizeMode: 'cover',
-    opacity: 0.8,
   },
   navbar: {
     position: 'absolute',
