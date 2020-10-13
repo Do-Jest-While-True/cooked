@@ -1,10 +1,9 @@
 import axios from 'axios'
 import { URL } from './url'
 
-// clean up both reducers and "URIS"
-
 // ACTION TYPES
 const ADD_IMAGE_URL = 'ADD_IMAGE_URL'
+const REMOVE_IMAGE_URL = 'REMOVE_IMAGE_URL'
 const POST_RECIPE = 'POST_RECIPE'
 
 // ACTION CREATORS
@@ -13,12 +12,17 @@ export const addImageUrl = (imageUrl) => ({
   imageUrl,
 })
 
+export const removeImageUrl = () => ({
+  type: REMOVE_IMAGE_URL,
+})
+
 const postedRecipe = (recipe) => ({
   type: POST_RECIPE,
   recipe,
 })
 
 // THUNK CREATORS
+// post data entered in RecipePostForm into the DB and put it on state:
 export const postRecipe = (recipeData) => async (dispatch) => {
   try {
     const { data: recipe } = await axios.post(`${URL}/api/recipes`, recipeData)
@@ -41,8 +45,9 @@ const initialState = {
 export const recipeReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_IMAGE_URL:
-      // console.log('in reducer-->', action.imageUrl)
       return { ...state, imageUrl: action.imageUrl }
+    case REMOVE_IMAGE_URL:
+      return { ...state, imageUrl: '' }
     case POST_RECIPE:
       return action.recipe
     default:

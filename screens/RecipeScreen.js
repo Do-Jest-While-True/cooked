@@ -19,6 +19,10 @@ import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
 const RecipeScreen = ({ route, recipes }) => {
+  // useEffect(() => {
+  //   ; (async () => await getRecipes())()
+  // }, [])
+
   let [fontsLoaded] = useFonts({
     CoveredByYourGrace_400Regular,
   })

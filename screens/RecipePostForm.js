@@ -18,14 +18,15 @@ import { AntDesign } from '@expo/vector-icons'
 import { MaterialIcons } from '@expo/vector-icons'
 
 import ImageInput from '../components/ImageInput'
-import { postRecipe } from '../redux/recipe'
+import { postRecipe, removeImageUrl } from '../redux/recipe'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
+// set min height for UX
+const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   const [recipeName, setRecipeName] = useState('')
-  const [time, setTime] = useState(0)
+  const [time, setTime] = useState('')
   const [ingredient, setIngredient] = useState('')
   const [direction, setDirection] = useState('')
   const [ingredients, setIngredients] = useState([])
@@ -49,12 +50,15 @@ const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
       ingredients: ingredients,
       directions: directions,
     })
-    // reset fields / local state
+    // reset fields / local state:
     setRecipeName('')
     setTime('')
     setIngredients([])
     setDirections([])
-    // navigate to single recipe
+    // clear imageUrl from store state:
+    removeImageUrl()
+
+    // navigate to single recipe:
     // navigation.navigate('Recipe', { id: recipe.id })
   }
 
@@ -106,6 +110,7 @@ const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
                   />
                 </TouchableOpacity>
               </View>
+              {/* render list of ingredients here */}
             </View>
             {/* Directions: */}
             <View>
@@ -126,6 +131,7 @@ const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
                   />
                 </TouchableOpacity>
               </View>
+              {/* render list of directions here */}
             </View>
           </View>
           <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
@@ -155,6 +161,7 @@ const mapState = (state) => ({
 
 const mapDispatch = (dispatch) => ({
   postRecipe: (recipeData) => dispatch(postRecipe(recipeData)),
+  removeImageUrl: () => dispatch(removeImageUrl()),
 })
 
 export default connect(mapState, mapDispatch)(RecipePostForm)
