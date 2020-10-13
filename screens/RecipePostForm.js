@@ -18,12 +18,13 @@ import { AntDesign } from '@expo/vector-icons'
 import { MaterialIcons } from '@expo/vector-icons'
 
 import ImageInput from '../components/ImageInput'
-import { postRecipe, removeImageUrl } from '../redux/recipe'
+import { postRecipe, removeImageUrl } from '../redux'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
+import recipes from '../redux/recipes'
 
-// set min height for UX
+// REMOVE WARNINGS AFTER POSTING SUCCESSFULLY
 const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   const [recipeName, setRecipeName] = useState('')
   const [time, setTime] = useState('')
@@ -31,18 +32,48 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   const [direction, setDirection] = useState('')
   const [ingredients, setIngredients] = useState([])
   const [directions, setDirections] = useState([])
+  // for validations:
+  const [nameFieldEmpty, setNameFieldEmpty] = useState(true)
+  const [nameFieldWarning, setNameFieldWarning] = useState(false)
+  const [timeFieldEmpty, setTimeFieldEmpty] = useState(true)
+  const [timeFieldWarning, setTimeFieldWarning] = useState(false)
+  const [ingredientsFieldEmpty, setIngredientsFieldEmpty] = useState(true)
+  const [ingredientsFieldWarning, setIngredientsFieldWarning] = useState(false)
+  const [directionsFieldEmpty, setDirectionsFieldEmpty] = useState(true)
+  const [directionsFieldWarning, setDirectionsFieldWarning] = useState(false)
+  // const [imageFieldEmpty, setImageFieldEmpty] = useState(true)
+  // const [imageFieldWarning, setImageFieldWarning] = useState(false)
 
+  // add a single ingredient to new recipe object ingredients array
   const addIngredient = () => {
     setIngredients([...ingredients, ingredient])
     setIngredient('')
   }
 
+  // add a single direction to new recipe object directions array
   const addDirection = () => {
     setDirections([...directions, direction])
     setDirection('')
   }
 
   const handlePost = async () => {
+    // for validations:
+    if (nameFieldEmpty) {
+      return setNameFieldWarning(true)
+    }
+    if (timeFieldEmpty) {
+      return setTimeFieldWarning(true)
+    }
+    if (ingredientsFieldEmpty) {
+      return setIngredientsFieldWarning(true)
+    }
+    if (directionsFieldEmpty) {
+      return setDirectionsFieldWarning(true)
+    }
+    // if (imageFieldEmpty) {
+    //   return setImageFieldWarning(true)
+    // }
+
     await postRecipe({
       imageUrl: recipe.imageUrl,
       name: recipeName,
@@ -50,6 +81,7 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
       ingredients: ingredients,
       directions: directions,
     })
+
     // reset fields / local state:
     setRecipeName('')
     setTime('')
@@ -58,8 +90,9 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
     // clear imageUrl from store state:
     removeImageUrl()
 
-    // navigate to single recipe:
-    // navigation.navigate('Recipe', { id: recipe.id })
+    // navigate to All Recipes View after posting:
+    // (need to add pull to refresh and also sort All Recipes to be reverse-cron)
+    navigation.navigate('Explore')
   }
 
   let [fontsLoaded] = useFonts({
@@ -72,33 +105,57 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
     return (
       <SafeAreaView style={defaultStyles.container}>
         <ScrollView>
-          {/* ImageInput */}
+          {/* ImageInput __________________________________________*/}
           <ImageInput />
           <View style={styles.recipeContent}>
-            {/* Recipe Name: */}
+            {/* Recipe Name: ________________________________________*/}
+            {nameFieldWarning && (
+              <Text style={[defaultStyles.text, styles.warning]}>
+                Please Enter a Recipe Title!
+              </Text>
+            )}
             <TextInput
               placeholder="Enter Recipe Title"
               style={[styles.formInput, styles.formInputFullWidth]}
               clearButtonMode="always"
-              onChangeText={(val) => setRecipeName(val)}
+              onChangeText={(val) => {
+                setRecipeName(val)
+                setNameFieldEmpty(false)
+              }}
               value={recipeName}
             />
-            {/* Cook Time */}
+            {/* Cook Time ___________________________________________*/}
+            {timeFieldWarning && (
+              <Text style={[defaultStyles.text, styles.warning]}>
+                Please Enter a Cook Time!
+              </Text>
+            )}
             <TextInput
               placeholder="Enter Cook Time: ex: '5 minutes'"
               style={[styles.formInput, styles.formInputFullWidth]}
               clearButtonMode="always"
-              onChangeText={(val) => setTime(val)}
+              onChangeText={(val) => {
+                setTime(val)
+                setTimeFieldEmpty(false)
+              }}
               value={time}
             />
-            {/* Ingredients: */}
+            {/* Ingredients: ________________________________________*/}
+            {ingredientsFieldWarning && (
+              <Text style={[defaultStyles.text, styles.warning]}>
+                No Ingredients!
+              </Text>
+            )}
             <View>
               <View style={styles.formInputView}>
                 <TextInput
                   placeholder="Add Ingredient"
                   style={[styles.formInput]}
                   clearButtonMode="always"
-                  onChangeText={(val) => setIngredient(val)}
+                  onChangeText={(val) => {
+                    setIngredient(val)
+                    setIngredientsFieldEmpty(false)
+                  }}
                   value={ingredient}
                 />
                 <TouchableOpacity>
@@ -110,16 +167,28 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
                   />
                 </TouchableOpacity>
               </View>
-              {/* render list of ingredients here */}
+              {/* render list of ingredients inputted */}
+              {/* {recipe.ingredients.map((item) => {
+							console.log('map hit -------------------');
+							return <Text key={i}>{item}</Text>;
+						})} */}
             </View>
-            {/* Directions: */}
+            {/* Directions: ________________________________________*/}
+            {directionsFieldWarning && (
+              <Text style={[defaultStyles.text, styles.warning]}>
+                No Directions!
+              </Text>
+            )}
             <View>
               <View style={styles.formInputView}>
                 <TextInput
                   placeholder="Add Direction"
                   style={[styles.formInput]}
                   clearButtonMode="always"
-                  onChangeText={(val) => setDirection(val)}
+                  onChangeText={(val) => {
+                    setDirection(val)
+                    setDirectionsFieldEmpty(false)
+                  }}
                   value={direction}
                 />
                 <TouchableOpacity>
@@ -131,12 +200,13 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
                   />
                 </TouchableOpacity>
               </View>
-              {/* render list of directions here */}
+              {/* render list of directions inputted */}
             </View>
+            {/* Post Button ____________________________________*/}
+            <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
+              <Text style={styles.postBtnText}>Post!</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
-            <Text style={styles.postBtnText}>Post!</Text>
-          </TouchableOpacity>
           {console.log('---------------------------------')}
           {console.log('Local State in Form')}
           {console.log('---------------------------------')}
@@ -169,6 +239,7 @@ export default connect(mapState, mapDispatch)(RecipePostForm)
 const styles = StyleSheet.create({
   recipeContent: {
     margin: 20,
+    minHeight: 750, // this is for UX -- adds room to scroll when inputing directions
   },
   singleIngredient: {
     marginTop: 10,
@@ -212,7 +283,7 @@ const styles = StyleSheet.create({
   postBtn: {
     backgroundColor: colors.dark,
     borderRadius: 25,
-    margin: 20,
+    marginVertical: 20,
     padding: 12,
   },
   postBtnText: {
@@ -220,5 +291,9 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  warning: {
+    color: colors.red,
+    alignSelf: 'center',
   },
 })

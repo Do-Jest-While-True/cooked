@@ -3,19 +3,12 @@ import { URL } from './url'
 
 // ACTION TYPES
 const GOT_RECIPES = 'GOT_RECIPES'
-const ADD_RECIPE = 'ADD_RECIPE'
 const DELETE_RECIPE = 'DELETE_RECIPE'
 
 // ACTION CREATORS
 export const gotRecipes = (recipes) => ({
   type: GOT_RECIPES,
   recipes,
-})
-
-// needs to be refactored w/ thunks
-export const addRecipe = (recipe) => ({
-  type: ADD_RECIPE,
-  recipe,
 })
 
 // needs to be refactored w/ thunks
@@ -43,8 +36,6 @@ export default function (state = initialState, action) {
     case GOT_RECIPES:
       // currently not recollecting existing state
       return action.recipes
-    case ADD_RECIPE:
-      return [...state, action.recipe]
     case DELETE_RECIPE:
       return state.filter((recipe) => recipe.id !== action.id)
     default:

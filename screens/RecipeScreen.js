@@ -19,15 +19,11 @@ import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
 const RecipeScreen = ({ route, recipes }) => {
-  // useEffect(() => {
-  //   ; (async () => await getRecipes())()
-  // }, [])
-
   let [fontsLoaded] = useFonts({
     CoveredByYourGrace_400Regular,
   })
 
-  // might need to refetch recipes here
+  // this works because currently we always have the latest recipes on state because we enter this Screen from components that make a call for all recipes:
   const recipe = recipes.find((recipe) => recipe.id === route.params.id)
 
   if (!fontsLoaded) {
@@ -37,8 +33,7 @@ const RecipeScreen = ({ route, recipes }) => {
       <SafeAreaView style={defaultStyles.container}>
         <ScrollView>
           {/* Recipe Image: */}
-          {/* refactor img: */}
-          <Image source={{ uri: tempImgUrl }} style={styles.img} />
+          <Image source={{ uri: recipe.imageUrl }} style={styles.img} />
           <View style={styles.recipeContent}>
             {/* Recipe Name: */}
             <Text style={[styles.recipesHeadings, styles.recipeTitle]}>
@@ -130,6 +125,3 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
 })
-
-const tempImgUrl =
-  'https://images.squarespace-cdn.com/content/v1/57879a6cbebafb879f256735/1579721909133-R2KSZ8VGDGBI90DYATBK/ke17ZwdGBToddI8pDm48kLkXF2pIyv_F2eUT9F60jBl7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z4YTzHvnKhyp6Da-NYroOW3ZGjoBKy3azqku80C789l0iyqMbMesKd95J-X4EagrgU9L3Sa3U8cogeb0tjXbfawd0urKshkc5MgdBeJmALQKw/header4.jpg?format=2500w'
