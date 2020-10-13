@@ -73,7 +73,7 @@ const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
           <View style={styles.recipeContent}>
             {/* Recipe Name: */}
             <TextInput
-              placeholder="Enter Recipe Name"
+              placeholder="Enter Recipe Title"
               style={[styles.formInput, styles.formInputFullWidth]}
               clearButtonMode="always"
               onChangeText={(val) => setRecipeName(val)}
@@ -81,7 +81,7 @@ const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
             />
             {/* Cook Time */}
             <TextInput
-              placeholder="Enter Cook Time: '5 minutes'"
+              placeholder="Enter Cook Time: ex: '5 minutes'"
               style={[styles.formInput, styles.formInputFullWidth]}
               clearButtonMode="always"
               onChangeText={(val) => setTime(val)}
@@ -91,7 +91,7 @@ const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
             <View>
               <View style={styles.formInputView}>
                 <TextInput
-                  placeholder="Enter Ingredient"
+                  placeholder="Add Ingredient"
                   style={[styles.formInput]}
                   clearButtonMode="always"
                   onChangeText={(val) => setIngredient(val)}
@@ -101,7 +101,7 @@ const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
                   <AntDesign
                     name="pluscircleo"
                     size={30}
-                    color={colors.black}
+                    color={colors.white}
                     onPress={addIngredient}
                   />
                 </TouchableOpacity>
@@ -111,7 +111,7 @@ const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
             <View>
               <View style={styles.formInputView}>
                 <TextInput
-                  placeholder="Enter Direction"
+                  placeholder="Add Direction"
                   style={[styles.formInput]}
                   clearButtonMode="always"
                   onChangeText={(val) => setDirection(val)}
@@ -121,7 +121,7 @@ const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
                   <AntDesign
                     name="pluscircleo"
                     size={30}
-                    color={colors.black}
+                    color={colors.white}
                     onPress={addDirection}
                   />
                 </TouchableOpacity>
@@ -131,7 +131,9 @@ const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
           <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
             <Text style={styles.postBtnText}>Post!</Text>
           </TouchableOpacity>
-          {console.log('-------------------------')}
+          {console.log('---------------------------------')}
+          {console.log('Local State in Form')}
+          {console.log('---------------------------------')}
           {console.log({
             imageUrl: recipe.imageUrl,
             name: recipeName,
