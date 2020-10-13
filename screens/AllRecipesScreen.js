@@ -40,26 +40,27 @@ const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-      {recipes && (
-        <FlatList
-          data={recipes}
-          keyExtractor={(recipe) => recipe.id.toString()}
-          renderItem={({ item }) => (
-            <Swipeable
-              renderRightActions={() => <SwipeDeleteBtn id={item.id} />}
-              onSwipeableRightOpen={() => console.log('delete opened')}
-            >
-              <RecipeListItem
-                name={item.name}
-                imageUrl={item.imageUrl}
-                time={item.time}
-                id={item.id}
-                nav={navigation}
-              />
-            </Swipeable>
-          )}
-        />
-      )}
+        {recipes && (
+          <FlatList
+            data={recipes}
+            keyExtractor={(recipe) => recipe.id.toString()}
+            renderItem={({ item }) => (
+              <Swipeable
+                renderRightActions={() => <SwipeDeleteBtn id={item.id} />}
+                onSwipeableRightOpen={() => console.log('delete opened')}
+              >
+                <RecipeListItem
+                  name={item.name}
+                  imageUrl={item.imageUrl}
+                  time={item.time}
+                  id={item.id}
+                  nav={navigation}
+                />
+              </Swipeable>
+            )}
+          />
+        )}
+      </ScrollView>
     </SafeAreaView>
   )
 }
