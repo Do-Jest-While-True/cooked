@@ -1,16 +1,25 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { logout } from '../redux'
+import { connect } from 'react-redux'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const UserProfileInfo = () => {
+const UserProfileInfo = ({ logout, nav }) => {
+  let handleSubmit = () => {
+    logout()
+  }
   return (
     <View style={styles.container}>
       <Image
         source={{ uri: 'enter imageUrl once backend/redux is done' }}
         style={styles.profileImg}
       />
+      <TouchableOpacity onPress={() => handleSubmit()}>
+        <Text>Logout</Text>
+      </TouchableOpacity>
       <Text style={[defaultStyles.text]}>First Name Last Name</Text>
       <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
         @username
@@ -22,6 +31,16 @@ const UserProfileInfo = () => {
     </View>
   )
 }
+
+const mapState = (state) => ({
+  user: state.user,
+})
+
+const mapDispatch = (dispatch) => ({
+  logout: () => dispatch(logout()),
+})
+
+export default connect(mapState, mapDispatch)(UserProfileInfo)
 
 const styles = StyleSheet.create({
   container: {
@@ -54,4 +73,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default UserProfileInfo
+// export default UserProfileInfo
