@@ -24,7 +24,7 @@ const Stack = createStackNavigator()
 const ExploreAndSingleRecipeStack = () => (
   <Stack.Navigator>
     <Stack.Screen
-      name="All Recipes"
+      name="All Recipes" // not being used but is required -- call "Explore" to navigate (tab nav name)
       component={AllRecipesScreen}
       options={headerStyle}
     />
@@ -39,7 +39,7 @@ const ExploreAndSingleRecipeStack = () => (
 const ProfileAndPostStack = () => (
   <Stack.Navigator>
     <Stack.Screen
-      name="Profile"
+      name="Profile" // not being used but is required -- call "User Profile" to navigate (tab nav name)
       component={UserProfileScreen}
       options={{ ...headerStyle, headerShown: false }}
     />
@@ -98,8 +98,8 @@ const TabNavigator = () => (
 
 // App =======================================
 export default function App() {
-  // LogBox.ignoreLogs(['Warning: ...']) // Ignore log notification by message
-  // LogBox.ignoreAllLogs() // Ignore all log notifications
+  LogBox.ignoreLogs(['Warning: ...']) // Ignore log notification by message
+  LogBox.ignoreAllLogs() // Ignore all log notifications
 
   return (
     <Provider store={store}>
