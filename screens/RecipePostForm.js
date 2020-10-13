@@ -24,6 +24,7 @@ import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 import recipes from '../redux/recipes'
 
+// REMOVE WARNINGS AFTER POSTING SUCCESSFULLY
 const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   const [recipeName, setRecipeName] = useState('')
   const [time, setTime] = useState('')
