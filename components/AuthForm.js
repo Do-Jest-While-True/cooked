@@ -7,11 +7,11 @@ import { connect } from 'react-redux'
 import { auth } from '../redux'
 import colors from '../config/colors'
 
-const AuthForm = ({ name, getUser }) => {
+const AuthForm = ({ name, getUser, nav, user }) => {
   const { control, handleSubmit, getValues } = useForm()
   const onSubmit = () => {
     const values = getValues()
-    getUser(values, 'login')
+    getUser(values, name)
   }
   return (
     <View style={styles.formInputView}>
@@ -89,6 +89,7 @@ const mapLogin = (state) => ({
   name: 'login',
   displayName: 'Login',
   error: state.user.error,
+  user: state.user,
 })
 
 const mapSignup = (state) => ({
@@ -103,13 +104,14 @@ const mapDispatch = (dispatch) => ({
   },
 })
 
-export default connect(mapLogin, mapDispatch)(AuthForm)
-// export default connect(mapSignup, mapDispatch)(AuthForm)
+export const Login = connect(mapLogin, mapDispatch)(AuthForm)
+export const Signup = connect(mapSignup, mapDispatch)(AuthForm)
 
 const styles = StyleSheet.create({
   formInputView: {
     flex: 1,
     alignItems: 'center',
+    backgroundColor: colors.medium,
   },
   formInput: {
     backgroundColor: colors.light,

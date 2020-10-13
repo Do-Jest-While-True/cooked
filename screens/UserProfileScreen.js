@@ -9,7 +9,7 @@ import defaultStyles from '../config/defaultStyles'
 const UserProfileScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={defaultStyles.container}>
-      <UserProfileInfo />
+      <UserProfileInfo nav={navigation} />
       <UserProfileRecipes nav={navigation} />
     </SafeAreaView>
   )

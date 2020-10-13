@@ -48,6 +48,7 @@ export const auth = (payload, method) => async (dispatch) => {
   }
 }
 
+//Needs work, cannot get past line 54
 export const logout = () => async (dispatch) => {
   try {
     await axios.post(`${URL}/auth/logout`)

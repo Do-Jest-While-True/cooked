@@ -13,12 +13,13 @@ import {
   CoveredByYourGrace_400Regular,
   useFonts,
 } from '@expo-google-fonts/covered-by-your-grace'
-import AuthForm from '../components/AuthForm'
+import { Login, Signup } from '../components/AuthForm'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const WelcomeScreen = () => {
+const WelcomeScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
     CoveredByYourGrace_400Regular,
   })
@@ -35,7 +36,20 @@ const WelcomeScreen = () => {
           source={require('../assets/img/frost-kitchen-1.jpeg')}
           style={styles.welcomeImg}
         /> */}
-        <AuthForm />
+        <View style={styles.center}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Login')}
+            style={styles.submitBtn}
+          >
+            <Text style={styles.submitBtnText}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Signup')}
+            style={styles.submitBtn}
+          >
+            <Text style={styles.submitBtnText}>Signup</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     )
   }
@@ -78,5 +92,20 @@ const styles = StyleSheet.create({
   navbar: {
     position: 'absolute',
     bottom: 40,
+  },
+  center: {
+    marginTop: '35%',
+  },
+  submitBtn: {
+    backgroundColor: colors.dark,
+    borderRadius: 25,
+    margin: 20,
+    padding: 12,
+  },
+  submitBtnText: {
+    textAlign: 'center',
+    color: colors.white,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 })

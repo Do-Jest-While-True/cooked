@@ -1,40 +1,18 @@
-import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import { NavigationContainer } from '@react-navigation/native'
-import { Provider } from 'react-redux'
-import { LogBox, StyleSheet } from 'react-native'
+import colors from '../config/colors'
+import { StyleSheet } from 'react-native'
+import React from 'react'
+import WelcomeScreen from '../screens/WelcomeScreen'
+import AllRecipesScreen from '../screens/AllRecipesScreen'
+import RecipePostForm from '../screens/RecipePostForm'
+import RecipeScreen from '../screens/RecipeScreen'
+import UserProfileScreen from '../screens/UserProfileScreen'
 import { Entypo } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
 
-import store from './redux'
-import { Login, Signup } from './components/AuthForm'
-import WelcomeScreen from './screens/WelcomeScreen'
-import AllRecipesScreen from './screens/AllRecipesScreen'
-import RecipePostForm from './screens/RecipePostForm'
-import RecipeScreen from './screens/RecipeScreen'
-import UserProfileScreen from './screens/UserProfileScreen'
-import AppScreen from './screens/AppScreen'
-
-import colors from './config/colors'
-
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
-
-// Stack Navigators to be nested in Tab Navigator
-// need to figure out how to always navigate to root of these stacks onPress of Tab
-
-const LoginSignup = () => (
-  <Stack.Navigator>
-    <Stack.Screen
-      name="Welcome"
-      component={WelcomeScreen}
-      options={headerStyle}
-    />
-    <Stack.Screen name="Login" component={Login} options={headerStyle} />
-    <Stack.Screen name="Signup" component={Signup} options={headerStyle} />
-  </Stack.Navigator>
-)
 
 const ExploreAndSingleRecipeStack = () => (
   <Stack.Navigator>
@@ -65,10 +43,8 @@ const ProfileAndPostStack = () => (
     />
   </Stack.Navigator>
 )
-// =============================================
 
-// Bottom NavBar ===============================
-const TabNavigator = () => (
+export const TabNavigator = () => (
   <Tab.Navigator
     tabBarOptions={{
       showLabel: false,
@@ -111,25 +87,6 @@ const TabNavigator = () => (
   </Tab.Navigator>
 )
 
-// App =======================================
-export default function App() {
-  // LogBox.ignoreLogs(['Warning: ...']) // Ignore log notification by message
-  // LogBox.ignoreAllLogs() // Ignore all log notifications
-  return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <AppScreen />
-        {/* {
-         <LoginSignup />
-        :
-        <TabNavigator />
-      } */}
-      </NavigationContainer>
-    </Provider>
-  )
-}
-
-// navbar & header styles ====================
 const headerStyle = {
   headerStyle: { backgroundColor: colors.medium },
   headerTintColor: colors.black,
