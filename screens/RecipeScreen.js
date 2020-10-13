@@ -23,6 +23,7 @@ const RecipeScreen = ({ route, recipes }) => {
     CoveredByYourGrace_400Regular,
   })
 
+  // might need to refetch recipes here
   const recipe = recipes.find((recipe) => recipe.id === route.params.id)
 
   if (!fontsLoaded) {

@@ -14,20 +14,32 @@ import {
   CoveredByYourGrace_400Regular,
   useFonts,
 } from '@expo-google-fonts/covered-by-your-grace'
+import { AntDesign } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 
 import ImageInput from '../components/ImageInput'
-import SubFormIngredients from '../components/SubFormIngredients'
-import SubFormDirections from '../components/SubFormDirections'
+import { postRecipe } from '../redux/recipe'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
-import { postRecipe } from '../redux/recipe'
 
 const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
   const [recipeName, setRecipeName] = useState('')
   const [time, setTime] = useState(0)
+  const [ingredient, setIngredient] = useState('')
+  const [direction, setDirection] = useState('')
   const [ingredients, setIngredients] = useState([])
   const [directions, setDirections] = useState([])
+
+  const addIngredient = () => {
+    setIngredients([...ingredients, ingredient])
+    setIngredient('')
+  }
+
+  const addDirection = () => {
+    setDirections([...directions, direction])
+    setDirection('')
+  }
 
   const handlePost = async () => {
     await postRecipe({
@@ -43,7 +55,7 @@ const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
     setIngredients([])
     setDirections([])
     // navigate to single recipe
-    navigation.navigate('Recipe', { id: recipe.id })
+    // navigation.navigate('Recipe', { id: recipe.id })
   }
 
   let [fontsLoaded] = useFonts({
@@ -76,23 +88,59 @@ const RecipePostForm = ({ recipe, postRecipe, navigation }) => {
               value={time}
             />
             {/* Ingredients: */}
-            <View style={{}}>
-              <SubFormIngredients
-                ingredients={ingredients}
-                setIngredients={setIngredients}
-              />
+            <View>
+              <View style={styles.formInputView}>
+                <TextInput
+                  placeholder="Enter Ingredient"
+                  style={[styles.formInput]}
+                  clearButtonMode="always"
+                  onChangeText={(val) => setIngredient(val)}
+                  value={ingredient}
+                />
+                <TouchableOpacity>
+                  <AntDesign
+                    name="pluscircleo"
+                    size={30}
+                    color={colors.black}
+                    onPress={addIngredient}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
             {/* Directions: */}
-            <View style={{}}>
-              <SubFormDirections
-                directions={directions}
-                setDirections={setDirections}
-              />
+            <View>
+              <View style={styles.formInputView}>
+                <TextInput
+                  placeholder="Enter Direction"
+                  style={[styles.formInput]}
+                  clearButtonMode="always"
+                  onChangeText={(val) => setDirection(val)}
+                  value={direction}
+                />
+                <TouchableOpacity>
+                  <AntDesign
+                    name="pluscircleo"
+                    size={30}
+                    color={colors.black}
+                    onPress={addDirection}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
           <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
             <Text style={styles.postBtnText}>Post!</Text>
           </TouchableOpacity>
+          {console.log('-------------------------')}
+          {console.log({
+            imageUrl: recipe.imageUrl,
+            name: recipeName,
+            time: time,
+            ingredient: ingredient,
+            ingredients: ingredients,
+            direction: direction,
+            directions: directions,
+          })}
         </ScrollView>
       </SafeAreaView>
     )
@@ -117,6 +165,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 15,
   },
+  formInputView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   formInput: {
     backgroundColor: colors.light,
     borderRadius: 25,
@@ -129,6 +181,17 @@ const styles = StyleSheet.create({
   },
   formInputFullWidth: {
     width: '100%',
+  },
+  renderedInputText: {
+    fontSize: 20,
+    color: colors.white,
+    marginBottom: 8,
+    marginLeft: 20,
+  },
+  singleIngredientView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 2,
   },
   singleDirectionView: {
     flexDirection: 'row',
