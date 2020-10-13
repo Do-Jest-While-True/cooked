@@ -1,5 +1,10 @@
 import React, { useEffect } from 'react'
-import { FlatList, SafeAreaView } from 'react-native'
+import {
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  RefreshControl,
+} from 'react-native'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { connect } from 'react-redux'
 
@@ -9,12 +14,32 @@ import { getRecipes } from '../redux'
 
 import defaultStyles from '../config/defaultStyles'
 
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout)
+  })
+}
+
 const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
+  const [refreshing, setRefreshing] = React.useState(false)
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+    wait(1000).then(() => setRefreshing(false))
+    getRecipes()
+  }, [])
+
   useEffect(() => {
     getRecipes()
   }, [])
+
   return (
     <SafeAreaView style={defaultStyles.container}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
       {recipes && (
         <FlatList
           data={recipes}
