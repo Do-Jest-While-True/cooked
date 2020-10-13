@@ -13,7 +13,7 @@ const CLOUDINARY_URL =
 const uploadPreset = 'atmiftkx'
 
 // add a remove image option later on
-const ImageInput = ({ addImageUrl }) => {
+const ImageInput = ({ addImageUrl, recipe }) => {
   const [localImageUri, setLocalImageUri] = useState()
 
   const requestPermission = async () => {
@@ -65,12 +65,11 @@ const ImageInput = ({ addImageUrl }) => {
   useEffect(() => {
     requestPermission()
   }, [])
-  // NOTE: I learned that whatever you pass into this array will determine when useEffect is fired again. For example, if you want useEffect to rerender when a state var changes, you put that state var into the array. Leaving the array empty makes it function more like componentDidMount()
 
   return (
     <TouchableWithoutFeedback onPress={localImageUri && selectImage}>
       <View style={styles.container}>
-        {!localImageUri && (
+        {!recipe.imageUrl.length && (
           <MaterialCommunityIcons
             name="camera-plus"
             size={75}
@@ -78,19 +77,26 @@ const ImageInput = ({ addImageUrl }) => {
             onPress={selectImage}
           />
         )}
-        {localImageUri && (
+        {/* getting errors with && syntax below so I'm using ternary op to render an empty Image when no URI is on state --no styling implications with an empty Image */}
+        {recipe.imageUrl.length ? (
           <Image source={{ uri: localImageUri }} style={styles.img} />
+        ) : (
+          <Image />
         )}
       </View>
     </TouchableWithoutFeedback>
   )
 }
 
+const mapState = (state) => ({
+  recipe: state.recipe,
+})
+
 const mapDispatch = (dispatch) => ({
   addImageUrl: (imageUrl) => dispatch(addImageUrl(imageUrl)),
 })
 
-export default connect(null, mapDispatch)(ImageInput)
+export default connect(mapState, mapDispatch)(ImageInput)
 
 const styles = StyleSheet.create({
   container: {

@@ -49,7 +49,7 @@ export default function (state = initialState, action) {
     case REMOVE_IMAGE_URL:
       return { ...state, imageUrl: '' }
     case POST_RECIPE:
-      return action.recipe
+      return { ...state, ...action.recipe }
     default:
       return state
   }

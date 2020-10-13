@@ -18,12 +18,11 @@ import { AntDesign } from '@expo/vector-icons'
 import { MaterialIcons } from '@expo/vector-icons'
 
 import ImageInput from '../components/ImageInput'
-import { postRecipe, removeImageUrl } from '../redux/recipe'
+import { postRecipe, removeImageUrl } from '../redux/recipe' // refactor to /redux
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-// set min height for UX
 const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   const [recipeName, setRecipeName] = useState('')
   const [time, setTime] = useState('')
@@ -50,6 +49,7 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
       ingredients: ingredients,
       directions: directions,
     })
+
     // reset fields / local state:
     setRecipeName('')
     setTime('')
@@ -58,8 +58,9 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
     // clear imageUrl from store state:
     removeImageUrl()
 
-    // navigate to single recipe:
-    // navigation.navigate('Recipe', { id: recipe.id })
+    // navigate to All Recipes View after posting:
+    // (need to add pull to refresh and reverse - cron ordering)
+    navigation.navigate('Explore')
   }
 
   let [fontsLoaded] = useFonts({
@@ -133,10 +134,11 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
               </View>
               {/* render list of directions here */}
             </View>
+            {/* Post Button */}
+            <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
+              <Text style={styles.postBtnText}>Post!</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
-            <Text style={styles.postBtnText}>Post!</Text>
-          </TouchableOpacity>
           {console.log('---------------------------------')}
           {console.log('Local State in Form')}
           {console.log('---------------------------------')}
@@ -169,6 +171,7 @@ export default connect(mapState, mapDispatch)(RecipePostForm)
 const styles = StyleSheet.create({
   recipeContent: {
     margin: 20,
+    minHeight: 750, // this is for UX -- adds room to scroll when inputing directions
   },
   singleIngredient: {
     marginTop: 10,
