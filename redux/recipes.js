@@ -7,7 +7,7 @@ const ADD_RECIPE = 'ADD_RECIPE'
 const DELETE_RECIPE = 'DELETE_RECIPE'
 
 // ACTION CREATORS
-const gotRecipes = (recipes) => ({
+export const getRecipes = (recipes) => ({
   type: GET_RECIPES,
   recipes,
 })
@@ -25,10 +25,10 @@ export const deleteRecipe = (id) => ({
 })
 
 // THUNK CREATORS
-export const getRecipes = () => async (dispatch) => {
+export const gotRecipes = () => async (dispatch) => {
   try {
     const { data: recipes } = await axios.get(`${URL}/api/recipes`)
-    dispatch(gotRecipes(recipes))
+    dispatch(getRecipes(recipes))
   } catch (error) {
     console.error(error)
   }
@@ -38,7 +38,7 @@ export const getRecipes = () => async (dispatch) => {
 const initialState = []
 
 // REDUCER
-export const recipesReducer = (state = initialState, action) => {
+export default function (state = initialState, action) {
   switch (action.type) {
     case GET_RECIPES:
       // currently not recollecting existing state

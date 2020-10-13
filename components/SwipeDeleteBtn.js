@@ -3,7 +3,7 @@ import { StyleSheet, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 
-import { deleteRecipe } from '../redux/recipes'
+import { deleteRecipe } from '../redux'
 
 import colors from '../config/colors'
 

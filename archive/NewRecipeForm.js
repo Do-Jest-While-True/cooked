@@ -7,7 +7,7 @@ import SubFormRecipeName from '../components/SubFormRecipeName'
 import SubFormIngredients from '../components/SubFormIngredients'
 import SubFormDirections from '../components/SubFormDirections'
 import SubFormTime from '../components/SubFormTime'
-import { addRecipe } from '../redux/recipes'
+import { addRecipe } from '../redux'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
