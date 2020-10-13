@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
 import { AntDesign } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 
 import colors from '../config/colors'
 
@@ -27,9 +28,12 @@ const SubFormIngredients = ({ ingredients, setIngredients }) => {
             </TouchableOpacity>
           </View>
           {ingredients.map((ingredient, i) => (
-            <Text key={i} style={styles.renderedInputText}>
-              - {ingredient}
-            </Text>
+            <View style={styles.singleIngredientView}>
+              <Text key={i} style={styles.renderedInputText}>
+                - {ingredient}
+              </Text>
+              <MaterialIcons name="clear" size={24} color={colors.white} />
+            </View>
           ))}
         </View>
       )}
@@ -54,9 +58,14 @@ const styles = StyleSheet.create({
   },
   renderedInputText: {
     fontSize: 20,
-    color: colors.light,
+    color: colors.white,
     marginBottom: 8,
     marginLeft: 20,
+  },
+  singleIngredientView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 2,
   },
 })
 
