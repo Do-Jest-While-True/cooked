@@ -4,17 +4,16 @@ import { connect } from 'react-redux'
 import { TabNavigator } from './AppNav'
 import { LoginSignup } from './AuthNav'
 
-const AppGatekeeper = ({ user }) => {
-  console.log('user-->', user)
+const AppGatekeeper = ({ auth }) => {
   return (
     <React.Fragment>
-      {user && user.id ? <TabNavigator /> : <LoginSignup />}
+      {auth && auth.id ? <TabNavigator /> : <LoginSignup />}
     </React.Fragment>
   )
 }
 
 const mapState = (state) => ({
-  user: state.user,
+  auth: state.auth,
 })
 
 export default connect(mapState, null)(AppGatekeeper)

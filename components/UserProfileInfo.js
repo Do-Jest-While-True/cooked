@@ -1,23 +1,30 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { logout } from '../redux'
 import { connect } from 'react-redux'
 
+import { logout, gotUser } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const UserProfileInfo = ({ logout, nav }) => {
+const UserProfileInfo = ({ logout, gotUser, user, auth }) => {
+  useEffect(() => {
+    gotUser(auth.id)
+  }, [])
+
   let handleSubmit = () => {
     logout()
   }
+
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: 'enter imageUrl once backend/redux is done' }}
+        source={{ uri: user.user.profileImageUrl }}
         style={styles.profileImg}
       />
-      <Text style={[defaultStyles.text]}>First Name Last Name</Text>
+      <Text style={[defaultStyles.text]}>
+        {user.user.firstName} {user.user.lastName}
+      </Text>
       <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
         @username
       </Text>
@@ -33,18 +40,20 @@ const UserProfileInfo = ({ logout, nav }) => {
 }
 
 const mapState = (state) => ({
-  user: state.user,
+  user: state.user.user,
+  auth: state.auth,
 })
 
 const mapDispatch = (dispatch) => ({
   logout: () => dispatch(logout()),
+  gotUser: (userId) => dispatch(gotUser(userId)),
 })
 
 export default connect(mapState, mapDispatch)(UserProfileInfo)
 
 const styles = StyleSheet.create({
   container: {
-    height: '50%',
+    height: '55%',
     borderBottomWidth: 0.25,
     borderBottomColor: colors.white,
     alignItems: 'center',
