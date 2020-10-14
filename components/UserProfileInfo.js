@@ -40,10 +40,11 @@ const UserProfileInfo = ({ logout, gotUser, user, auth }) => {
         </TouchableOpacity>
         <View style={styles.followDataView}>
           <Text style={[defaultStyles.text, styles.textMargin]}>
-            # Followers
+            {user.followers.length} Followers
           </Text>
+
           <Text style={[defaultStyles.text, styles.textMargin]}>
-            # Following
+            {user.following.length} Following
           </Text>
         </View>
       </View>
