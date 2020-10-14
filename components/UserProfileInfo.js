@@ -13,9 +13,6 @@ const UserProfileInfo = ({ logout, nav }) => {
   }
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => handleSubmit()} style={styles.logout}>
-        <Text style={defaultStyles.smallText}>Logout</Text>
-      </TouchableOpacity>
       <Image
         source={{ uri: 'enter imageUrl once backend/redux is done' }}
         style={styles.profileImg}
@@ -24,6 +21,9 @@ const UserProfileInfo = ({ logout, nav }) => {
       <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
         @username
       </Text>
+      <TouchableOpacity onPress={() => handleSubmit()} style={styles.logoutBtn}>
+        <Text style={[defaultStyles.smallText, styles.textBold]}>Logout</Text>
+      </TouchableOpacity>
       <View style={styles.followDataView}>
         <Text style={[defaultStyles.text, styles.textMargin]}># Followers</Text>
         <Text style={[defaultStyles.text, styles.textMargin]}># Following</Text>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   textMargin: {
-    marginVertical: 10,
+    marginVertical: 18,
   },
   textBold: {
     fontWeight: 'bold',
@@ -68,11 +68,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-around',
-    marginVertical: 30,
   },
-  logout: {
-    position: 'absolute',
-    left: '30%',
+  logoutBtn: {
     backgroundColor: colors.dark,
     paddingVertical: 5,
     paddingHorizontal: 15,

@@ -1,4 +1,4 @@
-// original orange
+// ORIGINAL THEME ____________________
 // export default {
 // 	// ⬇ app theme ⬇
 // 	light: '#ffa190',
@@ -13,7 +13,7 @@
 // 	red: '#ff4f42'
 // };
 
-// twitter dark
+// TWITTER DARK THEME ________________
 export default {
   // ⬇ app theme ⬇
   // light text inputs:

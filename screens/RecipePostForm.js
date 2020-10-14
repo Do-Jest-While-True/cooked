@@ -262,6 +262,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     marginRight: 15,
     fontSize: 20,
+    color: colors.white,
   },
   formInputFullWidth: {
     width: '100%',
