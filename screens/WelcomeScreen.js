@@ -19,7 +19,7 @@ const WelcomeScreen = ({ navigation }) => {
     return <AppLoading />
   } else {
     return (
-      <SafeAreaView style={defaultStyles.container}>
+      <SafeAreaView style={[defaultStyles.container, styles.container]}>
         <View style={styles.welcomeHeadingView}>
           <Text style={styles.welcomeHeadingText}>Cook'd</Text>
         </View>
@@ -48,6 +48,9 @@ const welcomeHeaderHeight = Dimensions.get('screen').height / 12
 // would need to set navbar height by dimensions for super consistent results on WelcomeScreen
 
 const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'space-around',
+  },
   welcomeHeadingView: {
     height: welcomeHeaderHeight,
     justifyContent: 'center',

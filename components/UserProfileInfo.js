@@ -13,13 +13,13 @@ const UserProfileInfo = ({ logout, nav }) => {
   }
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={() => handleSubmit()} style={styles.logout}>
+        <Text style={defaultStyles.smallText}>Logout</Text>
+      </TouchableOpacity>
       <Image
         source={{ uri: 'enter imageUrl once backend/redux is done' }}
         style={styles.profileImg}
       />
-      <TouchableOpacity onPress={() => handleSubmit()}>
-        <Text>Logout</Text>
-      </TouchableOpacity>
       <Text style={[defaultStyles.text]}>First Name Last Name</Text>
       <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
         @username
@@ -64,13 +64,18 @@ const styles = StyleSheet.create({
   textBold: {
     fontWeight: 'bold',
   },
-
   followDataView: {
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-around',
     marginVertical: 30,
   },
+  logout: {
+    position: 'absolute',
+    left: '30%',
+    backgroundColor: colors.dark,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 30,
+  },
 })
-
-// export default UserProfileInfo
