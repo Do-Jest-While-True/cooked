@@ -95,6 +95,6 @@ const headerStyle = {
 const styles = StyleSheet.create({
   navbar: {
     backgroundColor: colors.medium,
-    height: '9%',
+    height: '11%',
   },
 })

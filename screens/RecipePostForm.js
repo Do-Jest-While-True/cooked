@@ -116,6 +116,7 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
             )}
             <TextInput
               placeholder="Enter Recipe Title"
+              placeholderTextColor={colors.lightGray}
               style={[styles.formInput, styles.formInputFullWidth]}
               clearButtonMode="always"
               onChangeText={(val) => {
@@ -132,6 +133,7 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
             )}
             <TextInput
               placeholder="Enter Cook Time: ex: '5 minutes'"
+              placeholderTextColor={colors.lightGray}
               style={[styles.formInput, styles.formInputFullWidth]}
               clearButtonMode="always"
               onChangeText={(val) => {
@@ -150,6 +152,7 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
               <View style={styles.formInputView}>
                 <TextInput
                   placeholder="Add Ingredient"
+                  placeholderTextColor={colors.lightGray}
                   style={[styles.formInput]}
                   clearButtonMode="always"
                   onChangeText={(val) => {
@@ -183,6 +186,7 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
               <View style={styles.formInputView}>
                 <TextInput
                   placeholder="Add Direction"
+                  placeholderTextColor={colors.lightGray}
                   style={[styles.formInput]}
                   clearButtonMode="always"
                   onChangeText={(val) => {
@@ -258,6 +262,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     marginRight: 15,
     fontSize: 20,
+    color: colors.white,
   },
   formInputFullWidth: {
     width: '100%',
@@ -293,7 +298,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   warning: {
-    color: colors.red,
+    color: colors.dark,
     alignSelf: 'center',
   },
 })

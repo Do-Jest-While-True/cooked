@@ -1,6 +1,6 @@
 import axios from 'axios'
 // import { createBrowserHistory as history } from 'history'
-import { URL } from './url'
+import { URL } from './serverUrl'
 
 /**
  * ACTION TYPES

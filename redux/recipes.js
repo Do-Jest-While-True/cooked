@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { URL } from './url'
+import { URL } from './serverUrl'
 
 // ACTION TYPES
 const GOT_RECIPES = 'GOT_RECIPES'

@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
   singleIngredient: {
     marginTop: 10,
     fontSize: 15,
+    color: colors.white,
   },
   singleDirectionView: {
     flexDirection: 'row',
@@ -115,6 +116,7 @@ const styles = StyleSheet.create({
   },
   singleDirection: {
     fontSize: 15,
+    color: colors.white,
   },
   timeView: {
     flexDirection: 'row',

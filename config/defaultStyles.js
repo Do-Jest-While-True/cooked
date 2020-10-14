@@ -18,6 +18,10 @@ const defaultStyles = StyleSheet.create({
     fontSize: 20,
     color: colors.white,
   },
+  smallText: {
+    fontSize: 15,
+    color: colors.white,
+  },
 })
 
 export default defaultStyles
