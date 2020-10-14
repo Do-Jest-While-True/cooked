@@ -30,7 +30,7 @@ const UserProfileInfo = ({ logout, gotUser, user, auth }) => {
           {user.user.firstName} {user.user.lastName}
         </Text>
         <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
-          @username
+          @{user.user.username}
         </Text>
         <TouchableOpacity
           onPress={() => handleSubmit()}
