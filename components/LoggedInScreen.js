@@ -1,15 +1,15 @@
-import React from 'react'
-import { StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import { Entypo } from '@expo/vector-icons'
-import { FontAwesome } from '@expo/vector-icons'
-
+import colors from '../config/colors'
+import { StyleSheet } from 'react-native'
+import React from 'react'
+import WelcomeScreen from '../screens/WelcomeScreen'
 import FeedRecipesScreen from '../screens/FeedRecipesScreen'
 import RecipePostForm from '../screens/RecipePostForm'
 import RecipeScreen from '../screens/RecipeScreen'
 import UserProfileScreen from '../screens/UserProfileScreen'
-import colors from '../config/colors'
+import { Entypo } from '@expo/vector-icons'
+import { FontAwesome } from '@expo/vector-icons'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -95,6 +95,6 @@ const headerStyle = {
 const styles = StyleSheet.create({
   navbar: {
     backgroundColor: colors.medium,
-    height: '11%',
+    height: '9%',
   },
 })

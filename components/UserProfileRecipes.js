@@ -2,13 +2,13 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { FlatGrid } from 'react-native-super-grid'
 
-import { gotRecipes } from '../redux/recipes'
+import { getAllRecipes } from '../redux'
 import RecipeGridItem from './RecipeGridItem'
 import { oneThirdScreenWidth } from '../config/dimensions'
 
-const UserProfileRecipes = ({ recipes, getRecipes, nav }) => {
+const UserProfileRecipes = ({ recipes, getAllRecipes, nav }) => {
   useEffect(() => {
-    ;(async () => await getRecipes())()
+    ;(async () => await getAllRecipes())()
   }, [])
 
   return (
@@ -30,11 +30,11 @@ const UserProfileRecipes = ({ recipes, getRecipes, nav }) => {
 }
 
 const mapState = (state) => ({
-  recipes: state.recipes,
+  recipes: state.allRecipes,
 })
 
 const mapDispatch = (dispatch) => ({
-  gotRecipes: () => dispatch(gotRecipes()),
+  getAllRecipes: () => dispatch(getAllRecipes()),
 })
 
 export default connect(mapState, mapDispatch)(UserProfileRecipes)

@@ -5,7 +5,6 @@ import { TabNavigator } from './AppNav'
 import { LoginSignup } from './AuthNav'
 
 const AppGatekeeper = ({ user }) => {
-  console.log('user-->', user)
   return (
     <React.Fragment>
       {user && user.id ? <TabNavigator /> : <LoginSignup />}
