@@ -12,6 +12,7 @@ import RecipeListItem from '../components/RecipeListItem'
 import SwipeDeleteBtn from '../components/SwipeDeleteBtn'
 import { getRecipes } from '../redux'
 
+import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
 const wait = (timeout) => {
@@ -37,7 +38,11 @@ const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
     <SafeAreaView style={defaultStyles.container}>
       <ScrollView
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.white}
+          />
         }
       >
         {recipes && (
@@ -45,18 +50,18 @@ const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
             data={recipes}
             keyExtractor={(recipe) => recipe.id.toString()}
             renderItem={({ item }) => (
-              <Swipeable
-                renderRightActions={() => <SwipeDeleteBtn id={item.id} />}
-                onSwipeableRightOpen={() => console.log('delete opened')}
-              >
-                <RecipeListItem
-                  name={item.name}
-                  imageUrl={item.imageUrl}
-                  time={item.time}
-                  id={item.id}
-                  nav={navigation}
-                />
-              </Swipeable>
+              // <Swipeable
+              // 	renderRightActions={() => <SwipeDeleteBtn id={item.id} />}
+              // 	onSwipeableRightOpen={() => console.log('delete opened')}
+              // >
+              <RecipeListItem
+                name={item.name}
+                imageUrl={item.imageUrl}
+                time={item.time}
+                id={item.id}
+                nav={navigation}
+              />
+              // </Swipeable>
             )}
           />
         )}

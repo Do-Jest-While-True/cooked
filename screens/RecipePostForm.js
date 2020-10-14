@@ -171,12 +171,11 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
                 </TouchableOpacity>
               </View>
               {/* render list of ingredients inputted */}
-
-              {recipe.ingredients.map((item, i) => (
+              {/* {recipe.ingredients.map((item, i) => (
                 <View>
                   <Text key={i}>{item}</Text>
                 </View>
-              ))}
+              ))} */}
             </View>
             {/* Directions: ________________________________________*/}
             {directionsFieldWarning && (

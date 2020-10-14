@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 0.25,
     borderColor: colors.white,
+    backgroundColor: '#18232e',
   },
   listItemImg: {
     width: 70,
