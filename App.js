@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { LogBox } from 'react-native'
 
 import store from './redux'
-import AppScreen from './components/AuthNav'
+import AppGatekeeper from './components/AppGatekeeper'
 
 // App =======================================
 export default function App() {
@@ -14,7 +14,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <AppScreen />
+        <AppGatekeeper />
       </NavigationContainer>
     </Provider>
   )

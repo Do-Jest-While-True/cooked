@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   btn: {
     backgroundColor: colors.dark,
     borderRadius: 25,
-    margin: 20,
+    margin: 25,
     padding: 12,
   },
   btnText: {

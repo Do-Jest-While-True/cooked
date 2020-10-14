@@ -128,14 +128,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
     borderRadius: 25,
     height: 50,
-    width: '90%',
+    width: '85%',
     paddingHorizontal: 20,
     marginVertical: 20,
     fontSize: 20,
     color: colors.white,
   },
   submitBtnView: {
-    width: '90%',
+    width: '85%',
   },
   submitBtn: {
     backgroundColor: colors.dark,

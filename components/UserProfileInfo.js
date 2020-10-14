@@ -44,7 +44,7 @@ export default connect(mapState, mapDispatch)(UserProfileInfo)
 
 const styles = StyleSheet.create({
   container: {
-    height: '45%',
+    height: '50%',
     borderBottomWidth: 0.25,
     borderBottomColor: colors.white,
     alignItems: 'center',
