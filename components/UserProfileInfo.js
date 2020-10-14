@@ -7,6 +7,9 @@ import { logout, gotUser } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
+// need to render # followers and following
+// need to render THIS users recipes only here
+
 const UserProfileInfo = ({ logout, gotUser, user, auth }) => {
   useEffect(() => {
     gotUser(auth.id)
@@ -16,27 +19,38 @@ const UserProfileInfo = ({ logout, gotUser, user, auth }) => {
     logout()
   }
 
-  return (
-    <View style={styles.container}>
-      <Image
-        source={{ uri: user.user.profileImageUrl }}
-        style={styles.profileImg}
-      />
-      <Text style={[defaultStyles.text]}>
-        {user.user.firstName} {user.user.lastName}
-      </Text>
-      <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
-        @username
-      </Text>
-      <TouchableOpacity onPress={() => handleSubmit()} style={styles.logoutBtn}>
-        <Text style={[defaultStyles.smallText, styles.textBold]}>Logout</Text>
-      </TouchableOpacity>
-      <View style={styles.followDataView}>
-        <Text style={[defaultStyles.text, styles.textMargin]}># Followers</Text>
-        <Text style={[defaultStyles.text, styles.textMargin]}># Following</Text>
+  if (user.user) {
+    return (
+      <View style={styles.container}>
+        <Image
+          source={{ uri: user.user.profileImageUrl }}
+          style={styles.profileImg}
+        />
+        <Text style={[defaultStyles.text]}>
+          {user.user.firstName} {user.user.lastName}
+        </Text>
+        <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
+          @username
+        </Text>
+        <TouchableOpacity
+          onPress={() => handleSubmit()}
+          style={styles.logoutBtn}
+        >
+          <Text style={[defaultStyles.smallText, styles.textBold]}>Logout</Text>
+        </TouchableOpacity>
+        <View style={styles.followDataView}>
+          <Text style={[defaultStyles.text, styles.textMargin]}>
+            # Followers
+          </Text>
+          <Text style={[defaultStyles.text, styles.textMargin]}>
+            # Following
+          </Text>
+        </View>
       </View>
-    </View>
-  )
+    )
+  } else {
+    return <View />
+  }
 }
 
 const mapState = (state) => ({
