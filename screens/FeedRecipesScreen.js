@@ -32,7 +32,6 @@ const FeedRecipesScreen = ({ navigation, getFeedRecipes, recipes }) => {
   useEffect(() => {
     getFeedRecipes()
   }, [])
-
   return (
     <SafeAreaView style={defaultStyles.container}>
       <ScrollView
@@ -54,6 +53,7 @@ const FeedRecipesScreen = ({ navigation, getFeedRecipes, recipes }) => {
                   imageUrl={item.imageUrl}
                   time={item.time}
                   id={item.id}
+                  user={item.user}
                   nav={navigation}
                 />
               </Swipeable>

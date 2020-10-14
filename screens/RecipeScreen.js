@@ -75,7 +75,7 @@ const RecipeScreen = ({ route, recipes }) => {
 }
 
 const mapState = (state) => ({
-  recipes: state.recipes,
+  recipes: state.feedRecipes,
 })
 
 export default connect(mapState)(RecipeScreen)
