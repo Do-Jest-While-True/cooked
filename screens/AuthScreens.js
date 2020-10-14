@@ -8,7 +8,7 @@ import { auth } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const AuthForm = ({ name, getUser }) => {
+const AuthScreens = ({ name, getUser }) => {
   const { control, handleSubmit, getValues } = useForm()
   const onSubmit = () => {
     const values = getValues()
@@ -115,8 +115,8 @@ const mapDispatch = (dispatch) => ({
   },
 })
 
-export const Login = connect(mapLogin, mapDispatch)(AuthForm)
-export const Signup = connect(mapSignup, mapDispatch)(AuthForm)
+export const Login = connect(mapLogin, mapDispatch)(AuthScreens)
+export const Signup = connect(mapSignup, mapDispatch)(AuthScreens)
 
 const styles = StyleSheet.create({
   formInputView: {

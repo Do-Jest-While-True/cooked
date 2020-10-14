@@ -26,7 +26,7 @@ const WelcomeScreen = ({ navigation }) => {
     return <AppLoading />
   } else {
     return (
-      <SafeAreaView style={[defaultStyles.container]}>
+      <SafeAreaView style={[defaultStyles.container, styles.container]}>
         <View>
           <Image
             source={require('../assets/cookedlogo.png')}
@@ -55,9 +55,13 @@ const WelcomeScreen = ({ navigation }) => {
 export default WelcomeScreen
 
 const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'space-evenly',
+  },
   logo: {
-    width: 400,
-    height: 400,
+    width: 275,
+    height: 275,
+    alignSelf: 'center',
   },
   btn: {
     backgroundColor: colors.dark,

@@ -1,11 +1,12 @@
 import React from 'react'
-import { TabNavigator } from '../components/LoggedInView'
 import { connect } from 'react-redux'
-import { Login, Signup } from '../components/AuthForm'
-import WelcomeScreen from './WelcomeScreen'
-import colors from '../config/colors'
-
 import { createStackNavigator } from '@react-navigation/stack'
+
+import { Login, Signup } from '../screens/AuthScreens'
+import { TabNavigator } from './AppNav'
+import WelcomeScreen from '../screens/WelcomeScreen'
+
+import colors from '../config/colors'
 
 const Stack = createStackNavigator()
 
@@ -22,7 +23,11 @@ export const LoginSignup = () => (
 )
 
 export const AppScreen = ({ user }) => {
-  return <>{user && user.id ? <TabNavigator /> : <LoginSignup />}</>
+  return (
+    <React.Fragment>
+      {user && user.id ? <TabNavigator /> : <LoginSignup />}
+    </React.Fragment>
+  )
 }
 
 const mapState = (state) => ({

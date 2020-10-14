@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { LogBox } from 'react-native'
 
 import store from './redux'
-import AppScreen from './screens/AppScreen'
+import AppScreen from './components/AuthNav'
 
 // App =======================================
 export default function App() {

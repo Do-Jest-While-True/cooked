@@ -20,7 +20,6 @@ const defaultStyles = StyleSheet.create({
   },
   smallText: {
     fontSize: 15,
-    // fontWeight: 'bold',
     color: colors.white,
   },
 })
