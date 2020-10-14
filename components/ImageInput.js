@@ -106,6 +106,8 @@ const styles = StyleSheet.create({
     height: 400,
     borderBottomWidth: 0.25,
     borderBottomColor: colors.white,
+    borderTopWidth: 0.25,
+    borderTopColor: colors.white,
   },
   img: {
     resizeMode: 'cover',

@@ -99,14 +99,14 @@ const AuthScreens = ({ name, getUser }) => {
 const mapLogin = (state) => ({
   name: 'login',
   displayName: 'Login',
-  error: state.user.error,
-  user: state.user,
+  error: state.auth.error,
+  auth: state.auth,
 })
 
 const mapSignup = (state) => ({
   name: 'signup',
   displayName: 'Sign Up',
-  error: state.user.error,
+  error: state.auth.error,
 })
 
 const mapDispatch = (dispatch) => ({
