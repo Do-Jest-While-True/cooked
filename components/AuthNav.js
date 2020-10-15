@@ -13,7 +13,7 @@ export const LoginSignup = () => (
     <Stack.Screen
       name="Welcome"
       component={WelcomeScreen}
-      options={headerStyle}
+      options={{ ...headerStyle, headerShown: false }}
     />
     <Stack.Screen name="Login" component={Login} options={headerStyle} />
     <Stack.Screen name="Signup" component={Signup} options={headerStyle} />
