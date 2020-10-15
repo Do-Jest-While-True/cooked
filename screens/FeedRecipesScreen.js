@@ -52,7 +52,7 @@ const FeedRecipesScreen = ({ navigation, getFeedRecipes, recipes }) => {
                   name={item.name}
                   imageUrl={item.imageUrl}
                   time={item.time}
-                  id={item.id}
+                  recipeId={item.id}
                   user={item.user}
                   nav={navigation}
                 />

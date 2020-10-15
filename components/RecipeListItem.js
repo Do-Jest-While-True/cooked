@@ -6,11 +6,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import colors from '../config/colors'
 import user from '../redux/user'
 
-const RecipeListItem = ({ id, name, imageUrl, time, nav, user }) => {
+const RecipeListItem = ({ recipeId, name, imageUrl, time, nav, user }) => {
   return (
     <TouchableOpacity
       style={styles.listItemView}
-      onPress={() => nav.navigate('Recipe', { id })}
+      onPress={() => nav.navigate('Recipe', { recipeId })}
     >
       <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
       <View>

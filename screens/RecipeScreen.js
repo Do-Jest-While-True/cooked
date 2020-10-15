@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   StyleSheet,
   SafeAreaView,
@@ -14,42 +14,48 @@ import {
   useFonts,
 } from '@expo-google-fonts/covered-by-your-grace'
 import { MaterialIcons } from '@expo/vector-icons'
+import { getSingleRecipe } from '../redux'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const RecipeScreen = ({ route, recipes }) => {
+const RecipeScreen = ({ route, singleRecipe, getSingleRecipe }) => {
+  useEffect(() => {
+    getSingleRecipe(route.params.recipeId)
+  }, [])
+
   let [fontsLoaded] = useFonts({
     CoveredByYourGrace_400Regular,
   })
 
   // this works because currently we always have the latest recipes on state because we enter this Screen from components that make a call for all recipes:
-  const recipe = recipes.find((recipe) => recipe.id === route.params.id)
 
-  if (!fontsLoaded) {
+  // const singleRecipe = recipes.find((singleRecipe) => singleRecipe.id === route.params.id)
+
+  if (!fontsLoaded || !singleRecipe.id) {
     return <AppLoading />
   } else {
     return (
       <SafeAreaView style={defaultStyles.container}>
         <ScrollView>
           {/* Recipe Image: */}
-          <Image source={{ uri: recipe.imageUrl }} style={styles.img} />
+          <Image source={{ uri: singleRecipe.imageUrl }} style={styles.img} />
           <View style={styles.recipeContent}>
             {/* Recipe Name: */}
             <Text style={[styles.recipesHeadings, styles.recipeTitle]}>
-              {recipe.name}
+              {singleRecipe.name}
             </Text>
             {/* Cook Time */}
             <View style={styles.timeView}>
               <MaterialIcons name="timer" size={18} color={colors.white} />
-              <Text style={styles.time}>{recipe.time}</Text>
+              <Text style={styles.time}>{singleRecipe.time}</Text>
             </View>
             {/* Ingredients: */}
             <View style={styles.recipesContentSection}>
               <Text style={[styles.recipesHeadings, styles.recipeSubHeading]}>
                 Ingredients
               </Text>
-              {recipe.ingredients.map((ingredient, i) => (
+              {singleRecipe.ingredients.map((ingredient, i) => (
                 <Text key={i} style={styles.singleIngredient}>
                   - {ingredient}
                 </Text>
@@ -60,7 +66,7 @@ const RecipeScreen = ({ route, recipes }) => {
               <Text style={[styles.recipesHeadings, styles.recipeSubHeading]}>
                 Directions
               </Text>
-              {recipe.directions.map((direction, i) => (
+              {singleRecipe.directions.map((direction, i) => (
                 <View key={i} style={styles.singleDirectionView}>
                   <Text style={styles.singleDirection}>- </Text>
                   <Text style={styles.singleDirection}>{direction}</Text>
@@ -75,10 +81,14 @@ const RecipeScreen = ({ route, recipes }) => {
 }
 
 const mapState = (state) => ({
-  recipes: state.feedRecipes,
+  singleRecipe: state.singleRecipe,
 })
 
-export default connect(mapState)(RecipeScreen)
+const mapDispatch = (dispatch) => ({
+  getSingleRecipe: (recipeId) => dispatch(getSingleRecipe(recipeId)),
+})
+
+export default connect(mapState, mapDispatch)(RecipeScreen)
 
 const styles = StyleSheet.create({
   img: {
