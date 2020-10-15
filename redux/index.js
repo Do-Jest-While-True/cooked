@@ -8,6 +8,7 @@ import feedRecipes from './feedRecipes'
 import auth from './auth'
 import user from './user'
 import singleRecipe from './singleRecipe'
+import myRecipes from './myRecipes'
 
 const appReducer = combineReducers({
   auth,
@@ -15,7 +16,9 @@ const appReducer = combineReducers({
   allRecipes,
   feedRecipes,
   singleRecipe,
+  myRecipes,
   recipe,
+
 })
 
 const store = createStore(appReducer, applyMiddleware(thunkMiddleware))
@@ -25,4 +28,5 @@ export * from './user'
 export * from './allRecipes'
 export * from './feedRecipes'
 export * from './singleRecipe'
+export * from './myRecipes'
 export * from './recipe'

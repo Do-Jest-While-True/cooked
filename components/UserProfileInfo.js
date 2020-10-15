@@ -7,61 +7,44 @@ import { logout, gotUser } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-// need to render # followers and following
-// need to render THIS users recipes only here
-
 const UserProfileInfo = ({ logout, gotUser, user, auth }) => {
-  useEffect(() => {
-    gotUser(auth.id)
-  }, [])
-
   let handleSubmit = () => {
     logout()
   }
 
-  if (user.user) {
-    return (
-      <View style={styles.container}>
-        <Image
-          source={{ uri: user.user.profileImageUrl }}
-          style={styles.profileImg}
-        />
-        <Text style={[defaultStyles.text]}>
-          {user.user.firstName} {user.user.lastName}
+  return (
+    <View style={styles.container}>
+      <Image
+        source={{ uri: user.user.profileImageUrl }}
+        style={styles.profileImg}
+      />
+      <Text style={[defaultStyles.text]}>
+        {user.user.firstName} {user.user.lastName}
+      </Text>
+      <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
+        @{user.user.username}
+      </Text>
+      <TouchableOpacity onPress={() => handleSubmit()} style={styles.logoutBtn}>
+        <Text style={[defaultStyles.smallText, styles.textBold]}>Logout</Text>
+      </TouchableOpacity>
+      <View style={styles.followDataView}>
+        <Text style={[defaultStyles.text, styles.textMargin]}>
+          {user.followers.length} Followers
         </Text>
-        <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
-          @{user.user.username}
+        <Text style={[defaultStyles.text, styles.textMargin]}>
+          {user.following.length} Following
         </Text>
-        <TouchableOpacity
-          onPress={() => handleSubmit()}
-          style={styles.logoutBtn}
-        >
-          <Text style={[defaultStyles.smallText, styles.textBold]}>Logout</Text>
-        </TouchableOpacity>
-        <View style={styles.followDataView}>
-          <Text style={[defaultStyles.text, styles.textMargin]}>
-            {user.followers.length} Followers
-          </Text>
-
-          <Text style={[defaultStyles.text, styles.textMargin]}>
-            {user.following.length} Following
-          </Text>
-        </View>
       </View>
-    )
-  } else {
-    return <View />
-  }
+    </View>
+  )
 }
 
 const mapState = (state) => ({
-  user: state.user.user,
   auth: state.auth,
 })
 
 const mapDispatch = (dispatch) => ({
   logout: () => dispatch(logout()),
-  gotUser: (userId) => dispatch(gotUser(userId)),
 })
 
 export default connect(mapState, mapDispatch)(UserProfileInfo)

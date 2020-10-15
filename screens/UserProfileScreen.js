@@ -1,21 +1,41 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SafeAreaView } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import { connect } from 'react-redux'
+import { AppLoading } from 'expo'
 
 import UserProfileInfo from '../components/UserProfileInfo'
 import UserProfileRecipes from '../components/UserProfileRecipes'
 
 import defaultStyles from '../config/defaultStyles'
+import { gotUser } from '../redux'
 
-const UserProfileScreen = ({ navigation }) => {
-  return (
-    <SafeAreaView style={defaultStyles.container}>
-      <ScrollView>
-        <UserProfileInfo nav={navigation} />
-        <UserProfileRecipes nav={navigation} />
-      </ScrollView>
-    </SafeAreaView>
-  )
+const UserProfileScreen = ({ navigation, auth, user, gotUser }) => {
+  useEffect(() => {
+    gotUser(auth.id)
+  }, [])
+
+  if (!user.user) {
+    return <AppLoading />
+  } else {
+    return (
+      <SafeAreaView style={defaultStyles.container}>
+        <ScrollView>
+          <UserProfileInfo nav={navigation} user={user} />
+          <UserProfileRecipes nav={navigation} user={user.user} />
+        </ScrollView>
+      </SafeAreaView>
+    )
+  }
 }
 
-export default UserProfileScreen
+const mapState = (state) => ({
+  auth: state.auth,
+  user: state.user.user,
+})
+
+const mapDispatch = (dispatch) => ({
+  gotUser: (userId) => dispatch(gotUser(userId)),
+})
+
+export default connect(mapState, mapDispatch)(UserProfileScreen)
