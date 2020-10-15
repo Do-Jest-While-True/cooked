@@ -11,21 +11,22 @@ import singleRecipe from './singleRecipe'
 import myRecipes from './myRecipes'
 
 const appReducer = combineReducers({
-  recipe,
-  allRecipes,
-  feedRecipes,
   auth,
   user,
+  allRecipes,
+  feedRecipes,
   singleRecipe,
   myRecipes,
+  recipe,
+
 })
 
 const store = createStore(appReducer, applyMiddleware(thunkMiddleware))
 export default store
+export * from './auth'
 export * from './user'
 export * from './allRecipes'
-export * from './recipe'
 export * from './feedRecipes'
 export * from './singleRecipe'
-export * from './auth'
 export * from './myRecipes'
+export * from './recipe'

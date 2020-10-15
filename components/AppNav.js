@@ -1,25 +1,30 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, SafeAreaView } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
 import { Entypo } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
-
-import FeedRecipesScreen from '../screens/FeedRecipesScreen'
+import {
+  FeedRecipesScreen,
+  AllRecipesScreen,
+} from '../screens/ExploreRecipesScreen'
 import RecipePostForm from '../screens/RecipePostForm'
 import RecipeScreen from '../screens/RecipeScreen'
 import UserProfileScreen from '../screens/UserProfileScreen'
 import colors from '../config/colors'
+import defaultStyles from '../config/defaultStyles'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
+const ExploreTab = createMaterialTopTabNavigator()
 
-const ExploreAndSingleRecipeStack = () => (
+const AllAndSingleRecipeStack = () => (
   <Stack.Navigator>
     <Stack.Screen
-      name="All Recipes"
-      component={FeedRecipesScreen}
-      options={headerStyle}
+      name="Global Recipes"
+      component={AllRecipesScreen}
+      options={{ ...headerStyle, headerShown: false }}
     />
     <Stack.Screen
       name="Recipe"
@@ -27,6 +32,36 @@ const ExploreAndSingleRecipeStack = () => (
       options={headerStyle}
     />
   </Stack.Navigator>
+)
+
+const FeedAndSingleRecipeStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Feed Recipes"
+      component={FeedRecipesScreen}
+      options={{ ...headerStyle, headerShown: false }}
+    />
+    <Stack.Screen
+      name="Recipe"
+      component={RecipeScreen}
+      options={headerStyle}
+    />
+  </Stack.Navigator>
+)
+
+const ExploreTabs = () => (
+  <SafeAreaView style={defaultStyles.container}>
+    <ExploreTab.Navigator
+      tabBarOptions={{
+        labelStyle: { color: colors.white },
+        indicatorStyle: { backgroundColor: colors.dark },
+        style: styles.exploreTab,
+      }}
+    >
+      <Tab.Screen name="Feed" component={FeedAndSingleRecipeStack} />
+      <Tab.Screen name="Global" component={AllAndSingleRecipeStack} />
+    </ExploreTab.Navigator>
+  </SafeAreaView>
 )
 
 const ProfileAndPostStack = () => (
@@ -54,7 +89,7 @@ export const TabNavigator = () => (
   >
     <Tab.Screen
       name="Explore"
-      component={ExploreAndSingleRecipeStack}
+      component={ExploreTabs}
       options={{
         tabBarIcon: () => <Entypo name="bowl" size={35} color={colors.white} />,
       }}
@@ -89,5 +124,9 @@ const styles = StyleSheet.create({
   navbar: {
     backgroundColor: colors.medium,
     height: '11%',
+  },
+  exploreTab: {
+    backgroundColor: colors.medium,
+    color: colors.light,
   },
 })

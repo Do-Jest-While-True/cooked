@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 
 import RecipeListItem from '../components/RecipeListItem'
 import SwipeDeleteBtn from '../components/SwipeDeleteBtn'
-import { getFeedRecipes } from '../redux'
+import { getFeedRecipes, getAllRecipes } from '../redux'
 
 import defaultStyles from '../config/defaultStyles'
 
@@ -20,17 +20,17 @@ const wait = (timeout) => {
   })
 }
 
-const FeedRecipesScreen = ({ navigation, getFeedRecipes, recipes }) => {
+const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
   const [refreshing, setRefreshing] = React.useState(false)
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true)
     wait(1000).then(() => setRefreshing(false))
-    getFeedRecipes()
+    getRecipes()
   }, [])
 
   useEffect(() => {
-    getFeedRecipes()
+    getRecipes()
   }, [])
   return (
     <SafeAreaView style={defaultStyles.container}>
@@ -65,12 +65,28 @@ const FeedRecipesScreen = ({ navigation, getFeedRecipes, recipes }) => {
   )
 }
 
-const mapState = (state) => ({
+const mapStateFeed = (state) => ({
   recipes: state.feedRecipes,
 })
 
-const mapDispatch = (dispatch) => ({
-  getFeedRecipes: () => dispatch(getFeedRecipes()),
+const mapStateAll = (state) => ({
+  recipes: state.allRecipes,
 })
 
-export default connect(mapState, mapDispatch)(FeedRecipesScreen)
+const mapDispatchFeed = (dispatch) => ({
+  getRecipes: () => dispatch(getFeedRecipes()),
+})
+
+const mapDispatchAll = (dispatch) => ({
+  getRecipes: () => dispatch(getAllRecipes()),
+})
+
+export const FeedRecipesScreen = connect(
+  mapStateFeed,
+  mapDispatchFeed
+)(ExploreRecipesScreen)
+
+export const AllRecipesScreen = connect(
+  mapStateAll,
+  mapDispatchAll
+)(ExploreRecipesScreen)
