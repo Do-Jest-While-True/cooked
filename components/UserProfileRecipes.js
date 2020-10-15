@@ -21,7 +21,11 @@ const UserProfileRecipes = ({ user, myRecipes, getMyRecipes, nav }) => {
       data={myRecipes}
       renderItem={({ item }) => {
         return (
-          <RecipeGridItem nav={nav} id={item.id} imageUrl={item.imageUrl} />
+          <RecipeGridItem
+            nav={nav}
+            recipeId={item.id}
+            imageUrl={item.imageUrl}
+          />
         )
       }}
     />
