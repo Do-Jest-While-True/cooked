@@ -1,33 +1,61 @@
-import React from 'react'
-import { StyleSheet, Image, View, Text } from 'react-native'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native'
+import { AppLoading } from 'expo'
 import { MaterialIcons } from '@expo/vector-icons'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+// import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import colors from '../config/colors'
-import user from '../redux/user'
+import { gotUser } from '../redux'
 
-const RecipeListItem = ({ recipeId, name, imageUrl, time, nav, user }) => {
-  return (
-    <TouchableOpacity
-      style={styles.listItemView}
-      onPress={() => nav.navigate('Recipe', { recipeId })}
-    >
-      <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
-      <View>
-        <Text style={styles.listItemName}>{name}</Text>
-        <Text style={styles.listItemName}>
-          {user.firstName} {user.lastName}
-        </Text>
-        <View style={styles.timeView}>
-          <MaterialIcons name="timer" size={18} color={colors.white} />
-          <Text style={styles.listItemTime}>{time}</Text>
+const RecipeListItem = ({
+  recipeId,
+  name,
+  imageUrl,
+  time,
+  nav,
+  user,
+  gotUser,
+  userProp,
+}) => {
+  useEffect(() => {
+    gotUser(user.id)
+  }, [])
+
+  console.log('user on the recipelistItem===', user)
+  if (!userProp) {
+    return <AppLoading />
+  } else {
+    return (
+      <TouchableOpacity
+        style={styles.listItemView}
+        onPress={() => nav.navigate('Recipe', { recipeId })}
+      >
+        <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
+        <View>
+          <Text style={styles.listItemName}>{name}</Text>
+          <View style={styles.timeView}>
+            <MaterialIcons name="timer" size={18} color={colors.white} />
+            <Text style={styles.listItemTime}>{time}</Text>
+          </View>
+          <TouchableOpacity onPress={() => nav.navigate()}>
+            <Text style={styles.userName}>@{user.username}</Text>
+          </TouchableOpacity>
         </View>
-      </View>
-    </TouchableOpacity>
-  )
+      </TouchableOpacity>
+    )
+  }
 }
 
-export default RecipeListItem
+const mapState = (state) => ({
+  userProp: state.user.user,
+})
+
+const mapDispatch = (dispatch) => ({
+  gotUser: (userId) => dispatch(gotUser(userId)),
+})
+
+export default connect(mapState, mapDispatch)(RecipeListItem)
 
 const styles = StyleSheet.create({
   listItemView: {
@@ -47,8 +75,14 @@ const styles = StyleSheet.create({
   listItemName: {
     fontSize: 15,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginVertical: 8,
     color: colors.darkGray,
+  },
+  userName: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginVertical: 8,
+    color: colors.dark,
   },
   listItemTime: {
     color: '#fff',

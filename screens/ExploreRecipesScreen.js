@@ -33,6 +33,7 @@ const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
   useEffect(() => {
     getRecipes()
   }, [])
+
   return (
     <SafeAreaView style={defaultStyles.container}>
       <ScrollView
