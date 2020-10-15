@@ -52,13 +52,6 @@ export const TabNavigator = () => (
       activeTintColor: '#000',
     }}
   >
-    {/* <Tab.Screen
-      name="Welcome"
-      component={LoginSignup}
-      options={{
-        tabBarIcon: () => <Entypo name="home" size={35} color={colors.white} />,
-      }}
-    /> */}
     <Tab.Screen
       name="Explore"
       component={ExploreAndSingleRecipeStack}

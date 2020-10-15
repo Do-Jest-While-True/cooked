@@ -5,7 +5,7 @@ import {
   ScrollView,
   RefreshControl,
 } from 'react-native'
-import Swipeable from 'react-native-gesture-handler/Swipeable'
+// import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { connect } from 'react-redux'
 
 import RecipeListItem from '../components/RecipeListItem'

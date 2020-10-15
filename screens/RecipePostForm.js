@@ -24,7 +24,7 @@ import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 import recipes from '../redux/recipes'
 
-// REMOVE WARNINGS AFTER POSTING SUCCESSFULLY
+// NOTE: frontend validation is not perfect. There is currently no validation for images and also, if you start typing in a field but then delete your entry, the frontend will still let you post but will fail at the server.. need more robust validation for keyed fields
 const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   const [recipeName, setRecipeName] = useState('')
   const [time, setTime] = useState('')
@@ -82,7 +82,7 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
       directions: directions,
     })
 
-    // reset fields / local state:
+    // reset fields / local state / warnings:
     setRecipeName('')
     setTime('')
     setIngredients([])
@@ -90,8 +90,12 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
     // clear imageUrl from store state:
     removeImageUrl()
 
+    setNameFieldWarning(false)
+    setTimeFieldWarning(false)
+    setIngredientsFieldWarning(false)
+    setDirectionsFieldWarning(false)
+
     // navigate to All Recipes View after posting:
-    // (need to add pull to refresh and also sort All Recipes to be reverse-cron)
     navigation.navigate('Explore')
   }
 
@@ -159,6 +163,8 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
                     setIngredient(val)
                     setIngredientsFieldEmpty(false)
                   }}
+                  // return btn on keyboard acts same as clicking +
+                  onSubmitEditing={addIngredient}
                   value={ingredient}
                 />
                 <TouchableOpacity>
@@ -171,11 +177,13 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
                 </TouchableOpacity>
               </View>
               {/* render list of ingredients inputted */}
-              {/* {recipe.ingredients.map((item, i) => (
-                <View>
-                  <Text key={i}>{item}</Text>
-                </View>
-              ))} */}
+              {/* refactor to UUID for key!!!! */}
+              {/* need a DELETE single button */}
+              {ingredients.map((item, i) => (
+                <Text key={i} style={styles.singleIngredientDirection}>
+                  - {item}
+                </Text>
+              ))}
             </View>
             {/* Directions: ________________________________________*/}
             {directionsFieldWarning && (
@@ -194,6 +202,8 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
                     setDirection(val)
                     setDirectionsFieldEmpty(false)
                   }}
+                  // return btn on keyboard acts same as clicking +
+                  onSubmitEditing={addDirection}
                   value={direction}
                 />
                 <TouchableOpacity>
@@ -206,6 +216,13 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
                 </TouchableOpacity>
               </View>
               {/* render list of directions inputted */}
+              {/* refactor to UUID for key!!!! */}
+              {/* need a DELETE single button */}
+              {directions.map((item, i) => (
+                <Text key={i} style={styles.singleIngredientDirection}>
+                  - {item}
+                </Text>
+              ))}
             </View>
             {/* Post Button ____________________________________*/}
             <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
@@ -279,12 +296,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginVertical: 2,
   },
+  singleIngredientDirection: {
+    marginTop: 10,
+    marginLeft: 10,
+    fontSize: 20,
+    color: colors.white,
+  },
   singleDirectionView: {
     flexDirection: 'row',
     marginTop: 15,
-  },
-  singleDirection: {
-    fontSize: 15,
   },
   postBtn: {
     backgroundColor: colors.dark,
