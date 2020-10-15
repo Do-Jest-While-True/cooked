@@ -18,7 +18,6 @@ const appReducer = combineReducers({
   singleRecipe,
   myRecipes,
   recipe,
-
 })
 
 const store = createStore(appReducer, applyMiddleware(thunkMiddleware))
