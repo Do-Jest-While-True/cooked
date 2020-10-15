@@ -4,16 +4,20 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import colors from '../config/colors'
+import user from '../redux/user'
 
-const RecipeListItem = ({ id, name, imageUrl, time, nav }) => {
+const RecipeListItem = ({ recipeId, name, imageUrl, time, nav, user }) => {
   return (
     <TouchableOpacity
       style={styles.listItemView}
-      onPress={() => nav.navigate('Recipe', { id })}
+      onPress={() => nav.navigate('Recipe', { recipeId })}
     >
       <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
       <View>
         <Text style={styles.listItemName}>{name}</Text>
+        <Text style={styles.listItemName}>
+          {user.firstName} {user.lastName}
+        </Text>
         <View style={styles.timeView}>
           <MaterialIcons name="timer" size={18} color={colors.white} />
           <Text style={styles.listItemTime}>{time}</Text>

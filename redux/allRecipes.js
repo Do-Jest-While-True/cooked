@@ -2,12 +2,12 @@ import axios from 'axios'
 import { URL } from './serverUrl'
 
 // ACTION TYPES
-const GOT_RECIPES = 'GOT_RECIPES'
+const GOT_ALL_RECIPES = 'GOT_ALL_RECIPES'
 const DELETE_RECIPE = 'DELETE_RECIPE'
 
 // ACTION CREATORS
-export const gotRecipes = (recipes) => ({
-  type: GOT_RECIPES,
+export const gotAllRecipes = (recipes) => ({
+  type: GOT_ALL_RECIPES,
   recipes,
 })
 
@@ -18,10 +18,10 @@ export const deleteRecipe = (id) => ({
 })
 
 // THUNK CREATORS
-export const getRecipes = () => async (dispatch) => {
+export const getAllRecipes = () => async (dispatch) => {
   try {
-    const { data: recipes } = await axios.get(`${URL}/api/recipes`)
-    dispatch(gotRecipes(recipes))
+    const { data: recipes } = await axios.get(`${URL}/api/recipes/all`)
+    dispatch(gotAllRecipes(recipes))
   } catch (error) {
     console.error(error)
   }
@@ -33,7 +33,7 @@ const initialState = []
 // REDUCER
 export default function (state = initialState, action) {
   switch (action.type) {
-    case GOT_RECIPES:
+    case GOT_ALL_RECIPES:
       // currently not recollecting existing state
       return action.recipes
     case DELETE_RECIPE:

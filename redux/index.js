@@ -2,20 +2,27 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 
 import recipe from './recipe'
-import recipes from './recipes'
+
+import allRecipes from './allRecipes'
+import feedRecipes from './feedRecipes'
 import auth from './auth'
 import user from './user'
+import singleRecipe from './singleRecipe'
 
 const appReducer = combineReducers({
   recipe,
-  recipes,
+  allRecipes,
+  feedRecipes,
   auth,
   user,
+  singleRecipe,
 })
 
 const store = createStore(appReducer, applyMiddleware(thunkMiddleware))
 export default store
-export * from './auth'
-export * from './recipes'
-export * from './recipe'
 export * from './user'
+export * from './allRecipes'
+export * from './recipe'
+export * from './feedRecipes'
+export * from './singleRecipe'
+export * from './auth'

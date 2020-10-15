@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 
 import RecipeListItem from '../components/RecipeListItem'
 import SwipeDeleteBtn from '../components/SwipeDeleteBtn'
-import { getRecipes } from '../redux'
+import { getFeedRecipes } from '../redux'
 
 import defaultStyles from '../config/defaultStyles'
 
@@ -20,19 +20,18 @@ const wait = (timeout) => {
   })
 }
 
-const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
+const FeedRecipesScreen = ({ navigation, getFeedRecipes, recipes }) => {
   const [refreshing, setRefreshing] = React.useState(false)
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true)
     wait(1000).then(() => setRefreshing(false))
-    getRecipes()
+    getFeedRecipes()
   }, [])
 
   useEffect(() => {
-    getRecipes()
+    getFeedRecipes()
   }, [])
-
   return (
     <SafeAreaView style={defaultStyles.container}>
       <ScrollView
@@ -53,7 +52,8 @@ const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
                   name={item.name}
                   imageUrl={item.imageUrl}
                   time={item.time}
-                  id={item.id}
+                  recipeId={item.id}
+                  user={item.user}
                   nav={navigation}
                 />
               </Swipeable>
@@ -66,11 +66,11 @@ const AllRecipesScreen = ({ navigation, getRecipes, recipes }) => {
 }
 
 const mapState = (state) => ({
-  recipes: state.recipes,
+  recipes: state.feedRecipes,
 })
 
 const mapDispatch = (dispatch) => ({
-  getRecipes: () => dispatch(getRecipes()),
+  getFeedRecipes: () => dispatch(getFeedRecipes()),
 })
 
-export default connect(mapState, mapDispatch)(AllRecipesScreen)
+export default connect(mapState, mapDispatch)(FeedRecipesScreen)
