@@ -5,6 +5,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { createStackNavigator } from '@react-navigation/stack'
 import { Entypo } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
+
 import {
   FeedRecipesScreen,
   AllRecipesScreen,
@@ -12,6 +13,8 @@ import {
 import RecipePostForm from '../screens/RecipePostForm'
 import RecipeScreen from '../screens/RecipeScreen'
 import UserProfileScreen from '../screens/UserProfileScreen'
+import ExtUserProfileScreen from '../screens/ExtUserProfileScreen'
+
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
@@ -26,10 +29,16 @@ const AllAndSingleRecipeStack = () => (
       component={AllRecipesScreen}
       options={{ ...headerStyle, headerShown: false }}
     />
+    {/* we actually may not want to hide this header below, but rather hide the tab switcher when you're stacked on top of it  */}
     <Stack.Screen
       name="Recipe"
       component={RecipeScreen}
-      options={headerStyle}
+      options={{ ...headerStyle, headerShown: false }}
+    />
+    <Stack.Screen
+      name="Ext User Profile"
+      component={ExtUserProfileScreen}
+      options={{ ...headerStyle, headerShown: false }}
     />
   </Stack.Navigator>
 )
@@ -41,10 +50,16 @@ const FeedAndSingleRecipeStack = () => (
       component={FeedRecipesScreen}
       options={{ ...headerStyle, headerShown: false }}
     />
+    {/* we actually may not want to hide this header below, but rather hide the tab switcher when you're stacked on top of it */}
     <Stack.Screen
       name="Recipe"
       component={RecipeScreen}
-      options={headerStyle}
+      options={{ ...headerStyle, headerShown: false }}
+    />
+    <Stack.Screen
+      name="Ext User Profile"
+      component={ExtUserProfileScreen}
+      options={{ ...headerStyle, headerShown: false }}
     />
   </Stack.Navigator>
 )

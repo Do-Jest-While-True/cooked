@@ -14,25 +14,28 @@ import {
   useFonts,
 } from '@expo-google-fonts/covered-by-your-grace'
 import { MaterialIcons } from '@expo/vector-icons'
-import { getSingleRecipe } from '../redux'
+import { getSingleRecipe, gotUser } from '../redux'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const RecipeScreen = ({ route, singleRecipe, getSingleRecipe }) => {
+const RecipeScreen = ({
+  route,
+  singleRecipe,
+  getSingleRecipe,
+  user,
+  gotUser,
+}) => {
   useEffect(() => {
     getSingleRecipe(route.params.recipeId)
+    gotUser(route.params.userId)
   }, [])
 
   let [fontsLoaded] = useFonts({
     CoveredByYourGrace_400Regular,
   })
 
-  // this works because currently we always have the latest recipes on state because we enter this Screen from components that make a call for all recipes:
-
-  // const singleRecipe = recipes.find((singleRecipe) => singleRecipe.id === route.params.id)
-
-  if (!fontsLoaded || !singleRecipe.id) {
+  if (!fontsLoaded || !singleRecipe.id || !user.user) {
     return <AppLoading />
   } else {
     return (
@@ -44,6 +47,10 @@ const RecipeScreen = ({ route, singleRecipe, getSingleRecipe }) => {
             {/* Recipe Name: */}
             <Text style={[styles.recipesHeadings, styles.recipeTitle]}>
               {singleRecipe.name}
+            </Text>
+            {/* Username: */}
+            <Text style={[defaultStyles.text, styles.username]}>
+              @{user.user.username}
             </Text>
             {/* Cook Time */}
             <View style={styles.timeView}>
@@ -82,10 +89,12 @@ const RecipeScreen = ({ route, singleRecipe, getSingleRecipe }) => {
 
 const mapState = (state) => ({
   singleRecipe: state.singleRecipe,
+  user: state.user.user,
 })
 
 const mapDispatch = (dispatch) => ({
   getSingleRecipe: (recipeId) => dispatch(getSingleRecipe(recipeId)),
+  gotUser: (userId) => dispatch(gotUser(userId)),
 })
 
 export default connect(mapState, mapDispatch)(RecipeScreen)
@@ -96,6 +105,11 @@ const styles = StyleSheet.create({
     width: '100%',
     resizeMode: 'cover',
     opacity: 0.75,
+  },
+  username: {
+    color: colors.dark,
+    fontWeight: 'bold',
+    marginBottom: 25,
   },
   recipeContent: {
     margin: 20,

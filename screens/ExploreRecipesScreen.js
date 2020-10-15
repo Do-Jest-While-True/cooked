@@ -61,6 +61,8 @@ const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
                 recipeId={item.id}
                 user={item.user}
                 nav={navigation}
+                // I'm adding this to pass down into single post for my gotUser() call
+                userId={item.userId}
               />
               // </Swipeable>
             )}

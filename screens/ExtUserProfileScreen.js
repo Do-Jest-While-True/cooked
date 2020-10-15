@@ -1,19 +1,15 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { SafeAreaView } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
-import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
 
 import UserProfileInfo from '../components/UserProfileInfo'
 import UserProfileRecipes from '../components/UserProfileRecipes'
 
 import defaultStyles from '../config/defaultStyles'
-import { gotUser } from '../redux'
 
-const UserProfileScreen = ({ navigation, user, gotUser }) => {
-  useEffect(() => {
-    gotUser()
-  }, [])
+const ExtUserProfileScreen = ({ route, navigation }) => {
+  const user = route.params.userPlusFollows
 
   if (!user.user) {
     return <AppLoading />
@@ -29,13 +25,4 @@ const UserProfileScreen = ({ navigation, user, gotUser }) => {
   }
 }
 
-const mapState = (state) => ({
-  auth: state.auth,
-  user: state.user.user,
-})
-
-const mapDispatch = (dispatch) => ({
-  gotUser: (userId) => dispatch(gotUser(userId)),
-})
-
-export default connect(mapState, mapDispatch)(UserProfileScreen)
+export default ExtUserProfileScreen

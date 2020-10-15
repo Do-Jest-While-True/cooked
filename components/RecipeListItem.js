@@ -3,52 +3,52 @@ import { connect } from 'react-redux'
 import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native'
 import { AppLoading } from 'expo'
 import { MaterialIcons } from '@expo/vector-icons'
-// import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import colors from '../config/colors'
 import { gotUser } from '../redux'
 
 const RecipeListItem = ({
   recipeId,
+  userId,
   name,
   imageUrl,
   time,
   nav,
   user,
   gotUser,
-  userProp,
+  userPlusFollows,
 }) => {
-  useEffect(() => {
-    gotUser(user.id)
-  }, [])
+  // useEffect(() => {
+  // 	gotUser(user.id);
+  // }, []);
 
-  console.log('user on the recipelistItem===', user)
-  if (!userProp) {
-    return <AppLoading />
-  } else {
-    return (
-      <TouchableOpacity
-        style={styles.listItemView}
-        onPress={() => nav.navigate('Recipe', { recipeId })}
-      >
-        <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
-        <View>
-          <Text style={styles.listItemName}>{name}</Text>
-          <View style={styles.timeView}>
-            <MaterialIcons name="timer" size={18} color={colors.white} />
-            <Text style={styles.listItemTime}>{time}</Text>
-          </View>
-          <TouchableOpacity onPress={() => nav.navigate()}>
-            <Text style={styles.userName}>@{user.username}</Text>
-          </TouchableOpacity>
+  // if (!userPlusFollows) {
+  // 	return <AppLoading />;
+  // } else {
+  return (
+    <TouchableOpacity
+      style={styles.listItemView}
+      onPress={() => nav.navigate('Recipe', { recipeId, userId })}
+    >
+      <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
+      <View>
+        <Text style={styles.listItemName}>{name}</Text>
+        <View style={styles.timeView}>
+          <MaterialIcons name="timer" size={18} color={colors.white} />
+          <Text style={styles.listItemTime}>{time}</Text>
         </View>
-      </TouchableOpacity>
-    )
-  }
+        {/* we're removing this feature to click into a user profile from feed for now -- we will start with this feature only from a single post: */}
+        {/* <TouchableOpacity onPress={() => nav.navigate('Ext User Profile', { userPlusFollows })}> */}
+        <Text style={styles.userName}>@{user.username}</Text>
+        {/* </TouchableOpacity> */}
+      </View>
+    </TouchableOpacity>
+  )
+  // }
 }
 
 const mapState = (state) => ({
-  userProp: state.user.user,
+  userPlusFollows: state.user.user,
 })
 
 const mapDispatch = (dispatch) => ({
