@@ -5,13 +5,14 @@ import {
   ScrollView,
   RefreshControl,
 } from 'react-native'
-import Swipeable from 'react-native-gesture-handler/Swipeable'
+// import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { connect } from 'react-redux'
 
 import RecipeListItem from '../components/RecipeListItem'
-import SwipeDeleteBtn from '../components/SwipeDeleteBtn'
+// import SwipeDeleteBtn from '../components/SwipeDeleteBtn'
 import { getFeedRecipes } from '../redux'
 
+import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
 const wait = (timeout) => {
@@ -36,7 +37,11 @@ const FeedRecipesScreen = ({ navigation, getFeedRecipes, recipes }) => {
     <SafeAreaView style={defaultStyles.container}>
       <ScrollView
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.white}
+          />
         }
       >
         {recipes && (
@@ -44,19 +49,19 @@ const FeedRecipesScreen = ({ navigation, getFeedRecipes, recipes }) => {
             data={recipes}
             keyExtractor={(recipe) => recipe.id.toString()}
             renderItem={({ item }) => (
-              <Swipeable
-                renderRightActions={() => <SwipeDeleteBtn id={item.id} />}
-                onSwipeableRightOpen={() => console.log('delete opened')}
-              >
-                <RecipeListItem
-                  name={item.name}
-                  imageUrl={item.imageUrl}
-                  time={item.time}
-                  recipeId={item.id}
-                  user={item.user}
-                  nav={navigation}
-                />
-              </Swipeable>
+              // <Swipeable
+              //   renderRightActions={() => <SwipeDeleteBtn id={item.id} />}
+              //   onSwipeableRightOpen={() => console.log('delete opened')}
+              // >
+              <RecipeListItem
+                name={item.name}
+                imageUrl={item.imageUrl}
+                time={item.time}
+                recipeId={item.id}
+                user={item.user}
+                nav={navigation}
+              />
+              // </Swipeable>
             )}
           />
         )}
