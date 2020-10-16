@@ -6,10 +6,13 @@ import { connect } from 'react-redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const ExtUserProfileInfo = ({ user }) => {
+const ExtUserProfileInfo = ({ user, me }) => {
   const handleSubmit = () => {
     // follow functionality
   }
+
+  console.log('user in ExtProfileInfo----->', user)
+  console.log('me in ext-->', me)
 
   return (
     <View style={styles.container}>

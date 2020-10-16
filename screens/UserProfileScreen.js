@@ -6,9 +6,9 @@ import { AppLoading } from 'expo'
 
 import UserProfileInfo from '../components/UserProfileInfo'
 import UserProfileRecipes from '../components/UserProfileRecipes'
+import { getMe } from '../redux'
 
 import defaultStyles from '../config/defaultStyles'
-import { getMe } from '../redux'
 
 const UserProfileScreen = ({ navigation, auth, getMe, me }) => {
   useEffect(() => {
