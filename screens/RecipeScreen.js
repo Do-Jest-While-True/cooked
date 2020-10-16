@@ -6,6 +6,7 @@ import {
   View,
   Text,
   Image,
+  TouchableOpacity,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
@@ -50,17 +51,23 @@ const RecipeScreen = ({
           {/* Recipe Image: */}
           <Image source={{ uri: singleRecipe.imageUrl }} style={styles.img} />
           <View style={styles.recipeContent}>
+            {/* Username: */}
+            {/* don't render username when clicking in from my user profile */}
+            {route.params.userId && (
+              <TouchableOpacity
+                onPress={() =>
+                  route.params.nav.navigate('Ext User Profile', { user })
+                }
+              >
+                <Text style={[defaultStyles.text, styles.username]}>
+                  @{user.user.username}
+                </Text>
+              </TouchableOpacity>
+            )}
             {/* Recipe Name: */}
             <Text style={[styles.recipesHeadings, styles.recipeTitle]}>
               {singleRecipe.name}
             </Text>
-            {/* Username: */}
-            {/* don't render username when clicking in from my user profile */}
-            {route.params.userId && (
-              <Text style={[defaultStyles.text, styles.username]}>
-                @{user.user.username}
-              </Text>
-            )}
             {/* Cook Time */}
             <View style={styles.timeView}>
               <MaterialIcons name="timer" size={18} color={colors.white} />
@@ -125,6 +132,9 @@ const styles = StyleSheet.create({
   },
   recipesContentSection: {
     marginBottom: 20,
+    borderBottomWidth: 0.25,
+    paddingBottom: 25,
+    borderBottomColor: colors.white,
   },
   recipeTitle: {
     fontFamily: 'CoveredByYourGrace_400Regular',
@@ -153,7 +163,10 @@ const styles = StyleSheet.create({
   },
   timeView: {
     flexDirection: 'row',
+    paddingBottom: 20,
     marginBottom: 22,
+    borderBottomWidth: 0.25,
+    borderBottomColor: colors.white,
   },
   time: {
     color: colors.white,

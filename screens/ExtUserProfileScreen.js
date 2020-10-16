@@ -3,22 +3,20 @@ import { SafeAreaView } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { AppLoading } from 'expo'
 
-import UserProfileInfo from '../components/UserProfileInfo'
+import ExtUserProfileInfo from '../components/ExtUserProfileInfo'
 import UserProfileRecipes from '../components/UserProfileRecipes'
 
 import defaultStyles from '../config/defaultStyles'
 
 const ExtUserProfileScreen = ({ route, navigation }) => {
-  const user = route.params.userPlusFollows
-
-  if (!user.user) {
+  if (!route.params.user.user) {
     return <AppLoading />
   } else {
     return (
       <SafeAreaView style={defaultStyles.container}>
         <ScrollView>
-          <UserProfileInfo nav={navigation} user={user} />
-          <UserProfileRecipes nav={navigation} user={user.user} />
+          <ExtUserProfileInfo nav={navigation} user={route.params.user} />
+          <UserProfileRecipes nav={navigation} user={route.params.user.user} />
         </ScrollView>
       </SafeAreaView>
     )

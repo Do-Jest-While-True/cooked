@@ -3,13 +3,12 @@ import { StyleSheet, View, Text, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 
-import { logout } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const UserProfileInfo = ({ logout, user }) => {
-  let handleSubmit = () => {
-    logout()
+const ExtUserProfileInfo = ({ user }) => {
+  const handleSubmit = () => {
+    // follow functionality
   }
 
   return (
@@ -24,8 +23,8 @@ const UserProfileInfo = ({ logout, user }) => {
       <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
         @{user.user.username}
       </Text>
-      <TouchableOpacity onPress={() => handleSubmit()} style={styles.logoutBtn}>
-        <Text style={[defaultStyles.smallText, styles.textBold]}>Logout</Text>
+      <TouchableOpacity onPress={() => handleSubmit()} style={styles.followBtn}>
+        <Text style={[defaultStyles.smallText, styles.textBold]}>Follow</Text>
       </TouchableOpacity>
       <View style={styles.followDataView}>
         <Text style={[defaultStyles.text, styles.textMargin]}>
@@ -39,11 +38,9 @@ const UserProfileInfo = ({ logout, user }) => {
   )
 }
 
-const mapDispatch = (dispatch) => ({
-  logout: () => dispatch(logout()),
-})
+const mapDispatch = (dispatch) => ({})
 
-export default connect(null, mapDispatch)(UserProfileInfo)
+export default connect(null, mapDispatch)(ExtUserProfileInfo)
 
 const styles = StyleSheet.create({
   container: {
@@ -72,7 +69,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-around',
   },
-  logoutBtn: {
+  followBtn: {
     backgroundColor: colors.dark,
     paddingVertical: 5,
     paddingHorizontal: 15,
