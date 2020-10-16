@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native'
-import { AppLoading } from 'expo'
 import { MaterialIcons } from '@expo/vector-icons'
 
 import colors from '../config/colors'
-import { gotUser } from '../redux'
 
 const RecipeListItem = ({
   recipeId,
@@ -15,16 +13,7 @@ const RecipeListItem = ({
   time,
   nav,
   user,
-  gotUser,
-  userPlusFollows,
 }) => {
-  // useEffect(() => {
-  // 	gotUser(user.id);
-  // }, []);
-
-  // if (!userPlusFollows) {
-  // 	return <AppLoading />;
-  // } else {
   return (
     <TouchableOpacity
       style={styles.listItemView}
@@ -37,23 +26,15 @@ const RecipeListItem = ({
           <MaterialIcons name="timer" size={18} color={colors.white} />
           <Text style={styles.listItemTime}>{time}</Text>
         </View>
-        {/* we're removing this feature to click into a user profile from feed for now -- we will start with this feature only from a single post: */}
-        {/* <TouchableOpacity onPress={() => nav.navigate('Ext User Profile', { userPlusFollows })}> */}
         <Text style={styles.userName}>@{user.username}</Text>
-        {/* </TouchableOpacity> */}
       </View>
     </TouchableOpacity>
   )
-  // }
 }
 
-const mapState = (state) => ({
-  userPlusFollows: state.user.user,
-})
+const mapState = (state) => ({})
 
-const mapDispatch = (dispatch) => ({
-  gotUser: (userId) => dispatch(gotUser(userId)),
-})
+const mapDispatch = (dispatch) => ({})
 
 export default connect(mapState, mapDispatch)(RecipeListItem)
 
