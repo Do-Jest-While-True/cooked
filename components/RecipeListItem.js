@@ -1,38 +1,38 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-
+import { AppLoading } from 'expo'
 import { URL } from '../redux/serverUrl'
 
 import colors from '../config/colors'
 
 const RecipeListItem = ({
   recipeId,
-  userId,
   name,
   imageUrl,
   time,
   nav,
   user,
   likes,
+  userId,
   authId,
 }) => {
   const likedOrNot = likes.filter((like) => like.userId === authId).length
 
   const [likeCount, setLikeCount] = useState(likes.length)
-  const [isLiked, setisLiked] = useState(likedOrNot)
+  const [isLiked, setIsLiked] = useState(likedOrNot)
 
   const liked = async () => {
     if (!isLiked) {
       await axios.put(`${URL}/api/recipes/like/${recipeId}`)
       setLikeCount(likeCount + 1)
-      setisLiked(true)
+      setIsLiked(true)
     } else if (isLiked) {
       await axios.delete(`${URL}/api/recipes/like/${recipeId}`)
       setLikeCount(likeCount - 1)
-      setisLiked(false)
+      setIsLiked(false)
     }
   }
 
@@ -42,7 +42,7 @@ const RecipeListItem = ({
     return (
       <TouchableOpacity
         style={styles.listItemView}
-        onPress={() => nav.navigate('Recipe', { recipeId })}
+        onPress={() => nav.navigate('Recipe', { recipeId, userId, nav })}
       >
         <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
         <View>
@@ -67,9 +67,9 @@ const RecipeListItem = ({
             <Text style={styles.likeText}>{likeCount} likes</Text>
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  )
+      </TouchableOpacity>
+    )
+  }
 }
 
 const mapState = (state) => ({
