@@ -16,6 +16,7 @@ const RecipeListItem = ({
   nav,
   user,
   likes,
+  userId,
   authId,
 }) => {
   const likedOrNot = likes.filter((like) => like.userId === authId).length
