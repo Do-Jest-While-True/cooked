@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import { connect } from 'react-redux'
 import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native'
 import { AppLoading } from 'expo'
 import { MaterialIcons } from '@expo/vector-icons'
+import { URL } from '../redux/serverUrl'
 // import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import colors from '../config/colors'
@@ -17,12 +19,30 @@ const RecipeListItem = ({
   user,
   gotUser,
   userProp,
+  likes,
+  authId,
 }) => {
   useEffect(() => {
     gotUser(user.id)
   }, [])
 
-  console.log('user on the recipelistItem===', user)
+  const likedOrNot = likes.filter((like) => like.userId === authId).length
+
+  const [likeCount, setLikeCount] = useState(likes.length)
+  const [isLiked, setisLiked] = useState(likedOrNot)
+
+  const liked = async () => {
+    if (!isLiked) {
+      await axios.put(`${URL}/api/recipes/like/${recipeId}`)
+      setLikeCount(likeCount + 1)
+      setisLiked(true)
+    } else if (isLiked) {
+      await axios.delete(`${URL}/api/recipes/like/${recipeId}`)
+      setLikeCount(likeCount - 1)
+      setisLiked(false)
+    }
+  }
+
   if (!userProp) {
     return <AppLoading />
   } else {
@@ -41,6 +61,20 @@ const RecipeListItem = ({
           <TouchableOpacity onPress={() => nav.navigate()}>
             <Text style={styles.userName}>@{user.username}</Text>
           </TouchableOpacity>
+          <View style={styles.likeView}>
+            <TouchableOpacity onPress={() => liked()}>
+              {isLiked ? (
+                <MaterialIcons name="favorite" size={18} color={colors.white} />
+              ) : (
+                <MaterialIcons
+                  name="favorite-border"
+                  size={18}
+                  color={colors.white}
+                />
+              )}
+            </TouchableOpacity>
+            <Text style={styles.likeText}>{likeCount} likes</Text>
+          </View>
         </View>
       </TouchableOpacity>
     )
@@ -49,6 +83,7 @@ const RecipeListItem = ({
 
 const mapState = (state) => ({
   userProp: state.user.user,
+  authId: state.auth.id,
 })
 
 const mapDispatch = (dispatch) => ({
@@ -62,13 +97,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 0.25,
+    borderBottomWidth: 0.3,
     borderColor: colors.white,
     backgroundColor: '#18232e',
   },
   listItemImg: {
     width: 70,
-    height: 70,
+    height: 80,
     borderRadius: 10,
     margin: 15,
   },
@@ -90,5 +125,12 @@ const styles = StyleSheet.create({
   },
   timeView: {
     flexDirection: 'row',
+  },
+  likeView: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  likeText: {
+    color: colors.white,
   },
 })
