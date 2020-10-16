@@ -28,7 +28,9 @@ const RecipeScreen = ({
 }) => {
   useEffect(() => {
     getSingleRecipe(route.params.recipeId)
-    gotUser(route.params.userId)
+    // don't need to pass userId on route obj when we call this component from my own user profile
+    // I already know who I am in there... causes unwanted 500 without this conditional
+    route.params.userId && gotUser(route.params.userId)
   }, [])
 
   let [fontsLoaded] = useFonts({
@@ -49,9 +51,12 @@ const RecipeScreen = ({
               {singleRecipe.name}
             </Text>
             {/* Username: */}
-            <Text style={[defaultStyles.text, styles.username]}>
-              @{user.user.username}
-            </Text>
+            {/* don't render username when clicking in from my user profile */}
+            {route.params.userId && (
+              <Text style={[defaultStyles.text, styles.username]}>
+                @{user.user.username}
+              </Text>
+            )}
             {/* Cook Time */}
             <View style={styles.timeView}>
               <MaterialIcons name="timer" size={18} color={colors.white} />

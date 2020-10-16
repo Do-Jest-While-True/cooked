@@ -4,12 +4,14 @@ import { URL } from './serverUrl'
 /**
  * ACTION TYPES
  */
+const GET_ME = 'GET_ME'
 const GET_USER = 'GET_USER'
 const GET_USERS = 'GET_USER'
 
 /**
  * ACTION CREATORS
  */
+const gotMe = (me) => ({ type: GET_ME, me })
 const getUser = (user) => ({ type: GET_USER, user })
 const getUsers = (users) => ({ type: GET_USERS, users })
 
@@ -17,7 +19,15 @@ const getUsers = (users) => ({ type: GET_USERS, users })
  * THUNK CREATORS
  */
 
-// USER ROUTES
+export const getMe = (userId) => async (dispatch) => {
+  try {
+    const { data: me } = await axios.get(`${URL}/api/users/${userId}`)
+    dispatch(gotMe(me))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const gotUser = (userId) => async (dispatch) => {
   try {
     const { data: user } = await axios.get(`${URL}/api/users/${userId}`)
@@ -40,6 +50,7 @@ export const gotUsers = () => async (dispatch) => {
  * INITIAL STATE
  */
 const defaultUser = {
+  me: {},
   user: {},
   users: [],
 }
@@ -50,6 +61,8 @@ const defaultUser = {
 
 export default function (state = defaultUser, action) {
   switch (action.type) {
+    case GET_ME:
+      return { ...state, me: action.me }
     case GET_USER:
       return { ...state, user: action.user }
     case GET_USERS:

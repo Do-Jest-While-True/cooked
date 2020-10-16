@@ -8,21 +8,21 @@ import UserProfileInfo from '../components/UserProfileInfo'
 import UserProfileRecipes from '../components/UserProfileRecipes'
 
 import defaultStyles from '../config/defaultStyles'
-import { gotUser } from '../redux'
+import { getMe } from '../redux'
 
-const UserProfileScreen = ({ navigation, auth, user, gotUser }) => {
+const UserProfileScreen = ({ navigation, auth, getMe, me }) => {
   useEffect(() => {
-    gotUser(auth.id)
+    getMe(auth.id)
   }, [])
 
-  if (!user.user) {
+  if (!me.user) {
     return <AppLoading />
   } else {
     return (
       <SafeAreaView style={defaultStyles.container}>
         <ScrollView>
-          <UserProfileInfo nav={navigation} user={user} />
-          <UserProfileRecipes nav={navigation} user={user.user} />
+          <UserProfileInfo nav={navigation} user={me} />
+          <UserProfileRecipes nav={navigation} user={me.user} />
         </ScrollView>
       </SafeAreaView>
     )
@@ -31,11 +31,11 @@ const UserProfileScreen = ({ navigation, auth, user, gotUser }) => {
 
 const mapState = (state) => ({
   auth: state.auth,
-  user: state.user.user,
+  me: state.user.me,
 })
 
 const mapDispatch = (dispatch) => ({
-  gotUser: (userId) => dispatch(gotUser(userId)),
+  getMe: (myId) => dispatch(getMe(myId)),
 })
 
 export default connect(mapState, mapDispatch)(UserProfileScreen)
