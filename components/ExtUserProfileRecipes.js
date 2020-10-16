@@ -5,10 +5,10 @@ import { AppLoading } from 'expo'
 import { useIsFocused } from '@react-navigation/native'
 
 import { getMyRecipes } from '../redux'
-import RecipeGridItem from './RecipeGridItem'
+import ExtRecipeGridItem from './ExtRecipeGridItem'
 import { oneThirdScreenWidth } from '../config/dimensions'
 
-const UserProfileRecipes = ({ user, myRecipes, getMyRecipes, nav }) => {
+const ExtUserProfileRecipes = ({ user, myRecipes, getMyRecipes, nav }) => {
   const isFocused = useIsFocused()
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const UserProfileRecipes = ({ user, myRecipes, getMyRecipes, nav }) => {
       data={myRecipes}
       renderItem={({ item }) => {
         return (
-          <RecipeGridItem
+          <ExtRecipeGridItem
             nav={nav}
             recipeId={item.id}
             imageUrl={item.imageUrl}
@@ -43,4 +43,4 @@ const mapDispatch = (dispatch) => ({
   getMyRecipes: (userId) => dispatch(getMyRecipes(userId)),
 })
 
-export default connect(mapState, mapDispatch)(UserProfileRecipes)
+export default connect(mapState, mapDispatch)(ExtUserProfileRecipes)

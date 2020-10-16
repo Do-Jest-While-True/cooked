@@ -4,25 +4,32 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
 
-import UserProfileInfo from '../components/UserProfileInfo'
-import UserProfileRecipes from '../components/UserProfileRecipes'
+import ExtUserProfileInfo from '../components/ExtUserProfileInfo'
+import ExtUserProfileRecipes from '../components/ExtUserProfileRecipes'
 import { getMe } from '../redux'
 
 import defaultStyles from '../config/defaultStyles'
 
-const UserProfileScreen = ({ navigation, auth, getMe, me }) => {
+const ExtUserProfileScreen = ({ route, navigation, auth, getMe, me }) => {
   useEffect(() => {
     getMe(auth.id)
   }, [])
 
-  if (!me.user) {
+  if (!route.params.user.user) {
     return <AppLoading />
   } else {
     return (
       <SafeAreaView style={defaultStyles.container}>
         <ScrollView>
-          <UserProfileInfo nav={navigation} user={me} />
-          <UserProfileRecipes nav={navigation} user={me.user} />
+          <ExtUserProfileInfo
+            nav={navigation}
+            user={route.params.user}
+            me={me}
+          />
+          <ExtUserProfileRecipes
+            nav={navigation}
+            user={route.params.user.user}
+          />
         </ScrollView>
       </SafeAreaView>
     )
@@ -38,4 +45,4 @@ const mapDispatch = (dispatch) => ({
   getMe: (myId) => dispatch(getMe(myId)),
 })
 
-export default connect(mapState, mapDispatch)(UserProfileScreen)
+export default connect(mapState, mapDispatch)(ExtUserProfileScreen)

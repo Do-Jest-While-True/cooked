@@ -2,30 +2,23 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native'
-import { AppLoading } from 'expo'
 import { MaterialIcons } from '@expo/vector-icons'
+
 import { URL } from '../redux/serverUrl'
-// import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import colors from '../config/colors'
-import { gotUser } from '../redux'
 
 const RecipeListItem = ({
   recipeId,
+  userId,
   name,
   imageUrl,
   time,
   nav,
   user,
-  gotUser,
-  userProp,
   likes,
   authId,
 }) => {
-  useEffect(() => {
-    gotUser(user.id)
-  }, [])
-
   const likedOrNot = likes.filter((like) => like.userId === authId).length
 
   const [likeCount, setLikeCount] = useState(likes.length)
@@ -43,7 +36,7 @@ const RecipeListItem = ({
     }
   }
 
-  if (!userProp) {
+  if (!user.id) {
     return <AppLoading />
   } else {
     return (
@@ -58,9 +51,7 @@ const RecipeListItem = ({
             <MaterialIcons name="timer" size={18} color={colors.white} />
             <Text style={styles.listItemTime}>{time}</Text>
           </View>
-          <TouchableOpacity onPress={() => nav.navigate()}>
-            <Text style={styles.userName}>@{user.username}</Text>
-          </TouchableOpacity>
+          <Text style={styles.userName}>@{user.username}</Text>
           <View style={styles.likeView}>
             <TouchableOpacity onPress={() => liked()}>
               {isLiked ? (
@@ -76,21 +67,16 @@ const RecipeListItem = ({
             <Text style={styles.likeText}>{likeCount} likes</Text>
           </View>
         </View>
-      </TouchableOpacity>
-    )
-  }
+      </View>
+    </TouchableOpacity>
+  )
 }
 
 const mapState = (state) => ({
-  userProp: state.user.user,
   authId: state.auth.id,
 })
 
-const mapDispatch = (dispatch) => ({
-  gotUser: (userId) => dispatch(gotUser(userId)),
-})
-
-export default connect(mapState, mapDispatch)(RecipeListItem)
+export default connect(mapState)(RecipeListItem)
 
 const styles = StyleSheet.create({
   listItemView: {
