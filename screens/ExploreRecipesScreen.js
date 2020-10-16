@@ -61,6 +61,7 @@ const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
                 recipeId={item.id}
                 user={item.user}
                 nav={navigation}
+                likes={item.likes}
               />
               // </Swipeable>
             )}
