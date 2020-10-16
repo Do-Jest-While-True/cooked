@@ -63,6 +63,7 @@ const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
                 nav={navigation}
                 // I'm adding this to pass down into single post for my gotUser() call
                 userId={item.userId}
+                likes={item.likes}
               />
               // </Swipeable>
             )}
