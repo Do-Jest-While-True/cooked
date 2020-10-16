@@ -41,7 +41,7 @@ const RecipeListItem = ({
     return (
       <TouchableOpacity
         style={styles.listItemView}
-        onPress={() => nav.navigate('Recipe', { recipeId })}
+        onPress={() => nav.navigate('Recipe', { recipeId, userId, nav })}
       >
         <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
         <View>
