@@ -107,6 +107,7 @@ export const TabNavigator = () => (
       component={ExploreTabs}
       options={{
         tabBarIcon: () => <Entypo name="bowl" size={35} color={colors.white} />,
+        unmountOnBlur: true,
       }}
     />
     <Tab.Screen
