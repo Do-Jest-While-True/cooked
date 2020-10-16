@@ -7,7 +7,7 @@ import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
 const ExtUserProfileInfo = ({ user, me }) => {
-  const handleSubmit = () => {
+  const handleFollow = () => {
     // follow functionality
   }
 
@@ -26,7 +26,7 @@ const ExtUserProfileInfo = ({ user, me }) => {
       <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
         @{user.user.username}
       </Text>
-      <TouchableOpacity onPress={() => handleSubmit()} style={styles.followBtn}>
+      <TouchableOpacity onPress={() => handleFollow()} style={styles.followBtn}>
         <Text style={[defaultStyles.smallText, styles.textBold]}>Follow</Text>
       </TouchableOpacity>
       <View style={styles.followDataView}>
