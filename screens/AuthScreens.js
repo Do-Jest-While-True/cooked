@@ -10,7 +10,7 @@ import defaultStyles from '../config/defaultStyles'
 
 // "REQUIRED: TRUE" REMOVED BELOW FOR VALIDATIONS -- CHECK W TEAM BEFORE MERGING
 
-const AuthScreens = ({ name, getUser }) => {
+const AuthScreens = ({ name, getUser, auth }) => {
   // for validations:
   const [emailFieldWarning, setEmailFieldWarning] = useState(false)
   const [passwordFieldWarning, setPasswordFieldWarning] = useState(false)
@@ -159,6 +159,11 @@ const AuthScreens = ({ name, getUser }) => {
               />
             </React.Fragment>
           ) : null}
+          {auth.isLoggingIn && (
+            <Text style={[defaultStyles.text, styles.loggingInMsg]}>
+              Working on it...
+            </Text>
+          )}
           <View style={styles.submitBtnView}>
             <TouchableOpacity
               style={styles.submitBtn}
@@ -186,6 +191,7 @@ const mapSignup = (state) => ({
   name: 'signup',
   displayName: 'Sign Up',
   error: state.auth.error,
+  auth: state.auth,
 })
 
 const mapDispatch = (dispatch) => ({
@@ -202,7 +208,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.medium,
     marginTop: '20%',
-    minHeight: 750,
+    minHeight: 950,
   },
   formInput: {
     backgroundColor: colors.light,
@@ -233,5 +239,8 @@ const styles = StyleSheet.create({
   warning: {
     color: colors.dark,
     alignSelf: 'center',
+  },
+  loggingInMsg: {
+    marginTop: 15,
   },
 })
