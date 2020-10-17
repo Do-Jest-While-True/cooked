@@ -30,7 +30,7 @@ const AuthScreens = ({ name, getUser }) => {
     if (!values.password) {
       return setPasswordFieldWarning(true)
     }
-    if (!values.username) {
+    if (!values.username && name === 'signup') {
       return setUsernameFieldWarning(true)
     }
     if (!values.firstName && name === 'signup') {

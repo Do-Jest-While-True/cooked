@@ -221,7 +221,7 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
             </View>
             {/* Post Button ____________________________________*/}
             <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
-              <Text style={styles.postBtnText}>Post!</Text>
+              <Text style={styles.postBtnText}>Cook'd!</Text>
             </TouchableOpacity>
           </View>
           {console.log('---------------------------------')}
