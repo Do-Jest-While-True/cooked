@@ -23,7 +23,6 @@ import { postRecipe, removeImageUrl } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-// NOTE: frontend validation is not perfect. There is currently no validation for images and also, if you start typing in a field but then delete your entry, the frontend will still let you post but will fail at the server.. need more robust validation for keyed fields
 const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   const [recipeName, setRecipeName] = useState('')
   const [time, setTime] = useState('')
@@ -32,16 +31,11 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   const [ingredients, setIngredients] = useState([])
   const [directions, setDirections] = useState([])
   // for validations:
-  const [nameFieldEmpty, setNameFieldEmpty] = useState(true)
   const [nameFieldWarning, setNameFieldWarning] = useState(false)
-  const [timeFieldEmpty, setTimeFieldEmpty] = useState(true)
   const [timeFieldWarning, setTimeFieldWarning] = useState(false)
-  const [ingredientsFieldEmpty, setIngredientsFieldEmpty] = useState(true)
   const [ingredientsFieldWarning, setIngredientsFieldWarning] = useState(false)
-  const [directionsFieldEmpty, setDirectionsFieldEmpty] = useState(true)
   const [directionsFieldWarning, setDirectionsFieldWarning] = useState(false)
-  // const [imageFieldEmpty, setImageFieldEmpty] = useState(true)
-  // const [imageFieldWarning, setImageFieldWarning] = useState(false)
+  const [imageFieldWarning, setImageFieldWarning] = useState(false)
 
   // add a single ingredient to new recipe object ingredients array
   const addIngredient = () => {
@@ -57,21 +51,21 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
 
   const handlePost = async () => {
     // for validations:
-    if (nameFieldEmpty) {
+    if (!recipe.imageUrl) {
+      return setImageFieldWarning(true)
+    }
+    if (!recipeName) {
       return setNameFieldWarning(true)
     }
-    if (timeFieldEmpty) {
+    if (!time) {
       return setTimeFieldWarning(true)
     }
-    if (ingredientsFieldEmpty) {
+    if (!ingredients.length) {
       return setIngredientsFieldWarning(true)
     }
-    if (directionsFieldEmpty) {
+    if (!directions.length) {
       return setDirectionsFieldWarning(true)
     }
-    // if (imageFieldEmpty) {
-    //   return setImageFieldWarning(true)
-    // }
 
     await postRecipe({
       imageUrl: recipe.imageUrl,
@@ -81,18 +75,19 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
       directions: directions,
     })
 
-    // reset fields / local state / warnings:
+    // reset fields / state
     setRecipeName('')
     setTime('')
     setIngredients([])
     setDirections([])
-    // clear imageUrl from store state:
     removeImageUrl()
 
+    // reset warning messages
     setNameFieldWarning(false)
     setTimeFieldWarning(false)
     setIngredientsFieldWarning(false)
     setDirectionsFieldWarning(false)
+    setImageFieldWarning(false)
 
     // navigate to All Recipes View after posting:
     navigation.navigate('Explore')
@@ -109,6 +104,11 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
       <SafeAreaView style={defaultStyles.container}>
         <ScrollView>
           {/* ImageInput __________________________________________*/}
+          {imageFieldWarning && (
+            <Text style={[defaultStyles.text, styles.warning]}>
+              Please Select an Image!
+            </Text>
+          )}
           <ImageInput />
           <View style={styles.recipeContent}>
             {/* Recipe Name: ________________________________________*/}
@@ -124,7 +124,6 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
               clearButtonMode="always"
               onChangeText={(val) => {
                 setRecipeName(val)
-                setNameFieldEmpty(false)
               }}
               value={recipeName}
             />
@@ -141,7 +140,6 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
               clearButtonMode="always"
               onChangeText={(val) => {
                 setTime(val)
-                setTimeFieldEmpty(false)
               }}
               value={time}
             />
@@ -160,7 +158,6 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
                   clearButtonMode="always"
                   onChangeText={(val) => {
                     setIngredient(val)
-                    setIngredientsFieldEmpty(false)
                   }}
                   // return btn on keyboard acts same as clicking +
                   onSubmitEditing={addIngredient}
@@ -199,7 +196,6 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
                   clearButtonMode="always"
                   onChangeText={(val) => {
                     setDirection(val)
-                    setDirectionsFieldEmpty(false)
                   }}
                   // return btn on keyboard acts same as clicking +
                   onSubmitEditing={addDirection}
