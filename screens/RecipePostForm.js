@@ -60,23 +60,18 @@ const RecipePostForm = ({
     if (!recipe.imageUrl) {
       return setImageFieldWarning(true)
     }
-
     if (!recipeName) {
       return setNameFieldWarning(true)
     }
-
     if (!time) {
       return setTimeFieldWarning(true)
     }
-
     if (!ingredients.length) {
       return setIngredientsFieldWarning(true)
     }
-
     if (!directions.length) {
       return setDirectionsFieldWarning(true)
     }
-
     await postRecipe({
       imageUrl: recipe.imageUrl,
       name: recipeName,
