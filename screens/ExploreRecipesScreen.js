@@ -8,6 +8,7 @@ import {
   Text,
 } from 'react-native'
 import { connect } from 'react-redux'
+import { useScrollToTop } from '@react-navigation/native'
 
 import RecipeListItem from '../components/RecipeListItem'
 import { getFeedRecipes, getAllRecipes } from '../redux'
@@ -24,6 +25,10 @@ const wait = (timeout) => {
 const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
   const [refreshing, setRefreshing] = React.useState(false)
 
+  // scroll to top onPress of FEED/GLOBAL
+  const ref = React.useRef(null)
+  useScrollToTop(ref)
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true)
     wait(1000).then(() => setRefreshing(false))
@@ -37,6 +42,7 @@ const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
   return (
     <SafeAreaView style={defaultStyles.container}>
       <ScrollView
+        ref={ref}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -52,6 +58,7 @@ const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
         )}
         {recipes && (
           <FlatList
+            ref={ref}
             data={recipes}
             keyExtractor={(recipe) => recipe.id.toString()}
             renderItem={({ item }) => (

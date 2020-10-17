@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native'
+import { useScrollToTop } from '@react-navigation/native'
 import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
 import {
@@ -36,6 +37,10 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   const [ingredientsFieldWarning, setIngredientsFieldWarning] = useState(false)
   const [directionsFieldWarning, setDirectionsFieldWarning] = useState(false)
   const [imageFieldWarning, setImageFieldWarning] = useState(false)
+
+  // scroll to top onPress of tab bar icon
+  const ref = React.useRef(null)
+  useScrollToTop(ref)
 
   // add a single ingredient to new recipe object ingredients array
   const addIngredient = () => {
@@ -134,7 +139,7 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   } else {
     return (
       <SafeAreaView style={defaultStyles.container}>
-        <ScrollView>
+        <ScrollView ref={ref}>
           {/* ImageInput __________________________________________*/}
           {imageFieldWarning && (
             <Text style={[defaultStyles.text, styles.warning]}>
