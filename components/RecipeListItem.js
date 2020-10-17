@@ -110,13 +110,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     marginVertical: 8,
-    color: colors.darkGray,
+    color: colors.white,
   },
   userName: {
     fontSize: 15,
     fontWeight: 'bold',
     marginVertical: 8,
-    color: colors.dark,
+    color: colors.pink,
   },
   listItemTime: {
     color: '#fff',

@@ -132,6 +132,6 @@ const styles = StyleSheet.create({
   },
   loadingMsg: {
     bottom: 30,
-    color: colors.dark,
+    color: colors.pink,
   },
 })

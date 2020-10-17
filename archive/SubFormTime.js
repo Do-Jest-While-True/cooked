@@ -24,7 +24,7 @@ const SubFormTime = ({ time, setTime }) => {
               onSubmitEditing={handleSubmit}
             />
             <TouchableOpacity onPress={handleSubmit}>
-              <AntDesign name="pluscircleo" size={30} color={colors.black} />
+              <AntDesign name="pluscircleo" size={30} color={colors.white} />
             </TouchableOpacity>
           </View>
 

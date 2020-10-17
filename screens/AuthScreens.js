@@ -206,7 +206,7 @@ export const Signup = connect(mapSignup, mapDispatch)(AuthScreens)
 const styles = StyleSheet.create({
   formContainer: {
     alignItems: 'center',
-    backgroundColor: colors.medium,
+    backgroundColor: colors.main,
     marginTop: '20%',
     minHeight: 950,
   },
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     width: '85%',
   },
   submitBtn: {
-    backgroundColor: colors.dark,
+    backgroundColor: colors.pink,
     borderRadius: 25,
     marginVertical: 40,
     paddingHorizontal: 30,
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   warning: {
-    color: colors.dark,
+    color: colors.pink,
     alignSelf: 'center',
   },
   loggingInMsg: {

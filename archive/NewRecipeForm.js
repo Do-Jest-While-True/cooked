@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   submitBtn: {
-    backgroundColor: colors.dark,
+    backgroundColor: colors.pink,
     borderRadius: 25,
     margin: 20,
     padding: 12,

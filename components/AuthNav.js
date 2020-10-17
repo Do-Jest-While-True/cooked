@@ -21,6 +21,6 @@ export const LoginSignup = () => (
 )
 
 const headerStyle = {
-  headerStyle: { backgroundColor: colors.medium },
-  headerTintColor: colors.black,
+  headerStyle: { backgroundColor: colors.main },
+  headerTintColor: colors.white,
 }

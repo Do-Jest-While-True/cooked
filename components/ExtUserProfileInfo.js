@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   followBtn: {
-    backgroundColor: colors.dark,
+    backgroundColor: colors.pink,
     paddingVertical: 5,
     paddingHorizontal: 15,
     borderRadius: 30,

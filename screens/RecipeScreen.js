@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     opacity: 0.75,
   },
   username: {
-    color: colors.dark,
+    color: colors.pink,
     fontWeight: 'bold',
     marginBottom: 25,
   },

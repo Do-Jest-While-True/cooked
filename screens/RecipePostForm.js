@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   postBtn: {
-    backgroundColor: colors.dark,
+    backgroundColor: colors.pink,
     borderRadius: 25,
     marginVertical: 20,
     padding: 12,
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   warning: {
-    color: colors.dark,
+    color: colors.pink,
     alignSelf: 'center',
   },
 })
