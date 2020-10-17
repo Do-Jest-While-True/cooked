@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   formContainer: {
     alignItems: 'center',
     backgroundColor: colors.medium,
-    marginTop: '33%',
+    marginTop: '20%',
     minHeight: 750,
   },
   formInput: {

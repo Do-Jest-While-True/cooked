@@ -138,7 +138,7 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
           {/* ImageInput __________________________________________*/}
           {imageFieldWarning && (
             <Text style={[defaultStyles.text, styles.warning]}>
-              Please Select an Image!
+              Please Add an Image!
             </Text>
           )}
           <ImageInput />
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
   resetBtn: {
     backgroundColor: colors.red,
     borderRadius: 25,
-    marginVertical: 60,
+    marginVertical: 90,
     padding: 12,
   },
   resetBtnText: {
