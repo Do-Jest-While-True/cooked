@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
@@ -15,7 +16,6 @@ import {
   useFonts,
 } from '@expo-google-fonts/covered-by-your-grace'
 import { AntDesign } from '@expo/vector-icons'
-import { MaterialIcons } from '@expo/vector-icons'
 
 import ImageInput from '../components/ImageInput'
 import { postRecipe, removeImageUrl } from '../redux'
@@ -23,13 +23,7 @@ import { postRecipe, removeImageUrl } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const RecipePostForm = ({
-  recipe,
-  postRecipe,
-  removeImageUrl,
-  isUploading,
-  navigation,
-}) => {
+const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   const [recipeName, setRecipeName] = useState('')
   const [time, setTime] = useState('')
   const [ingredient, setIngredient] = useState('')
@@ -53,6 +47,37 @@ const RecipePostForm = ({
   const addDirection = () => {
     setDirections([...directions, direction])
     setDirection('')
+  }
+
+  const handleReset = () => {
+    Alert.alert(
+      'Resetting Form',
+      'Are you sure you want to clear your entire post?',
+      [
+        {
+          text: 'Cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            // reset fields / state
+            setRecipeName('')
+            setTime('')
+            setIngredient('')
+            setIngredients([])
+            setDirection('')
+            setDirections([])
+            removeImageUrl()
+            // reset warning messages
+            setNameFieldWarning(false)
+            setTimeFieldWarning(false)
+            setIngredientsFieldWarning(false)
+            setDirectionsFieldWarning(false)
+            setImageFieldWarning(false)
+          },
+        },
+      ]
+    )
   }
 
   const handlePost = async () => {
@@ -83,7 +108,9 @@ const RecipePostForm = ({
     // reset fields / state
     setRecipeName('')
     setTime('')
+    setIngredient('')
     setIngredients([])
+    setDirection('')
     setDirections([])
     removeImageUrl()
 
@@ -228,6 +255,10 @@ const RecipePostForm = ({
             <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
               <Text style={styles.postBtnText}>cook'd!</Text>
             </TouchableOpacity>
+            {/* Reset Form Button */}
+            <TouchableOpacity style={styles.resetBtn} onPress={handleReset}>
+              <Text style={styles.resetBtnText}>Reset</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -237,7 +268,6 @@ const RecipePostForm = ({
 
 const mapState = (state) => ({
   recipe: state.recipe,
-  isUploading: state.recipe.isUploading,
 })
 
 const mapDispatch = (dispatch) => ({
@@ -250,7 +280,7 @@ export default connect(mapState, mapDispatch)(RecipePostForm)
 const styles = StyleSheet.create({
   recipeContent: {
     margin: 20,
-    minHeight: 750, // this is for UX -- adds room to scroll when inputing directions
+    minHeight: 750, // this is for UX -- adds room to scroll when inputting directions
   },
   singleIngredient: {
     marginTop: 10,
@@ -302,6 +332,18 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   postBtnText: {
+    textAlign: 'center',
+    color: colors.white,
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  resetBtn: {
+    backgroundColor: colors.red,
+    borderRadius: 25,
+    marginVertical: 60,
+    padding: 12,
+  },
+  resetBtnText: {
     textAlign: 'center',
     color: colors.white,
     fontSize: 20,
