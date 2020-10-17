@@ -11,6 +11,7 @@ import { URL } from './serverUrl'
 const ADD_IMAGE_URL = 'ADD_IMAGE_URL'
 const REMOVE_IMAGE_URL = 'REMOVE_IMAGE_URL'
 const POST_RECIPE = 'POST_RECIPE'
+const IS_UPLOADING = 'IS_UPLOADING'
 
 // ACTION CREATORS
 export const addImageUrl = (imageUrl) => ({
@@ -27,12 +28,19 @@ const postedRecipe = (recipe) => ({
   recipe,
 })
 
+const isUploading = (bool) => ({
+  type: IS_UPLOADING,
+  isUploading: bool,
+})
+
 // THUNK CREATORS
 // post data entered in RecipePostForm into the DB and put it on state:
 export const postRecipe = (recipeData) => async (dispatch) => {
   try {
+    dispatch(isUploading(true))
     const { data: recipe } = await axios.post(`${URL}/api/recipes`, recipeData)
     dispatch(postedRecipe(recipe))
+    dispatch(isUploading(false))
   } catch (error) {
     console.error(error)
   }
@@ -45,6 +53,7 @@ const initialState = {
   time: '',
   ingredients: [],
   directions: [],
+  isUploading: false,
 }
 
 // REDUCER
@@ -56,6 +65,8 @@ export default function (state = initialState, action) {
       return { ...state, imageUrl: '' }
     case POST_RECIPE:
       return { ...state, ...action.recipe }
+    case IS_UPLOADING:
+      return { ...state, isUploading: action.bool }
     default:
       return state
   }

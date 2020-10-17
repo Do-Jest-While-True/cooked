@@ -23,7 +23,13 @@ import { postRecipe, removeImageUrl } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
+const RecipePostForm = ({
+  recipe,
+  postRecipe,
+  removeImageUrl,
+  isUploading,
+  navigation,
+}) => {
   const [recipeName, setRecipeName] = useState('')
   const [time, setTime] = useState('')
   const [ingredient, setIngredient] = useState('')
@@ -54,15 +60,19 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
     if (!recipe.imageUrl) {
       return setImageFieldWarning(true)
     }
+
     if (!recipeName) {
       return setNameFieldWarning(true)
     }
+
     if (!time) {
       return setTimeFieldWarning(true)
     }
+
     if (!ingredients.length) {
       return setIngredientsFieldWarning(true)
     }
+
     if (!directions.length) {
       return setDirectionsFieldWarning(true)
     }
@@ -221,21 +231,9 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
             </View>
             {/* Post Button ____________________________________*/}
             <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
-              <Text style={styles.postBtnText}>Cook'd!</Text>
+              <Text style={styles.postBtnText}>cook'd!</Text>
             </TouchableOpacity>
           </View>
-          {console.log('---------------------------------')}
-          {console.log('Local State in Form')}
-          {console.log('---------------------------------')}
-          {console.log({
-            imageUrl: recipe.imageUrl,
-            name: recipeName,
-            time: time,
-            ingredient: ingredient,
-            ingredients: ingredients,
-            direction: direction,
-            directions: directions,
-          })}
         </ScrollView>
       </SafeAreaView>
     )
@@ -244,6 +242,7 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
 
 const mapState = (state) => ({
   recipe: state.recipe,
+  isUploading: state.recipe.isUploading,
 })
 
 const mapDispatch = (dispatch) => ({
