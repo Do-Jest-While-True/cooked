@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 
-import { followUser, gotUser } from '../redux'
+import { followUser, gotUser, unfollowUser } from '../redux'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
@@ -15,13 +15,17 @@ const ExtUserProfileInfo = ({
   followUser,
   getUser,
   userToFollow,
+  unfollowUser,
 }) => {
   const handleFollow = async () => {
     await followUser(user.user.id)
     await getUser(user.user.id)
   }
 
-  const handleUnfollow = async () => {}
+  const handleUnfollow = async () => {
+    await unfollowUser(user.user.id)
+    await getUser(user.user.id)
+  }
 
   let amFollowingUser = userToFollow.followers.some(
     (follower) => follower.followedById === me.user.id
@@ -80,6 +84,7 @@ const mapState = (state) => ({
 const mapDispatch = (dispatch) => ({
   followUser: (userToFollowId) => dispatch(followUser(userToFollowId)),
   getUser: (userId) => dispatch(gotUser(userId)),
+  unfollowUser: (userId) => dispatch(unfollowUser(userId)),
 })
 
 export default connect(mapState, mapDispatch)(ExtUserProfileInfo)
