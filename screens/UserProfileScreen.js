@@ -26,7 +26,7 @@ const UserProfileScreen = ({ navigation, auth, getMe, me }) => {
     return (
       <SafeAreaView style={defaultStyles.container}>
         <ScrollView ref={ref}>
-          <UserProfileInfo nav={navigation} user={me} />
+          <UserProfileInfo nav={navigation} authId={auth.id} />
           <UserProfileRecipes nav={navigation} user={me.user} />
         </ScrollView>
       </SafeAreaView>

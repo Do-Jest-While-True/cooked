@@ -54,6 +54,14 @@ export const followUser = (userToFollowId) => async () => {
   }
 }
 
+export const unfollowUser = (unfollowId) => async () => {
+  try {
+    await axios.delete(`${URL}/api/users/follow/${unfollowId}`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 /**
  * INITIAL STATE
  */
