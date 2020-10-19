@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
+import { AppLoading } from 'expo'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
@@ -11,8 +12,8 @@ const ExtUserProfileInfo = ({ user, me }) => {
     // follow functionality
   }
 
-  console.log('user in ExtProfileInfo----->', user)
-  console.log('me in ext-->', me)
+  console.log('user in ExtProfileInfo----->', user.user)
+  console.log('me in ext-->', me.user)
 
   return (
     <View style={styles.container}>
@@ -26,9 +27,14 @@ const ExtUserProfileInfo = ({ user, me }) => {
       <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
         @{user.user.username}
       </Text>
-      <TouchableOpacity onPress={() => handleFollow()} style={styles.followBtn}>
-        <Text style={[defaultStyles.smallText, styles.textBold]}>Follow</Text>
-      </TouchableOpacity>
+      {user.user.username !== me.user.username && (
+        <TouchableOpacity
+          onPress={() => handleFollow()}
+          style={styles.followBtn}
+        >
+          <Text style={[defaultStyles.smallText, styles.textBold]}>Follow</Text>
+        </TouchableOpacity>
+      )}
       <View style={styles.followDataView}>
         <Text style={[defaultStyles.text, styles.textMargin]}>
           {user.followers.length} Followers
