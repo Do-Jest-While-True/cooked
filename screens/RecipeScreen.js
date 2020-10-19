@@ -18,6 +18,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/native'
 
 import { getSingleRecipe, gotUser } from '../redux'
+import Likes from '../components/Likes'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
@@ -27,6 +28,8 @@ const RecipeScreen = ({
   getSingleRecipe,
   user,
   gotUser,
+  recipeId,
+  authId,
 }) => {
   const isFocused = useIsFocused()
 
@@ -51,6 +54,7 @@ const RecipeScreen = ({
           {/* Recipe Image: */}
           <Image source={{ uri: singleRecipe.imageUrl }} style={styles.img} />
           <View style={styles.recipeContent}>
+            <Likes recipeId={singleRecipe.id} />
             {/* Username: */}
             {/* don't render username when clicking in from my user profile */}
             {route.params.userId && (
@@ -106,6 +110,7 @@ const RecipeScreen = ({
 const mapState = (state) => ({
   singleRecipe: state.singleRecipe,
   user: state.user.user,
+  authId: state.auth.id,
 })
 
 const mapDispatch = (dispatch) => ({
@@ -171,5 +176,14 @@ const styles = StyleSheet.create({
   time: {
     color: colors.white,
     marginLeft: 5,
+  },
+  likeView: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  likeText: {
+    color: colors.white,
+    marginLeft: 8,
+    fontSize: 18,
   },
 })

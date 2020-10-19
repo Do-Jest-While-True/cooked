@@ -9,6 +9,7 @@ import auth from './auth'
 import user from './user'
 import singleRecipe from './singleRecipe'
 import myRecipes from './myRecipes'
+import serverUrl from './serverUrl'
 
 const appReducer = combineReducers({
   auth,
@@ -29,3 +30,4 @@ export * from './feedRecipes'
 export * from './singleRecipe'
 export * from './myRecipes'
 export * from './recipe'
+export * from './serverUrl'

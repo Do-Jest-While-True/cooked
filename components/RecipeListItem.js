@@ -5,6 +5,7 @@ import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { AppLoading } from 'expo'
 import { URL } from '../redux/serverUrl'
+import Likes from '../components/Likes'
 
 import colors from '../config/colors'
 import { screenWidth } from '../config/dimensions'
@@ -16,27 +17,26 @@ const RecipeListItem = ({
   time,
   nav,
   user,
-  likes,
+  singleRecipe,
   userId,
   authId,
 }) => {
-  const likedOrNot = likes.filter((like) => like.userId === authId).length
+  // const likedOrNot = likes.filter((like) => like.userId === authId).length
 
-  const [likeCount, setLikeCount] = useState(likes.length)
-  const [isLiked, setIsLiked] = useState(likedOrNot)
+  // const [likeCount, setLikeCount] = useState(likes.length)
+  // const [isLiked, setIsLiked] = useState(likedOrNot)
 
-  const liked = async () => {
-    if (!isLiked) {
-      await axios.put(`${URL}/api/recipes/like/${recipeId}`)
-      setLikeCount(likeCount + 1)
-      setIsLiked(true)
-    } else if (isLiked) {
-      await axios.delete(`${URL}/api/recipes/like/${recipeId}`)
-      setLikeCount(likeCount - 1)
-      setIsLiked(false)
-    }
-  }
-
+  // const liked = async () => {
+  //   if (!isLiked) {
+  //     await axios.put(`${URL}/api/recipes/like/${recipeId}`)
+  //     setLikeCount(likeCount + 1)
+  //     setIsLiked(true)
+  //   } else if (isLiked) {
+  //     await axios.delete(`${URL}/api/recipes/like/${recipeId}`)
+  //     setLikeCount(likeCount - 1)
+  //     setIsLiked(false)
+  //   }
+  // }
   if (!user.id) {
     return <AppLoading />
   } else {
@@ -57,25 +57,26 @@ const RecipeListItem = ({
           {/* USERNAME */}
           <Text style={styles.userName}>@{user.username}</Text>
           <View>
+            <Likes recipeId={singleRecipe.id} />
             {/* LIKES */}
-            <View style={styles.likeView}>
+            {/* <View style={styles.likeView}>
               <TouchableOpacity onPress={() => liked()}>
                 {isLiked ? (
                   <MaterialIcons
                     name="favorite"
-                    size={18}
+                    size={24}
                     color={colors.white}
                   />
                 ) : (
                   <MaterialIcons
                     name="favorite-border"
-                    size={18}
+                    size={24}
                     color={colors.white}
                   />
                 )}
               </TouchableOpacity>
-              <Text style={styles.likeText}>{likeCount}</Text>
-            </View>
+              <Text style={styles.likeText}>{likeCount} likes</Text>
+            </View> */}
           </View>
         </View>
       </TouchableOpacity>
@@ -85,6 +86,7 @@ const RecipeListItem = ({
 
 const mapState = (state) => ({
   authId: state.auth.id,
+  singleRecipe: state.singleRecipe,
 })
 
 export default connect(mapState)(RecipeListItem)
@@ -132,5 +134,6 @@ const styles = StyleSheet.create({
   likeText: {
     color: colors.white,
     marginLeft: 8,
+    fontSize: 18,
   },
 })
