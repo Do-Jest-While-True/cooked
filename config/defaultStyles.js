@@ -5,7 +5,7 @@ import colors from './colors'
 const defaultStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.medium,
+    backgroundColor: colors.main,
   },
   largeText: {
     fontSize: 25,

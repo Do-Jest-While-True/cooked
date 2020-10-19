@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableWithoutFeedback,
+} from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
 
-import { addImageUrl } from '../redux'
+import { addImageUrl, setLoading } from '../redux'
 
 import colors from '../config/colors'
+import defaultStyles from '../config/defaultStyles'
 
 const CLOUDINARY_URL =
   'https://api.cloudinary.com/v1_1/cooked-images/image/upload'
 const uploadPreset = 'atmiftkx'
 
 // add a remove image option later on
-const ImageInput = ({ addImageUrl, recipe }) => {
+const ImageInput = ({ addImageUrl, recipe, isLoading, setLoading }) => {
   const [localImageUri, setLocalImageUri] = useState()
 
   const requestPermission = async () => {
@@ -35,6 +42,7 @@ const ImageInput = ({ addImageUrl, recipe }) => {
       if (result.cancelled) {
         return
       } else {
+        setLoading(true)
         setLocalImageUri(result.uri)
         let base64Img = `data:image/jpg;base64,${result.base64}`
         let data = {
@@ -53,7 +61,8 @@ const ImageInput = ({ addImageUrl, recipe }) => {
           .then(async (r) => {
             let data = await r.json()
             // put cloudinary uri onto state ⬇️
-            addImageUrl(data.url)
+            await addImageUrl(data.url)
+            setLoading(false)
           })
           .catch((err) => console.log(err))
       }
@@ -69,6 +78,11 @@ const ImageInput = ({ addImageUrl, recipe }) => {
   return (
     <TouchableWithoutFeedback onPress={localImageUri && selectImage}>
       <View style={styles.container}>
+        {isLoading && (
+          <Text style={[defaultStyles.text, styles.loadingMsg]}>
+            Loading...
+          </Text>
+        )}
         {!recipe.imageUrl.length && (
           <MaterialCommunityIcons
             name="camera-plus"
@@ -77,7 +91,6 @@ const ImageInput = ({ addImageUrl, recipe }) => {
             onPress={selectImage}
           />
         )}
-        {/* getting errors with && syntax below so I'm using ternary op to render an empty Image when no URI is on state --no styling implications with an empty Image */}
         {recipe.imageUrl.length ? (
           <Image source={{ uri: localImageUri }} style={styles.img} />
         ) : (
@@ -90,10 +103,12 @@ const ImageInput = ({ addImageUrl, recipe }) => {
 
 const mapState = (state) => ({
   recipe: state.recipe,
+  isLoading: state.recipe.isLoading,
 })
 
 const mapDispatch = (dispatch) => ({
   addImageUrl: (imageUrl) => dispatch(addImageUrl(imageUrl)),
+  setLoading: (bool) => dispatch(setLoading(bool)),
 })
 
 export default connect(mapState, mapDispatch)(ImageInput)
@@ -114,5 +129,9 @@ const styles = StyleSheet.create({
     opacity: 0.75,
     width: '100%',
     height: '100%',
+  },
+  loadingMsg: {
+    bottom: 30,
+    color: colors.pink,
   },
 })

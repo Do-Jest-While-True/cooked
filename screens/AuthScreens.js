@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, SafeAreaView, View, Text } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, SafeAreaView, ScrollView, View, Text } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { useForm, Controller } from 'react-hook-form'
 import { connect } from 'react-redux'
@@ -8,90 +8,174 @@ import { auth } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const AuthScreens = ({ name, getUser }) => {
+// "REQUIRED: TRUE" REMOVED BELOW FOR VALIDATIONS -- CHECK W TEAM BEFORE MERGING
+
+const AuthScreens = ({ name, getUser, auth }) => {
+  // for validations:
+  const [emailFieldWarning, setEmailFieldWarning] = useState(false)
+  const [passwordFieldWarning, setPasswordFieldWarning] = useState(false)
+  const [usernameFieldWarning, setUsernameFieldWarning] = useState(false)
+  const [firstNameFieldWarning, setFirstNameFieldWarning] = useState(false)
+  const [lastNameFieldWarning, setLastNameFieldWarning] = useState(false)
+
   const { control, handleSubmit, getValues } = useForm()
+
   const onSubmit = () => {
     const values = getValues()
+
+    // for validations:
+    if (!values.email) {
+      return setEmailFieldWarning(true)
+    }
+    if (!values.password) {
+      return setPasswordFieldWarning(true)
+    }
+    if (!values.username && name === 'signup') {
+      return setUsernameFieldWarning(true)
+    }
+    if (!values.firstName && name === 'signup') {
+      return setFirstNameFieldWarning(true)
+    }
+    if (!values.lastName && name === 'signup') {
+      return setLastNameFieldWarning(true)
+    }
+
+    // login / signup
     getUser(values, name)
+
+    // reset warning messages
+    setEmailFieldWarning(false)
+    setPasswordFieldWarning(false)
+    setUsernameFieldWarning(false)
+    setFirstNameFieldWarning(false)
+    setLastNameFieldWarning(false)
   }
+
   return (
     <SafeAreaView style={defaultStyles.container}>
-      <View style={styles.formInputView}>
-        <Controller
-          control={control}
-          render={({ onChange, value }) => (
-            <TextInput
-              style={styles.formInput}
-              placeholder="Email"
-              placeholderTextColor={colors.lightGray}
-              onChangeText={(value) => onChange(value)}
-              value={value}
-            />
-          )}
-          name="email"
-          rules={{ required: true }}
-          defaultValue=""
-        />
-        <Controller
-          control={control}
-          render={({ onChange, value }) => (
-            <TextInput
-              style={styles.formInput}
-              placeholder="Password"
-              placeholderTextColor={colors.lightGray}
-              onChangeText={(value) => onChange(value)}
-              value={value}
-            />
-          )}
-          name="password"
-          rules={{ required: true }}
-          defaultValue=""
-        />
-        {name === 'signup' ? (
-          <React.Fragment>
-            <Controller
-              control={control}
-              render={({ onChange, value }) => (
-                <TextInput
-                  style={styles.formInput}
-                  placeholder="First Name"
-                  placeholderTextColor={colors.lightGray}
-                  onChangeText={(value) => onChange(value)}
-                  value={value}
-                />
-              )}
-              name="firstName"
-              rules={{ required: true }}
-              defaultValue=""
-            />
-            <Controller
-              control={control}
-              render={({ onChange, value }) => (
-                <TextInput
-                  style={styles.formInput}
-                  placeholder="Last Name"
-                  placeholderTextColor={colors.lightGray}
-                  onChangeText={(value) => onChange(value)}
-                  value={value}
-                />
-              )}
-              name="lastName"
-              rules={{ required: true }}
-              defaultValue=""
-            />
-          </React.Fragment>
-        ) : null}
-        <View style={styles.submitBtnView}>
-          <TouchableOpacity
-            style={styles.submitBtn}
-            onPress={handleSubmit(onSubmit)}
-          >
-            <Text style={styles.submitBtnText}>
-              {name === 'signup' ? 'Sign Up' : 'Login'}
+      <ScrollView>
+        <View style={styles.formContainer}>
+          {emailFieldWarning && (
+            <Text style={[defaultStyles.text, styles.warning]}>
+              Please enter your email address!
             </Text>
-          </TouchableOpacity>
+          )}
+          <Controller
+            control={control}
+            render={({ onChange, value }) => (
+              <TextInput
+                style={styles.formInput}
+                placeholder="Email"
+                placeholderTextColor={colors.lightGray}
+                onChangeText={(value) => onChange(value)}
+                value={value}
+              />
+            )}
+            name="email"
+            // rules={{ required: true }}
+            defaultValue=""
+          />
+          {passwordFieldWarning && (
+            <Text style={[defaultStyles.text, styles.warning]}>
+              Please enter your password!
+            </Text>
+          )}
+          <Controller
+            control={control}
+            render={({ onChange, value }) => (
+              <TextInput
+                style={styles.formInput}
+                placeholder="Password"
+                placeholderTextColor={colors.lightGray}
+                onChangeText={(value) => onChange(value)}
+                value={value}
+              />
+            )}
+            name="password"
+            // rules={{ required: true }}
+            defaultValue=""
+          />
+          {name === 'signup' ? (
+            <React.Fragment>
+              {usernameFieldWarning && (
+                <Text style={[defaultStyles.text, styles.warning]}>
+                  Please enter your username!
+                </Text>
+              )}
+              <Controller
+                control={control}
+                render={({ onChange, value }) => (
+                  <TextInput
+                    style={styles.formInput}
+                    placeholder="Username"
+                    placeholderTextColor={colors.lightGray}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                  />
+                )}
+                name="username"
+                // rules={{ required: true }}
+                defaultValue=""
+              />
+              {firstNameFieldWarning && (
+                <Text style={[defaultStyles.text, styles.warning]}>
+                  Please enter your first name!
+                </Text>
+              )}
+              <Controller
+                control={control}
+                render={({ onChange, value }) => (
+                  <TextInput
+                    style={styles.formInput}
+                    placeholder="First Name"
+                    placeholderTextColor={colors.lightGray}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                  />
+                )}
+                name="firstName"
+                // rules={{ required: true }}
+                defaultValue=""
+              />
+              {lastNameFieldWarning && (
+                <Text style={[defaultStyles.text, styles.warning]}>
+                  Please enter your last name!
+                </Text>
+              )}
+              <Controller
+                control={control}
+                render={({ onChange, value }) => (
+                  <TextInput
+                    style={styles.formInput}
+                    placeholder="Last Name"
+                    placeholderTextColor={colors.lightGray}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                  />
+                )}
+                name="lastName"
+                // rules={{ required: true }}
+                defaultValue=""
+              />
+            </React.Fragment>
+          ) : null}
+          {auth.isLoggingIn && (
+            <Text style={[defaultStyles.text, styles.loggingInMsg]}>
+              Working on it...
+            </Text>
+          )}
+          <View style={styles.submitBtnView}>
+            <TouchableOpacity
+              style={styles.submitBtn}
+              onPress={handleSubmit(onSubmit)}
+            >
+              <Text style={styles.submitBtnText}>
+                {name === 'signup' ? 'Sign Up' : 'Login'}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -107,6 +191,7 @@ const mapSignup = (state) => ({
   name: 'signup',
   displayName: 'Sign Up',
   error: state.auth.error,
+  auth: state.auth,
 })
 
 const mapDispatch = (dispatch) => ({
@@ -119,10 +204,11 @@ export const Login = connect(mapLogin, mapDispatch)(AuthScreens)
 export const Signup = connect(mapSignup, mapDispatch)(AuthScreens)
 
 const styles = StyleSheet.create({
-  formInputView: {
+  formContainer: {
     alignItems: 'center',
-    backgroundColor: colors.medium,
-    marginTop: '33%',
+    backgroundColor: colors.main,
+    marginTop: '20%',
+    minHeight: 950,
   },
   formInput: {
     backgroundColor: colors.light,
@@ -138,7 +224,7 @@ const styles = StyleSheet.create({
     width: '85%',
   },
   submitBtn: {
-    backgroundColor: colors.dark,
+    backgroundColor: colors.pink,
     borderRadius: 25,
     marginVertical: 40,
     paddingHorizontal: 30,
@@ -149,5 +235,12 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  warning: {
+    color: colors.pink,
+    alignSelf: 'center',
+  },
+  loggingInMsg: {
+    marginTop: 15,
   },
 })

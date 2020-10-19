@@ -114,13 +114,13 @@
 // )
 
 // const headerStyle = {
-//   headerStyle: { backgroundColor: colors.medium },
-//   headerTintColor: colors.black,
+//   headerStyle: { backgroundColor: colors.main },
+//   headerTintColor: colors.white,
 // }
 
 // const styles = StyleSheet.create({
 //   navbar: {
-//     backgroundColor: colors.medium,
+//     backgroundColor: colors.main,
 //     height: '9%',
 //   },
 // })

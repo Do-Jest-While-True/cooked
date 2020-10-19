@@ -69,7 +69,7 @@ const ExploreTabs = () => (
     <ExploreTab.Navigator
       tabBarOptions={{
         labelStyle: { color: colors.white },
-        indicatorStyle: { backgroundColor: colors.dark },
+        indicatorStyle: { backgroundColor: colors.pink },
         style: styles.exploreTab,
       }}
     >
@@ -132,17 +132,17 @@ export const TabNavigator = () => (
 )
 
 const headerStyle = {
-  headerStyle: { backgroundColor: colors.medium },
-  headerTintColor: colors.black,
+  headerStyle: { backgroundColor: colors.main },
+  headerTintColor: colors.white,
 }
 
 const styles = StyleSheet.create({
   navbar: {
-    backgroundColor: colors.medium,
+    backgroundColor: colors.main,
     height: '11%',
   },
   exploreTab: {
-    backgroundColor: colors.medium,
+    backgroundColor: colors.main,
     color: colors.light,
   },
 })

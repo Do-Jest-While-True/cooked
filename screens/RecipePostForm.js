@@ -7,7 +7,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native'
+import { useScrollToTop } from '@react-navigation/native'
 import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
 import {
@@ -15,7 +17,6 @@ import {
   useFonts,
 } from '@expo-google-fonts/covered-by-your-grace'
 import { AntDesign } from '@expo/vector-icons'
-import { MaterialIcons } from '@expo/vector-icons'
 
 import ImageInput from '../components/ImageInput'
 import { postRecipe, removeImageUrl } from '../redux'
@@ -23,7 +24,6 @@ import { postRecipe, removeImageUrl } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-// NOTE: frontend validation is not perfect. There is currently no validation for images and also, if you start typing in a field but then delete your entry, the frontend will still let you post but will fail at the server.. need more robust validation for keyed fields
 const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   const [recipeName, setRecipeName] = useState('')
   const [time, setTime] = useState('')
@@ -32,16 +32,15 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   const [ingredients, setIngredients] = useState([])
   const [directions, setDirections] = useState([])
   // for validations:
-  const [nameFieldEmpty, setNameFieldEmpty] = useState(true)
   const [nameFieldWarning, setNameFieldWarning] = useState(false)
-  const [timeFieldEmpty, setTimeFieldEmpty] = useState(true)
   const [timeFieldWarning, setTimeFieldWarning] = useState(false)
-  const [ingredientsFieldEmpty, setIngredientsFieldEmpty] = useState(true)
   const [ingredientsFieldWarning, setIngredientsFieldWarning] = useState(false)
-  const [directionsFieldEmpty, setDirectionsFieldEmpty] = useState(true)
   const [directionsFieldWarning, setDirectionsFieldWarning] = useState(false)
-  // const [imageFieldEmpty, setImageFieldEmpty] = useState(true)
-  // const [imageFieldWarning, setImageFieldWarning] = useState(false)
+  const [imageFieldWarning, setImageFieldWarning] = useState(false)
+
+  // scroll to top onPress of tab bar icon
+  const ref = React.useRef(null)
+  useScrollToTop(ref)
 
   // add a single ingredient to new recipe object ingredients array
   const addIngredient = () => {
@@ -55,24 +54,54 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
     setDirection('')
   }
 
+  const handleReset = () => {
+    Alert.alert(
+      'Resetting Form',
+      'Are you sure you want to clear your entire post?',
+      [
+        {
+          text: 'Cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            // reset fields / state
+            setRecipeName('')
+            setTime('')
+            setIngredient('')
+            setIngredients([])
+            setDirection('')
+            setDirections([])
+            removeImageUrl()
+            // reset warning messages
+            setNameFieldWarning(false)
+            setTimeFieldWarning(false)
+            setIngredientsFieldWarning(false)
+            setDirectionsFieldWarning(false)
+            setImageFieldWarning(false)
+          },
+        },
+      ]
+    )
+  }
+
   const handlePost = async () => {
     // for validations:
-    if (nameFieldEmpty) {
+    if (!recipe.imageUrl) {
+      return setImageFieldWarning(true)
+    }
+    if (!recipeName) {
       return setNameFieldWarning(true)
     }
-    if (timeFieldEmpty) {
+    if (!time) {
       return setTimeFieldWarning(true)
     }
-    if (ingredientsFieldEmpty) {
+    if (!ingredients.length) {
       return setIngredientsFieldWarning(true)
     }
-    if (directionsFieldEmpty) {
+    if (!directions.length) {
       return setDirectionsFieldWarning(true)
     }
-    // if (imageFieldEmpty) {
-    //   return setImageFieldWarning(true)
-    // }
-
     await postRecipe({
       imageUrl: recipe.imageUrl,
       name: recipeName,
@@ -81,18 +110,21 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
       directions: directions,
     })
 
-    // reset fields / local state / warnings:
+    // reset fields / state
     setRecipeName('')
     setTime('')
+    setIngredient('')
     setIngredients([])
+    setDirection('')
     setDirections([])
-    // clear imageUrl from store state:
     removeImageUrl()
 
+    // reset warning messages
     setNameFieldWarning(false)
     setTimeFieldWarning(false)
     setIngredientsFieldWarning(false)
     setDirectionsFieldWarning(false)
+    setImageFieldWarning(false)
 
     // navigate to All Recipes View after posting:
     navigation.navigate('Explore')
@@ -107,8 +139,13 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
   } else {
     return (
       <SafeAreaView style={defaultStyles.container}>
-        <ScrollView>
+        <ScrollView ref={ref}>
           {/* ImageInput __________________________________________*/}
+          {imageFieldWarning && (
+            <Text style={[defaultStyles.text, styles.warning]}>
+              Please Add an Image!
+            </Text>
+          )}
           <ImageInput />
           <View style={styles.recipeContent}>
             {/* Recipe Name: ________________________________________*/}
@@ -124,7 +161,6 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
               clearButtonMode="always"
               onChangeText={(val) => {
                 setRecipeName(val)
-                setNameFieldEmpty(false)
               }}
               value={recipeName}
             />
@@ -141,7 +177,6 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
               clearButtonMode="always"
               onChangeText={(val) => {
                 setTime(val)
-                setTimeFieldEmpty(false)
               }}
               value={time}
             />
@@ -160,7 +195,6 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
                   clearButtonMode="always"
                   onChangeText={(val) => {
                     setIngredient(val)
-                    setIngredientsFieldEmpty(false)
                   }}
                   // return btn on keyboard acts same as clicking +
                   onSubmitEditing={addIngredient}
@@ -199,7 +233,6 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
                   clearButtonMode="always"
                   onChangeText={(val) => {
                     setDirection(val)
-                    setDirectionsFieldEmpty(false)
                   }}
                   // return btn on keyboard acts same as clicking +
                   onSubmitEditing={addDirection}
@@ -225,21 +258,13 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
             </View>
             {/* Post Button ____________________________________*/}
             <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
-              <Text style={styles.postBtnText}>Post!</Text>
+              <Text style={styles.postBtnText}>cook'd!</Text>
+            </TouchableOpacity>
+            {/* Reset Form Button */}
+            <TouchableOpacity style={styles.resetBtn} onPress={handleReset}>
+              <Text style={styles.resetBtnText}>Reset</Text>
             </TouchableOpacity>
           </View>
-          {console.log('---------------------------------')}
-          {console.log('Local State in Form')}
-          {console.log('---------------------------------')}
-          {console.log({
-            imageUrl: recipe.imageUrl,
-            name: recipeName,
-            time: time,
-            ingredient: ingredient,
-            ingredients: ingredients,
-            direction: direction,
-            directions: directions,
-          })}
         </ScrollView>
       </SafeAreaView>
     )
@@ -260,7 +285,7 @@ export default connect(mapState, mapDispatch)(RecipePostForm)
 const styles = StyleSheet.create({
   recipeContent: {
     margin: 20,
-    minHeight: 750, // this is for UX -- adds room to scroll when inputing directions
+    minHeight: 750, // this is for UX -- adds room to scroll when inputting directions
   },
   singleIngredient: {
     marginTop: 10,
@@ -306,7 +331,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   postBtn: {
-    backgroundColor: colors.dark,
+    backgroundColor: colors.pink,
     borderRadius: 25,
     marginVertical: 20,
     padding: 12,
@@ -317,8 +342,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  resetBtn: {
+    backgroundColor: colors.red,
+    borderRadius: 25,
+    marginVertical: 90,
+    padding: 12,
+  },
+  resetBtnText: {
+    textAlign: 'center',
+    color: colors.white,
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
   warning: {
-    color: colors.dark,
+    color: colors.pink,
     alignSelf: 'center',
   },
 })

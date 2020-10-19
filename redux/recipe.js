@@ -5,12 +5,11 @@ import { URL } from './serverUrl'
 
 // all other recipe needs should be handled in recipes.js
 
-// all managing
-
 // ACTION TYPES
 const ADD_IMAGE_URL = 'ADD_IMAGE_URL'
 const REMOVE_IMAGE_URL = 'REMOVE_IMAGE_URL'
 const POST_RECIPE = 'POST_RECIPE'
+const SET_LOADING = 'SET_LOADING'
 
 // ACTION CREATORS
 export const addImageUrl = (imageUrl) => ({
@@ -25,6 +24,11 @@ export const removeImageUrl = () => ({
 const postedRecipe = (recipe) => ({
   type: POST_RECIPE,
   recipe,
+})
+
+export const setLoading = (bool) => ({
+  type: SET_LOADING,
+  bool,
 })
 
 // THUNK CREATORS
@@ -45,6 +49,7 @@ const initialState = {
   time: '',
   ingredients: [],
   directions: [],
+  isLoading: false,
 }
 
 // REDUCER
@@ -56,6 +61,8 @@ export default function (state = initialState, action) {
       return { ...state, imageUrl: '' }
     case POST_RECIPE:
       return { ...state, ...action.recipe }
+    case SET_LOADING:
+      return { ...state, isLoading: action.bool }
     default:
       return state
   }

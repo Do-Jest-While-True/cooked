@@ -7,6 +7,7 @@ import { AppLoading } from 'expo'
 import { URL } from '../redux/serverUrl'
 
 import colors from '../config/colors'
+import { screenWidth } from '../config/dimensions'
 
 const RecipeListItem = ({
   recipeId,
@@ -44,27 +45,37 @@ const RecipeListItem = ({
         style={styles.listItemView}
         onPress={() => nav.navigate('Recipe', { recipeId, userId, nav })}
       >
+        {/* IMAGE */}
         <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
         <View>
           <Text style={styles.listItemName}>{name}</Text>
+          {/* TIME */}
           <View style={styles.timeView}>
             <MaterialIcons name="timer" size={18} color={colors.white} />
             <Text style={styles.listItemTime}>{time}</Text>
           </View>
+          {/* USERNAME */}
           <Text style={styles.userName}>@{user.username}</Text>
-          <View style={styles.likeView}>
-            <TouchableOpacity onPress={() => liked()}>
-              {isLiked ? (
-                <MaterialIcons name="favorite" size={18} color={colors.white} />
-              ) : (
-                <MaterialIcons
-                  name="favorite-border"
-                  size={18}
-                  color={colors.white}
-                />
-              )}
-            </TouchableOpacity>
-            <Text style={styles.likeText}>{likeCount} likes</Text>
+          <View>
+            {/* LIKES */}
+            <View style={styles.likeView}>
+              <TouchableOpacity onPress={() => liked()}>
+                {isLiked ? (
+                  <MaterialIcons
+                    name="favorite"
+                    size={18}
+                    color={colors.white}
+                  />
+                ) : (
+                  <MaterialIcons
+                    name="favorite-border"
+                    size={18}
+                    color={colors.white}
+                  />
+                )}
+              </TouchableOpacity>
+              <Text style={styles.likeText}>{likeCount}</Text>
+            </View>
           </View>
         </View>
       </TouchableOpacity>
@@ -83,13 +94,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    borderTopWidth: 0.25,
     borderBottomWidth: 0.3,
-    borderColor: colors.white,
+    borderColor: colors.lightGray,
     backgroundColor: '#18232e',
+    paddingVertical: 5,
   },
   listItemImg: {
-    width: 70,
-    height: 80,
+    width: screenWidth / 4,
+    height: screenWidth / 4,
     borderRadius: 10,
     margin: 15,
   },
@@ -97,13 +110,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     marginVertical: 8,
-    color: colors.darkGray,
+    color: colors.white,
   },
   userName: {
     fontSize: 15,
     fontWeight: 'bold',
     marginVertical: 8,
-    color: colors.dark,
+    color: colors.pink,
   },
   listItemTime: {
     color: '#fff',
@@ -118,5 +131,6 @@ const styles = StyleSheet.create({
   },
   likeText: {
     color: colors.white,
+    marginLeft: 8,
   },
 })

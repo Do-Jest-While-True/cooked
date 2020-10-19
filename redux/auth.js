@@ -6,17 +6,14 @@ import { URL } from './serverUrl'
  */
 const GET_AUTH = 'GET_AUTH'
 const REMOVE_AUTH = 'REMOVE_AUTH'
-
-/**
- * INITIAL STATE
- */
-const defaultUser = {}
+const SET_LOGGING_IN = 'SET_LOGGING_IN'
 
 /**
  * ACTION CREATORS
  */
 const getUser = (user) => ({ type: GET_AUTH, user })
 const removeUser = () => ({ type: REMOVE_AUTH })
+const setLoggingIn = (bool) => ({ type: SET_LOGGING_IN, bool })
 
 /**
  * THUNK CREATORS
@@ -33,7 +30,9 @@ export const me = () => async (dispatch) => {
 export const auth = (payload, method) => async (dispatch) => {
   let res
   try {
+    dispatch(setLoggingIn(true))
     res = await axios.post(`${URL}/auth/${method}`, payload)
+    dispatch(setLoggingIn(false))
   } catch (authError) {
     return dispatch(getUser({ error: authError }))
   }
@@ -55,6 +54,13 @@ export const logout = () => async (dispatch) => {
 }
 
 /**
+ * INITIAL STATE
+ */
+const defaultUser = {
+  isLoggingIn: false,
+}
+
+/**
  * REDUCER
  */
 
@@ -64,6 +70,8 @@ export default function (state = defaultUser, action) {
       return action.user
     case REMOVE_AUTH:
       return defaultUser
+    case SET_LOGGING_IN:
+      return { ...defaultUser, isLoggingIn: action.bool }
     default:
       return state
   }

@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react'
 import {
+  StyleSheet,
   FlatList,
   SafeAreaView,
   ScrollView,
   RefreshControl,
+  Text,
 } from 'react-native'
-// import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { connect } from 'react-redux'
+import { useScrollToTop } from '@react-navigation/native'
 
 import RecipeListItem from '../components/RecipeListItem'
-// import SwipeDeleteBtn from '../components/SwipeDeleteBtn'
 import { getFeedRecipes, getAllRecipes } from '../redux'
 
 import defaultStyles from '../config/defaultStyles'
@@ -24,6 +25,10 @@ const wait = (timeout) => {
 const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
   const [refreshing, setRefreshing] = React.useState(false)
 
+  // scroll to top onPress of FEED/GLOBAL
+  const ref = React.useRef(null)
+  useScrollToTop(ref)
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true)
     wait(1000).then(() => setRefreshing(false))
@@ -37,6 +42,7 @@ const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
   return (
     <SafeAreaView style={defaultStyles.container}>
       <ScrollView
+        ref={ref}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -45,15 +51,17 @@ const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
           />
         }
       >
+        {!recipes.length && (
+          <Text style={[defaultStyles.text, styles.noRecipesMsg]}>
+            No Recipes to Display!
+          </Text>
+        )}
         {recipes && (
           <FlatList
+            ref={ref}
             data={recipes}
             keyExtractor={(recipe) => recipe.id.toString()}
             renderItem={({ item }) => (
-              // <Swipeable
-              //   renderRightActions={() => <SwipeDeleteBtn id={item.id} />}
-              //   onSwipeableRightOpen={() => console.log('delete opened')}
-              // >
               <RecipeListItem
                 name={item.name}
                 imageUrl={item.imageUrl}
@@ -61,11 +69,9 @@ const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
                 recipeId={item.id}
                 user={item.user}
                 nav={navigation}
-                // I'm adding this to pass down into single post for my gotUser() call
                 userId={item.userId}
                 likes={item.likes}
               />
-              // </Swipeable>
             )}
           />
         )}
@@ -99,3 +105,10 @@ export const AllRecipesScreen = connect(
   mapStateAll,
   mapDispatchAll
 )(ExploreRecipesScreen)
+
+const styles = StyleSheet.create({
+  noRecipesMsg: {
+    marginVertical: 50,
+    textAlign: 'center',
+  },
+})

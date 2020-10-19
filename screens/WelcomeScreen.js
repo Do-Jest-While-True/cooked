@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   btn: {
-    backgroundColor: colors.dark,
+    backgroundColor: colors.pink,
     borderRadius: 25,
     margin: 25,
     padding: 12,
