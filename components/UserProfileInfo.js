@@ -3,15 +3,18 @@ import { StyleSheet, View, Text, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
+import { useIsFocused } from '@react-navigation/native'
 
 import { getMe, logout } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
 const UserProfileInfo = ({ logout, me, authId, getMe }) => {
+  const isFocused = useIsFocused()
+
   useEffect(() => {
     getMe(authId)
-  }, [])
+  }, [isFocused])
 
   let handleSubmit = () => {
     logout()
