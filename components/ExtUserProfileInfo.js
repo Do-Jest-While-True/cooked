@@ -2,18 +2,30 @@ import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
-import { AppLoading } from 'expo'
+
+import { followUser, gotUser } from '../redux'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const ExtUserProfileInfo = ({ user, me }) => {
-  const handleFollow = () => {
-    // follow functionality
+// there is some redundancy here: user is the external user being passed down from parent, userToFollow is the same user but is mapped to props directly from store so that # followers is directly connected to store and rerenders the # after clicking follow/unfollow -- this component can be refactored to only use the user mapped from store
+const ExtUserProfileInfo = ({
+  user,
+  me,
+  followUser,
+  getUser,
+  userToFollow,
+}) => {
+  const handleFollow = async () => {
+    await followUser(user.user.id)
+    await getUser(user.user.id)
   }
 
-  console.log('user in ExtProfileInfo----->', user.user)
-  console.log('me in ext-->', me.user)
+  const handleUnfollow = async () => {}
+
+  let amFollowingUser = userToFollow.followers.some(
+    (follower) => follower.followedById === me.user.id
+  )
 
   return (
     <View style={styles.container}>
@@ -27,29 +39,50 @@ const ExtUserProfileInfo = ({ user, me }) => {
       <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
         @{user.user.username}
       </Text>
-      {user.user.username !== me.user.username && (
-        <TouchableOpacity
-          onPress={() => handleFollow()}
-          style={styles.followBtn}
-        >
-          <Text style={[defaultStyles.smallText, styles.textBold]}>Follow</Text>
-        </TouchableOpacity>
-      )}
+      {/* first conditional (left side of &&) says if I clicked into my own post from global feed don't display any follow/unfollow button */}
+      {/* ternary op (right side of &&) is checking whether or not to display follow or unfollow btn */}
+      {user.user.username !== me.user.username &&
+        (amFollowingUser ? (
+          <TouchableOpacity
+            onPress={() => handleUnfollow()}
+            style={styles.followBtn}
+          >
+            <Text style={[defaultStyles.smallText, styles.textBold]}>
+              Unfollow
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => handleFollow()}
+            style={styles.followBtn}
+          >
+            <Text style={[defaultStyles.smallText, styles.textBold]}>
+              Follow
+            </Text>
+          </TouchableOpacity>
+        ))}
       <View style={styles.followDataView}>
         <Text style={[defaultStyles.text, styles.textMargin]}>
-          {user.followers.length} Followers
+          {userToFollow.followers.length} Followers
         </Text>
         <Text style={[defaultStyles.text, styles.textMargin]}>
-          {user.following.length} Following
+          {userToFollow.following.length} Following
         </Text>
       </View>
     </View>
   )
 }
 
-const mapDispatch = (dispatch) => ({})
+const mapState = (state) => ({
+  userToFollow: state.user.user,
+})
 
-export default connect(null, mapDispatch)(ExtUserProfileInfo)
+const mapDispatch = (dispatch) => ({
+  followUser: (userToFollowId) => dispatch(followUser(userToFollowId)),
+  getUser: (userId) => dispatch(gotUser(userId)),
+})
+
+export default connect(mapState, mapDispatch)(ExtUserProfileInfo)
 
 const styles = StyleSheet.create({
   container: {

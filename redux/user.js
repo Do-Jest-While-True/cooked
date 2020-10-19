@@ -46,6 +46,14 @@ export const gotUsers = () => async (dispatch) => {
   }
 }
 
+export const followUser = (userToFollowId) => async () => {
+  try {
+    await axios.post(`${URL}/api/users/follow/${userToFollowId}`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 /**
  * INITIAL STATE
  */
