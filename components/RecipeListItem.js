@@ -5,7 +5,7 @@ import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { AppLoading } from 'expo'
 import { URL } from '../redux/serverUrl'
-import Likes from '../components/Likes'
+import Likes from './Likes'
 
 import colors from '../config/colors'
 import { screenWidth } from '../config/dimensions'
@@ -17,33 +17,40 @@ const RecipeListItem = ({
   time,
   nav,
   user,
-  singleRecipe,
+  likes,
   userId,
   authId,
 }) => {
-  // const likedOrNot = likes.filter((like) => like.userId === authId).length
+  const likedOrNot = likes.filter((like) => like.userId === authId).length
+  const [likeCount, setLikeCount] = useState(likes.length)
+  const [isLiked, setIsLiked] = useState(likedOrNot)
 
-  // const [likeCount, setLikeCount] = useState(likes.length)
-  // const [isLiked, setIsLiked] = useState(likedOrNot)
-
-  // const liked = async () => {
-  //   if (!isLiked) {
-  //     await axios.put(`${URL}/api/recipes/like/${recipeId}`)
-  //     setLikeCount(likeCount + 1)
-  //     setIsLiked(true)
-  //   } else if (isLiked) {
-  //     await axios.delete(`${URL}/api/recipes/like/${recipeId}`)
-  //     setLikeCount(likeCount - 1)
-  //     setIsLiked(false)
-  //   }
-  // }
+  const liked = async () => {
+    if (!isLiked) {
+      setLikeCount(likeCount + 1)
+      setIsLiked(true)
+      await axios.put(`${URL}/api/recipes/like/${recipeId}`)
+    } else if (isLiked) {
+      setLikeCount(likeCount - 1)
+      setIsLiked(false)
+      await axios.delete(`${URL}/api/recipes/like/${recipeId}`)
+    }
+  }
   if (!user.id) {
     return <AppLoading />
   } else {
     return (
       <TouchableOpacity
         style={styles.listItemView}
-        onPress={() => nav.navigate('Recipe', { recipeId, userId, nav })}
+        onPress={() =>
+          nav.navigate('Recipe', {
+            recipeId,
+            userId,
+            nav,
+            likeCount,
+            authId,
+          })
+        }
       >
         {/* IMAGE */}
         <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
@@ -59,24 +66,6 @@ const RecipeListItem = ({
           <View>
             <Likes recipeId={recipeId} />
             {/* LIKES */}
-            {/* <View style={styles.likeView}>
-              <TouchableOpacity onPress={() => liked()}>
-                {isLiked ? (
-                  <MaterialIcons
-                    name="favorite"
-                    size={24}
-                    color={colors.white}
-                  />
-                ) : (
-                  <MaterialIcons
-                    name="favorite-border"
-                    size={24}
-                    color={colors.white}
-                  />
-                )}
-              </TouchableOpacity>
-              <Text style={styles.likeText}>{likeCount} likes</Text>
-            </View> */}
           </View>
         </View>
       </TouchableOpacity>
