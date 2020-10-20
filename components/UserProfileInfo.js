@@ -35,6 +35,7 @@ const UserProfileInfo = ({ logout, me, authId, getMe, nav }) => {
           style={styles.settingsBtn}
           onPress={() => nav.openDrawer()}
         />
+
         <Image
           source={{ uri: me.user.profileImageUrl }}
           style={styles.profileImg}
