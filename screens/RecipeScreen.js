@@ -52,28 +52,6 @@ const RecipeScreen = ({
           {/* Recipe Image: */}
           <Image source={{ uri: singleRecipe.imageUrl }} style={styles.img} />
           <View style={styles.recipeContent}>
-            {/* <View style={styles.likeView}>
-              <TouchableOpacity onPress={() => route.params.liked()}>
-                {route.params.isLiked ? (
-                  <MaterialIcons
-                    name="favorite"
-                    size={24}
-                    color={colors.white}
-                  />
-                ) : (
-                  <MaterialIcons
-                    name="favorite-border"
-                    size={24}
-                    color={colors.white}
-                  />
-                )}
-              </TouchableOpacity>
-              <Text style={styles.likeText}>
-                {route.params.likeCount} likes
-              </Text>
-            </View> */}
-
-            {/* <Text style={styles.likeText}>{route.params.likeCount} likes</Text> */}
             <Likes recipeId={singleRecipe.id} />
             {/* Username: */}
             {/* don't render username when clicking in from my user profile */}
