@@ -17,6 +17,11 @@ import {
 import { MaterialIcons } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/native'
 
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
+import ReactTimeAgo from 'react-time-ago'
+TimeAgo.addDefaultLocale(en)
+
 import { getSingleRecipe, gotUser } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
@@ -45,6 +50,7 @@ const RecipeScreen = ({
   if (!fontsLoaded || !singleRecipe.id || (route.params.userId && !user.user)) {
     return <AppLoading />
   } else {
+    console.log(singleRecipe.createdAt)
     return (
       <SafeAreaView style={defaultStyles.container}>
         <ScrollView>
@@ -64,6 +70,12 @@ const RecipeScreen = ({
                 </Text>
               </TouchableOpacity>
             )}
+
+            <Text>
+              hello
+              <ReactTimeAgo date={singleRecipe.createdAt} timeStyle="round" />
+            </Text>
+
             {/* Recipe Name: */}
             <Text style={[styles.recipesHeadings, styles.recipeTitle]}>
               {singleRecipe.name}
