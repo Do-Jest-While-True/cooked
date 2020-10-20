@@ -175,13 +175,4 @@ const styles = StyleSheet.create({
     color: colors.white,
     marginLeft: 5,
   },
-  likeView: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  likeText: {
-    color: colors.white,
-    marginLeft: 8,
-    fontSize: 18,
-  },
 })
