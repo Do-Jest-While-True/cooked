@@ -8,7 +8,6 @@ import isEmail from 'validator/lib/isEmail'
 import { auth } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
-// "REQUIRED: TRUE" REMOVED BELOW FOR VALIDATIONS -- CHECK W TEAM BEFORE MERGING
 
 const AuthScreens = ({ name, getUser, auth }) => {
   // for validations:
