@@ -21,21 +21,6 @@ const RecipeListItem = ({
   userId,
   authId,
 }) => {
-  const likedOrNot = likes.filter((like) => like.userId === authId).length
-  const [likeCount, setLikeCount] = useState(likes.length)
-  const [isLiked, setIsLiked] = useState(likedOrNot)
-
-  const liked = async () => {
-    if (!isLiked) {
-      setLikeCount(likeCount + 1)
-      setIsLiked(true)
-      await axios.put(`${URL}/api/recipes/like/${recipeId}`)
-    } else if (isLiked) {
-      setLikeCount(likeCount - 1)
-      setIsLiked(false)
-      await axios.delete(`${URL}/api/recipes/like/${recipeId}`)
-    }
-  }
   if (!user.id) {
     return <AppLoading />
   } else {
