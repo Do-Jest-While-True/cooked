@@ -6,21 +6,18 @@ import { AppLoading } from 'expo'
 import { useIsFocused } from '@react-navigation/native'
 import { Feather } from '@expo/vector-icons'
 
+import ProfileImageInput from '../components/ProfileImageInput'
 import { getMe, logout } from '../redux'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const UserProfileInfo = ({ logout, me, authId, getMe, nav }) => {
+const UserProfileInfo = ({ me, authId, getMe, nav }) => {
   const isFocused = useIsFocused()
 
   useEffect(() => {
     getMe(authId)
   }, [isFocused])
-
-  let handleSubmit = () => {
-    logout()
-  }
 
   if (!me.user) {
     return <AppLoading />
@@ -35,30 +32,14 @@ const UserProfileInfo = ({ logout, me, authId, getMe, nav }) => {
           style={styles.settingsBtn}
           onPress={() => nav.openDrawer()}
         />
+        <ProfileImageInput />
         <Image
           source={{ uri: me.user.profileImageUrl }}
           style={styles.profileImg}
         />
-        <Text style={[defaultStyles.text]}>
-          {me.user.firstName} {me.user.lastName}
-        </Text>
         <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
           @{me.user.username}
         </Text>
-        <TouchableOpacity
-          onPress={() => handleSubmit()}
-          style={styles.logoutBtn}
-        >
-          <Text style={[defaultStyles.smallText, styles.textBold]}>Logout</Text>
-        </TouchableOpacity>
-        <View style={styles.followDataView}>
-          <Text style={[defaultStyles.text, styles.textMargin]}>
-            {me.followers.length} Followers
-          </Text>
-          <Text style={[defaultStyles.text, styles.textMargin]}>
-            {me.following.length} Following
-          </Text>
-        </View>
       </View>
     )
   }

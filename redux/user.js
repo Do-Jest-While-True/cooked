@@ -9,6 +9,7 @@ const GET_ME = 'GET_ME'
 const GET_USER = 'GET_USER'
 const GET_USERS = 'GET_USER'
 const ADD_PROFILE_IMAGE_URL = 'ADD_PROFILE_IMAGE_URL'
+// const UPDATE_USERNAME = 'UPDATE_USERNAME'
 
 /**
  * ACTION CREATORS
@@ -38,6 +39,14 @@ export const addProfileImageUrl = (profileImageUrl) => async (dispatch) => {
   try {
     await axios.put(`${URL}/api/users/profileImage`, { profileImageUrl })
     dispatch(addedProfileImageUrl(profileImageUrl))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const updateUsername = (newUsername) => async () => {
+  try {
+    await axios.put(`${URL}/api/users/username`, { newUsername })
   } catch (error) {
     console.error(error)
   }

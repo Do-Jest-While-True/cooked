@@ -5,6 +5,12 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { createStackNavigator } from '@react-navigation/stack'
 import { Entypo } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer'
 
 import {
   FeedRecipesScreen,
@@ -14,6 +20,7 @@ import RecipePostForm from '../screens/RecipePostForm'
 import RecipeScreen from '../screens/RecipeScreen'
 import UserProfileScreen from '../screens/UserProfileScreen'
 import ExtUserProfileScreen from '../screens/ExtUserProfileScreen'
+import EditUserProfileScreen from '../screens/EditUserProfileScreen'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
@@ -21,6 +28,7 @@ import defaultStyles from '../config/defaultStyles'
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 const ExploreTab = createMaterialTopTabNavigator()
+const Drawer = createDrawerNavigator()
 
 const AllAndSingleRecipeStack = () => (
   <Stack.Navigator>
@@ -94,6 +102,26 @@ const ProfileAndPostStack = () => (
   </Stack.Navigator>
 )
 
+const ProfileScreenDrawer = () => (
+  <Drawer.Navigator
+    drawerPosition="right"
+    drawerContent={(props) => {
+      return (
+        <DrawerContentScrollView {...props}>
+          <DrawerItemList {...props} />
+          <DrawerItem
+            label="Logout"
+            onPress={() => console.log('logout clicked')}
+          />
+        </DrawerContentScrollView>
+      )
+    }}
+  >
+    <Drawer.Screen name="Your Profile" component={ProfileAndPostStack} />
+    <Drawer.Screen name="Edit User Profile" component={EditUserProfileScreen} />
+  </Drawer.Navigator>
+)
+
 export const TabNavigator = () => (
   <Tab.Navigator
     tabBarOptions={{
@@ -121,7 +149,7 @@ export const TabNavigator = () => (
     />
     <Tab.Screen
       name="User Profile"
-      component={ProfileAndPostStack}
+      component={ProfileScreenDrawer}
       options={{
         tabBarIcon: () => (
           <FontAwesome name="user" size={35} color={colors.white} />

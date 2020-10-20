@@ -1,29 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  TouchableWithoutFeedback,
-} from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
 
 import { addProfileImageUrl } from '../redux'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const CLOUDINARY_URL =
   'https://api.cloudinary.com/v1_1/cooked-images/image/upload'
 const uploadPreset = 'atmiftkx'
 
-const ProfileImageInput = ({ addProfileImageUrl, me }) => {
-  console.log('me in ProfileImageInput')
-  console.log('---------------------------------')
-  console.log(me)
-  console.log('---------------------------------')
-
+const ProfileImageInput = ({ addProfileImageUrl }) => {
   const [localImageUri, setLocalImageUri] = useState()
 
   const requestPermission = async () => {
@@ -77,10 +67,11 @@ const ProfileImageInput = ({ addProfileImageUrl, me }) => {
   }, [])
 
   return (
-    <TouchableWithoutFeedback onPress={selectImage} style={styles.addImgBtn}>
-      {/* <Image source={{ uri: localImageUri }} style={{}} /> */}
-      <Text style={styles.btnText}>Click to add Profile Image</Text>
-    </TouchableWithoutFeedback>
+    <TouchableOpacity onPress={selectImage} style={styles.addImgBtn}>
+      <Text style={[defaultStyles.smallText, styles.btnText]}>
+        Edit Profile Photo
+      </Text>
+    </TouchableOpacity>
   )
 }
 
@@ -96,9 +87,13 @@ export default connect(mapState, mapDispatch)(ProfileImageInput)
 
 const styles = StyleSheet.create({
   addImgBtn: {
-    marginBottom: 30,
+    width: 175,
+    paddingVertical: 10,
+    borderRadius: 20,
+    backgroundColor: colors.pink,
   },
   btnText: {
-    color: colors.white,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 })
