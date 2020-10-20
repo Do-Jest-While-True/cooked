@@ -32,7 +32,6 @@ const RecipeListItem = ({
             recipeId,
             userId,
             nav,
-            likeCount,
             authId,
           })
         }
