@@ -81,10 +81,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.25,
     borderBottomColor: colors.white,
     alignItems: 'center',
-    padding: 15,
   },
   settingsBtn: {
     alignSelf: 'flex-end',
+    marginRight: 15,
+    marginTop: 10,
   },
   profileImg: {
     width: 150,

@@ -110,7 +110,7 @@ const ProfileScreenDrawer = () => (
         <DrawerContentScrollView {...props}>
           <DrawerItemList {...props} />
           <DrawerItem
-            label="Logout"
+            label="Logout (not functioning)"
             onPress={() => console.log('logout clicked')}
           />
         </DrawerContentScrollView>

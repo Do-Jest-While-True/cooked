@@ -53,68 +53,8 @@ const AuthScreens = ({ name, getUser, auth }) => {
     <SafeAreaView style={defaultStyles.container}>
       <ScrollView>
         <View style={styles.formContainer}>
-          {emailFieldWarning && (
-            <Text style={[defaultStyles.text, styles.warning]}>
-              Please enter your email address!
-            </Text>
-          )}
-          <Controller
-            control={control}
-            render={({ onChange, value }) => (
-              <TextInput
-                style={styles.formInput}
-                placeholder="Email"
-                placeholderTextColor={colors.lightGray}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-              />
-            )}
-            name="email"
-            // rules={{ required: true }}
-            defaultValue=""
-          />
-          {passwordFieldWarning && (
-            <Text style={[defaultStyles.text, styles.warning]}>
-              Please enter your password!
-            </Text>
-          )}
-          <Controller
-            control={control}
-            render={({ onChange, value }) => (
-              <TextInput
-                style={styles.formInput}
-                placeholder="Password"
-                placeholderTextColor={colors.lightGray}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-              />
-            )}
-            name="password"
-            // rules={{ required: true }}
-            defaultValue=""
-          />
           {name === 'signup' ? (
             <React.Fragment>
-              {usernameFieldWarning && (
-                <Text style={[defaultStyles.text, styles.warning]}>
-                  Please enter your username!
-                </Text>
-              )}
-              <Controller
-                control={control}
-                render={({ onChange, value }) => (
-                  <TextInput
-                    style={styles.formInput}
-                    placeholder="Username"
-                    placeholderTextColor={colors.lightGray}
-                    onChangeText={(value) => onChange(value)}
-                    value={value}
-                  />
-                )}
-                name="username"
-                // rules={{ required: true }}
-                defaultValue=""
-              />
               {firstNameFieldWarning && (
                 <Text style={[defaultStyles.text, styles.warning]}>
                   Please enter your first name!
@@ -129,6 +69,7 @@ const AuthScreens = ({ name, getUser, auth }) => {
                     placeholderTextColor={colors.lightGray}
                     onChangeText={(value) => onChange(value)}
                     value={value}
+                    clearButtonMode="always"
                   />
                 )}
                 name="firstName"
@@ -149,14 +90,79 @@ const AuthScreens = ({ name, getUser, auth }) => {
                     placeholderTextColor={colors.lightGray}
                     onChangeText={(value) => onChange(value)}
                     value={value}
+                    clearButtonMode="always"
                   />
                 )}
                 name="lastName"
                 // rules={{ required: true }}
                 defaultValue=""
               />
+              {usernameFieldWarning && (
+                <Text style={[defaultStyles.text, styles.warning]}>
+                  Please enter your username!
+                </Text>
+              )}
+              <Controller
+                control={control}
+                render={({ onChange, value }) => (
+                  <TextInput
+                    style={styles.formInput}
+                    placeholder="Username"
+                    placeholderTextColor={colors.lightGray}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    clearButtonMode="always"
+                  />
+                )}
+                name="username"
+                // rules={{ required: true }}
+                defaultValue=""
+              />
             </React.Fragment>
           ) : null}
+          {emailFieldWarning && (
+            <Text style={[defaultStyles.text, styles.warning]}>
+              Please enter your email address!
+            </Text>
+          )}
+          <Controller
+            control={control}
+            render={({ onChange, value }) => (
+              <TextInput
+                style={styles.formInput}
+                placeholder="Email"
+                placeholderTextColor={colors.lightGray}
+                onChangeText={(value) => onChange(value)}
+                value={value}
+                clearButtonMode="always"
+              />
+            )}
+            name="email"
+            // rules={{ required: true }}
+            defaultValue=""
+          />
+          {passwordFieldWarning && (
+            <Text style={[defaultStyles.text, styles.warning]}>
+              Please enter your password!
+            </Text>
+          )}
+          <Controller
+            control={control}
+            render={({ onChange, value }) => (
+              <TextInput
+                style={styles.formInput}
+                placeholder="Password"
+                placeholderTextColor={colors.lightGray}
+                onChangeText={(value) => onChange(value)}
+                value={value}
+                clearButtonMode="always"
+                onSubmitEditing={onSubmit}
+              />
+            )}
+            name="password"
+            // rules={{ required: true }}
+            defaultValue=""
+          />
           {auth.isLoggingIn && (
             <Text style={[defaultStyles.text, styles.loggingInMsg]}>
               Working on it...
