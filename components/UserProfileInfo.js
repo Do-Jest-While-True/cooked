@@ -5,7 +5,9 @@ import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
 import { useIsFocused } from '@react-navigation/native'
 
+import ProfileImageInput from './ProfileImageInput'
 import { getMe, logout } from '../redux'
+
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
@@ -25,6 +27,7 @@ const UserProfileInfo = ({ logout, me, authId, getMe }) => {
   } else {
     return (
       <View style={styles.container}>
+        <ProfileImageInput />
         <Image
           source={{ uri: me.user.profileImageUrl }}
           style={styles.profileImg}
