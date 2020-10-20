@@ -46,6 +46,22 @@ export const gotUsers = () => async (dispatch) => {
   }
 }
 
+export const followUser = (userToFollowId) => async () => {
+  try {
+    await axios.post(`${URL}/api/users/follow/${userToFollowId}`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const unfollowUser = (unfollowId) => async () => {
+  try {
+    await axios.delete(`${URL}/api/users/follow/${unfollowId}`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 /**
  * INITIAL STATE
  */

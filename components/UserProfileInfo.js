@@ -1,49 +1,66 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
+import { AppLoading } from 'expo'
 
-import { logout } from '../redux'
+import { getMe, logout } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const UserProfileInfo = ({ logout, user }) => {
+const UserProfileInfo = ({ logout, me, authId, getMe }) => {
+  useEffect(() => {
+    getMe(authId)
+  }, [])
+
   let handleSubmit = () => {
     logout()
   }
 
-  return (
-    <View style={styles.container}>
-      <Image
-        source={{ uri: user.user.profileImageUrl }}
-        style={styles.profileImg}
-      />
-      <Text style={[defaultStyles.text]}>
-        {user.user.firstName} {user.user.lastName}
-      </Text>
-      <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
-        @{user.user.username}
-      </Text>
-      <TouchableOpacity onPress={() => handleSubmit()} style={styles.logoutBtn}>
-        <Text style={[defaultStyles.smallText, styles.textBold]}>Logout</Text>
-      </TouchableOpacity>
-      <View style={styles.followDataView}>
-        <Text style={[defaultStyles.text, styles.textMargin]}>
-          {user.followers.length} Followers
+  if (!me.user) {
+    return <AppLoading />
+  } else {
+    return (
+      <View style={styles.container}>
+        <Image
+          source={{ uri: me.user.profileImageUrl }}
+          style={styles.profileImg}
+        />
+        <Text style={[defaultStyles.text]}>
+          {me.user.firstName} {me.user.lastName}
         </Text>
-        <Text style={[defaultStyles.text, styles.textMargin]}>
-          {user.following.length} Following
+        <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
+          @{me.user.username}
         </Text>
+        <TouchableOpacity
+          onPress={() => handleSubmit()}
+          style={styles.logoutBtn}
+        >
+          <Text style={[defaultStyles.smallText, styles.textBold]}>Logout</Text>
+        </TouchableOpacity>
+        <View style={styles.followDataView}>
+          <Text style={[defaultStyles.text, styles.textMargin]}>
+            {me.followers.length} Followers
+          </Text>
+          <Text style={[defaultStyles.text, styles.textMargin]}>
+            {me.following.length} Following
+          </Text>
+        </View>
       </View>
-    </View>
-  )
+    )
+  }
 }
+
+const mapState = (state) => ({
+  me: state.user.me,
+})
 
 const mapDispatch = (dispatch) => ({
   logout: () => dispatch(logout()),
+  getMe: (userId) => dispatch(getMe(userId)),
 })
 
-export default connect(null, mapDispatch)(UserProfileInfo)
+export default connect(mapState, mapDispatch)(UserProfileInfo)
 
 const styles = StyleSheet.create({
   container: {

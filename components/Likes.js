@@ -2,34 +2,55 @@ import React, { useState, useEffect } from 'react'
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native'
 import axios from 'axios'
 import { MaterialIcons } from '@expo/vector-icons'
-import { URL, getSingleRecipe } from '../redux'
+import {
+  URL,
+  getLikeObject,
+  addLikeObject,
+  removeLikeObject,
+  getSingleRecipe,
+} from '../redux'
 
 import colors from '../config/colors'
 import { connect } from 'react-redux'
 
-const Likes = ({ singleRecipe, authId, recipeId, likesList }) => {
+const Likes = ({
+  getLikeObject,
+  addLikeObject,
+  removeLikeObject,
+  singleRecipe,
+  userLikes,
+  authId,
+  recipeId,
+  likesList,
+}) => {
   useEffect(() => {
-    getSingleRecipe()
+    // getsingleRecipe()
+    getLikeObject()
   }, [])
-  let likes = singleRecipe.likes || []
-  // let recipeId = singleRecipe.id
-  const likedOrNot = likes.filter((like) => like.userId === authId).length
-  const [likeCount, setLikeCount] = useState(likes.length)
-  const [isLiked, setIsLiked] = useState(likedOrNot)
+  // let singleRecipe = allRecipes.filter(recipe => recipe.id === recipeId)
+  // let likes = singleRecipe[0].likes
+
+  // console.log(likes)
+  // // let recipeId = singleRecipe.id
+  // const likedOrNot = likes.filter((like) => like.userId === authId).length
+  // const [likeCount, setLikeCount] = useState(likes.length)
+  let isLiked = userLikes
+    ? userLikes.filter(
+        (userLikeObject) => userLikeObject.recipeId === recipeId
+      )[0]
+    : []
 
   const liked = async () => {
     if (!isLiked) {
-      await axios.put(`${URL}/api/recipes/like/${recipeId}`)
-      setLikeCount(likeCount + 1)
-      setIsLiked(true)
+      isLiked = true
+      addLikeObject(recipeId)
     } else if (isLiked) {
-      await axios.delete(`${URL}/api/recipes/like/${recipeId}`)
-      setLikeCount(likeCount - 1)
-      setIsLiked(false)
+      isLiked = false
+      removeLikeObject(recipeId)
     }
   }
 
-  if (singleRecipe) {
+  if (userLikes) {
     return (
       <View style={styles.likeView}>
         <TouchableOpacity onPress={() => liked()}>
@@ -43,17 +64,21 @@ const Likes = ({ singleRecipe, authId, recipeId, likesList }) => {
             />
           )}
         </TouchableOpacity>
-        <Text style={styles.likeText}>{likeCount}</Text>
+        {/* <Text style={styles.likeText}>{userLikes.length}</Text> */}
       </View>
     )
   }
 }
 
 const mapState = (state) => ({
-  singleRecipe: state.singleRecipe,
+  userLikes: state.userLikes,
+  // singleRecipe: state.singleRecipe
 })
 
 const mapDispatch = (dispatch) => ({
+  getLikeObject: () => dispatch(getLikeObject()),
+  addLikeObject: (recipeId) => dispatch(addLikeObject(recipeId)),
+  removeLikeObject: (recipeId) => dispatch(removeLikeObject(recipeId)),
   getSingleRecipe: (recipeId) => dispatch(getSingleRecipe(recipeId)),
 })
 

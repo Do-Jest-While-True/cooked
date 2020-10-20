@@ -10,6 +10,7 @@ import user from './user'
 import singleRecipe from './singleRecipe'
 import myRecipes from './myRecipes'
 import serverUrl from './serverUrl'
+import userLikes from './likes'
 
 const appReducer = combineReducers({
   auth,
@@ -19,6 +20,7 @@ const appReducer = combineReducers({
   singleRecipe,
   myRecipes,
   recipe,
+  userLikes,
 })
 
 const store = createStore(appReducer, applyMiddleware(thunkMiddleware))
@@ -31,3 +33,4 @@ export * from './singleRecipe'
 export * from './myRecipes'
 export * from './recipe'
 export * from './serverUrl'
+export * from './likes'

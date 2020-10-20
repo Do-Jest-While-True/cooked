@@ -57,7 +57,7 @@ const RecipeListItem = ({
           {/* USERNAME */}
           <Text style={styles.userName}>@{user.username}</Text>
           <View>
-            <Likes recipeId={singleRecipe.id} />
+            <Likes recipeId={recipeId} />
             {/* LIKES */}
             {/* <View style={styles.likeView}>
               <TouchableOpacity onPress={() => liked()}>
