@@ -63,6 +63,7 @@ const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
             keyExtractor={(recipe) => recipe.id.toString()}
             renderItem={({ item }) => (
               <RecipeListItem
+                item={item}
                 name={item.name}
                 imageUrl={item.imageUrl}
                 time={item.time}

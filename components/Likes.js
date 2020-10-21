@@ -53,9 +53,10 @@ const Likes = ({
   if (userLikes) {
     return (
       <View style={styles.likeView}>
+        <Text style={styles.likeText}>{userLikes.length}</Text>
         <TouchableOpacity onPress={() => liked()}>
           {isLiked ? (
-            <MaterialIcons name="favorite" size={24} color={colors.white} />
+            <MaterialIcons name="favorite" size={24} color={colors.pink} />
           ) : (
             <MaterialIcons
               name="favorite-border"
@@ -64,7 +65,6 @@ const Likes = ({
             />
           )}
         </TouchableOpacity>
-        {/* <Text style={styles.likeText}>{userLikes.length}</Text> */}
       </View>
     )
   }
@@ -88,10 +88,11 @@ const styles = StyleSheet.create({
   likeView: {
     flex: 1,
     flexDirection: 'row',
+    marginRight: 8,
   },
   likeText: {
     color: colors.white,
-    marginLeft: 8,
+    marginRight: 8,
     fontSize: 18,
   },
 })

@@ -1,23 +1,22 @@
-import React, { useState } from 'react'
-import axios from 'axios'
+import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { AppLoading } from 'expo'
-import { URL } from '../redux/serverUrl'
+import TimeAgo from 'react-native-timeago'
 import Likes from './Likes'
 
 import colors from '../config/colors'
 import { screenWidth } from '../config/dimensions'
 
 const RecipeListItem = ({
+  item,
   recipeId,
   name,
   imageUrl,
   time,
   nav,
   user,
-  likes,
   userId,
   authId,
 }) => {
@@ -38,7 +37,7 @@ const RecipeListItem = ({
       >
         {/* IMAGE */}
         <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
-        <View>
+        <View style={styles.contentView}>
           <Text style={styles.listItemName}>{name}</Text>
           {/* TIME */}
           <View style={styles.timeView}>
@@ -47,11 +46,16 @@ const RecipeListItem = ({
           </View>
           {/* USERNAME */}
           <Text style={styles.userName}>@{user.username}</Text>
+          {/* TIME AGO */}
           <View>
-            <Likes recipeId={recipeId} />
-            {/* LIKES */}
+            <Text style={styles.timeAgoText}>
+              <TimeAgo time={item.createdAt} />
+            </Text>
           </View>
+          <View />
         </View>
+        {/* LIKES */}
+        <Likes recipeId={recipeId} />
       </TouchableOpacity>
     )
   }
@@ -81,6 +85,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 15,
   },
+  contentView: {
+    flex: 5,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  likeView: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
   listItemName: {
     fontSize: 15,
     fontWeight: 'bold',
@@ -100,13 +114,18 @@ const styles = StyleSheet.create({
   timeView: {
     flexDirection: 'row',
   },
-  likeView: {
-    flex: 1,
-    flexDirection: 'row',
-  },
   likeText: {
     color: colors.white,
+    fontSize: 20,
     marginLeft: 8,
-    fontSize: 18,
+  },
+  timeAgoView: {
+    flex: 1,
+    flexDirection: 'row',
+    alignContent: 'flex-end',
+  },
+  timeAgoText: {
+    color: colors.white,
+    fontSize: 11,
   },
 })
