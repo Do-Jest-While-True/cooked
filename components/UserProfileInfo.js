@@ -35,23 +35,27 @@ const UserProfileInfo = ({ logout, me, authId, getMe, nav }) => {
           style={styles.settingsBtn}
           onPress={() => nav.openDrawer()}
         />
-
+        {/* PROFILE IMAGE */}
         <Image
           source={{ uri: me.user.profileImageUrl }}
           style={styles.profileImg}
         />
+        {/* FIRST LAST */}
         <Text style={[defaultStyles.text]}>
           {me.user.firstName} {me.user.lastName}
         </Text>
+        {/* USERNAME */}
         <Text style={[defaultStyles.text, styles.textMargin, styles.textBold]}>
           @{me.user.username}
         </Text>
+        {/* LOGOUT BTN */}
         <TouchableOpacity
           onPress={() => handleSubmit()}
           style={styles.logoutBtn}
         >
           <Text style={[defaultStyles.smallText, styles.textBold]}>Logout</Text>
         </TouchableOpacity>
+        {/* FOLLOW STATS */}
         <View style={styles.followDataView}>
           <Text style={[defaultStyles.text, styles.textMargin]}>
             {me.followers.length} Followers
@@ -82,10 +86,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.25,
     borderBottomColor: colors.white,
     alignItems: 'center',
-    padding: 15,
   },
   settingsBtn: {
     alignSelf: 'flex-end',
+    marginRight: 15,
+    marginTop: 10,
   },
   profileImg: {
     width: 150,

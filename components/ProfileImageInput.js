@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Text } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
@@ -13,9 +13,11 @@ const CLOUDINARY_URL =
   'https://api.cloudinary.com/v1_1/cooked-images/image/upload'
 const uploadPreset = 'atmiftkx'
 
-const ProfileImageInput = ({ addProfileImageUrl }) => {
-  const [localImageUri, setLocalImageUri] = useState()
-
+const ProfileImageInput = ({
+  addProfileImageUrl,
+  uploadMessage,
+  setUploadMessage,
+}) => {
   const requestPermission = async () => {
     const result = await ImagePicker.requestCameraRollPermissionsAsync()
     if (!result.granted) {
@@ -35,7 +37,6 @@ const ProfileImageInput = ({ addProfileImageUrl }) => {
       if (result.cancelled) {
         return
       } else {
-        setLocalImageUri(result.uri)
         let base64Img = `data:image/jpg;base64,${result.base64}`
         let data = {
           file: base64Img,
@@ -54,6 +55,8 @@ const ProfileImageInput = ({ addProfileImageUrl }) => {
             let data = await r.json()
             // put cloudinary uri onto state ⬇️
             await addProfileImageUrl(data.url)
+            // display upload saved message:
+            setUploadMessage(true)
           })
           .catch((err) => console.log(err))
       }
@@ -67,11 +70,20 @@ const ProfileImageInput = ({ addProfileImageUrl }) => {
   }, [])
 
   return (
-    <TouchableOpacity onPress={selectImage} style={styles.addImgBtn}>
-      <Text style={[defaultStyles.smallText, styles.btnText]}>
-        Edit Profile Photo
-      </Text>
-    </TouchableOpacity>
+    <React.Fragment>
+      {/* EDIT PROFILE PHOTO BTN */}
+      <TouchableOpacity onPress={selectImage} style={styles.addImgBtn}>
+        <Text style={[defaultStyles.smallText, styles.btnText]}>
+          Edit Profile Photo
+        </Text>
+      </TouchableOpacity>
+      {/* PROFILE PHOTO SAVED MESSAGE */}
+      {uploadMessage && (
+        <Text style={[defaultStyles.smallText, styles.photoSavedMsg]}>
+          Profile Photo Saved!
+        </Text>
+      )}
+    </React.Fragment>
   )
 }
 
@@ -89,11 +101,15 @@ const styles = StyleSheet.create({
   addImgBtn: {
     width: 175,
     paddingVertical: 10,
+    marginBottom: 20,
     borderRadius: 20,
     backgroundColor: colors.pink,
   },
   btnText: {
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  photoSavedMsg: {
+    color: colors.pink,
   },
 })
