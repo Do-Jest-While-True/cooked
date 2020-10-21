@@ -3,6 +3,7 @@ import { StyleSheet, SafeAreaView, ScrollView, View, Text } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { useForm, Controller } from 'react-hook-form'
 import { connect } from 'react-redux'
+import isEmail from 'validator/lib/isEmail'
 
 import { auth } from '../redux'
 import colors from '../config/colors'
@@ -22,10 +23,10 @@ const AuthScreens = ({ name, getUser, auth }) => {
     const values = getValues()
 
     // for validations:
-    if (!values.email) {
+    if (!isEmail(values.email)) {
       return setEmailFieldWarning(true)
     }
-    if (!values.password) {
+    if (values.password.length < 8) {
       return setPasswordFieldWarning(true)
     }
     if (!values.username && name === 'signup') {
@@ -122,7 +123,7 @@ const AuthScreens = ({ name, getUser, auth }) => {
           ) : null}
           {emailFieldWarning && (
             <Text style={[defaultStyles.text, styles.warning]}>
-              Please enter your email address!
+              Please enter a valid email address!
             </Text>
           )}
           <Controller
@@ -143,7 +144,7 @@ const AuthScreens = ({ name, getUser, auth }) => {
           />
           {passwordFieldWarning && (
             <Text style={[defaultStyles.text, styles.warning]}>
-              Please enter your password!
+               Password must be at least 8 characters!
             </Text>
           )}
           <Controller

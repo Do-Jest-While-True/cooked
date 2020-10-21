@@ -54,7 +54,8 @@
     "react-native-web": "^0.13.18",
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "validator": "^13.1.17"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
