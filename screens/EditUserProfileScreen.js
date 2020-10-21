@@ -24,8 +24,9 @@ import defaultStyles from '../config/defaultStyles'
 const UserProfileScreen = ({ navigation, auth, getMe, me, updateUsername }) => {
   const [newUsername, setNewUsername] = useState('')
 
-  // for validations:
+  // for validations / messages:
   const [usernameFieldWarning, setUsernameFieldWarning] = useState(false)
+  const [uploadMessage, setUploadMessage] = useState(false)
 
   useEffect(() => {
     getMe(auth.id)
@@ -60,7 +61,10 @@ const UserProfileScreen = ({ navigation, auth, getMe, me, updateUsername }) => {
             <View style={styles.topRowBtnsView}>
               <TouchableOpacity
                 style={styles.backBtn}
-                onPress={() => navigation.navigate('Your Profile')}
+                onPress={() => {
+                  setUploadMessage(false)
+                  navigation.navigate('Your Profile')
+                }}
               >
                 <Ionicons
                   name="ios-arrow-back"
@@ -77,21 +81,20 @@ const UserProfileScreen = ({ navigation, auth, getMe, me, updateUsername }) => {
                 onPress={() => navigation.openDrawer()}
               />
             </View>
-            {/* FORM CONTENT */}
             <View style={styles.formContentContainer}>
+              {/* PROFILE IMAGE */}
               <Image
                 source={{ uri: me.user.profileImageUrl }}
                 style={styles.profileImg}
               />
-              <ProfileImageInput />
+              {/* EDIT PROFILE BTN & UPLOAD SUCCESS MSG*/}
+              <ProfileImageInput
+                uploadMessage={uploadMessage}
+                setUploadMessage={setUploadMessage}
+              />
+              {/* USERNAME */}
               <View style={styles.usernameSection}>
-                <Text
-                  style={[
-                    defaultStyles.text,
-                    styles.textMargin,
-                    styles.textBold,
-                  ]}
-                >
+                <Text style={[defaultStyles.text, styles.textBold]}>
                   @{me.user.username}
                 </Text>
                 {usernameFieldWarning && (
@@ -99,6 +102,7 @@ const UserProfileScreen = ({ navigation, auth, getMe, me, updateUsername }) => {
                     Please Enter a New Username!
                   </Text>
                 )}
+                {/* USERNAME INPUT */}
                 <TextInput
                   placeholder="Enter Username"
                   placeholderTextColor={colors.lightGray}
@@ -109,6 +113,7 @@ const UserProfileScreen = ({ navigation, auth, getMe, me, updateUsername }) => {
                   }}
                   value={newUsername}
                 />
+                {/* SUBMIT USERNAME BTN */}
                 <TouchableOpacity
                   style={styles.saveBtn}
                   onPress={handleSaveChanges}
@@ -167,9 +172,6 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     borderColor: colors.white,
     marginVertical: 20,
-  },
-  textMargin: {
-    // marginBottom: 20
   },
   textBold: {
     fontWeight: 'bold',
