@@ -8,7 +8,7 @@ const RecipeGridItem = ({ recipeId, imageUrl, nav }) => {
     // 'User Profile' is the root of the nested Stack.Screens, 'Recipe' is the target Stack.Screen and 'id' is just being passed down through route.params.id (because RecipeScreen expects & requires it)
     <TouchableOpacity
       onPress={() =>
-        nav.navigate('User Profile', { screen: 'Recipe', params: { recipeId } })
+        nav.navigate('Your Profile', { screen: 'Recipe', params: { recipeId } })
       }
     >
       <Image source={{ uri: imageUrl }} style={styles.gridImg} />

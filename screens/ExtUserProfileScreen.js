@@ -15,7 +15,7 @@ const ExtUserProfileScreen = ({ route, navigation, auth, getMe, me }) => {
     getMe(auth.id)
   }, [])
 
-  if (!route.params.user.user) {
+  if (!route.params.user.user || !me.user) {
     return <AppLoading />
   } else {
     return (

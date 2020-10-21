@@ -6,6 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { AppLoading } from 'expo'
 import { URL } from '../redux/serverUrl'
 import TimeAgo from 'react-native-timeago'
+import Likes from './Likes'
 
 import colors from '../config/colors'
 import { screenWidth } from '../config/dimensions'
@@ -22,30 +23,20 @@ const RecipeListItem = ({
   userId,
   authId,
 }) => {
-  const likedOrNot = likes.filter((like) => like.userId === authId).length
-
-  const [likeCount, setLikeCount] = useState(likes.length)
-  const [isLiked, setIsLiked] = useState(likedOrNot)
-
-  const liked = async () => {
-    if (!isLiked) {
-      await axios.put(`${URL}/api/recipes/like/${recipeId}`)
-      setLikeCount(likeCount + 1)
-      setIsLiked(true)
-    } else if (isLiked) {
-      await axios.delete(`${URL}/api/recipes/like/${recipeId}`)
-      setLikeCount(likeCount - 1)
-      setIsLiked(false)
-    }
-  }
-
   if (!user.id) {
     return <AppLoading />
   } else {
     return (
       <TouchableOpacity
         style={styles.listItemView}
-        onPress={() => nav.navigate('Recipe', { recipeId, userId, nav })}
+        onPress={() =>
+          nav.navigate('Recipe', {
+            recipeId,
+            userId,
+            nav,
+            authId,
+          })
+        }
       >
         {/* IMAGE */}
         <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
@@ -61,28 +52,13 @@ const RecipeListItem = ({
           {/* TIME AGO */}
           <View>
             <Text style={styles.timeAgoText}>
-              <TimeAgo time={item.createdAt} hideAgo={true} />
+              <TimeAgo time={item.createdAt} />
             </Text>
           </View>
           <View />
         </View>
-        <View style={styles.likeView}>
-          {/* LIKES */}
-          <View style={styles.likeView}>
-            <TouchableOpacity onPress={() => liked()}>
-              {isLiked ? (
-                <MaterialIcons name="favorite" size={24} color={colors.white} />
-              ) : (
-                <MaterialIcons
-                  name="favorite-border"
-                  size={24}
-                  color={colors.white}
-                />
-              )}
-            </TouchableOpacity>
-            <Text style={styles.likeText}>{likeCount}</Text>
-          </View>
-        </View>
+        {/* LIKES */}
+        <Likes recipeId={recipeId} />
       </TouchableOpacity>
     )
   }
@@ -90,6 +66,7 @@ const RecipeListItem = ({
 
 const mapState = (state) => ({
   authId: state.auth.id,
+  singleRecipe: state.singleRecipe,
 })
 
 export default connect(mapState)(RecipeListItem)
@@ -152,5 +129,6 @@ const styles = StyleSheet.create({
   },
   timeAgoText: {
     color: colors.white,
+    fontSize: 11,
   },
 })

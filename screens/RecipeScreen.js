@@ -16,6 +16,7 @@ import {
 } from '@expo-google-fonts/covered-by-your-grace'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/native'
+import Likes from '../components/Likes'
 
 import { getSingleRecipe, gotUser } from '../redux'
 import colors from '../config/colors'
@@ -52,6 +53,7 @@ const RecipeScreen = ({
           {/* Recipe Image: */}
           <Image source={{ uri: singleRecipe.imageUrl }} style={styles.img} />
           <View style={styles.recipeContent}>
+            <Likes recipeId={singleRecipe.id} />
             {/* Username: */}
             {/* don't render username when clicking in from my user profile */}
             {route.params.userId && (
@@ -107,6 +109,7 @@ const RecipeScreen = ({
 const mapState = (state) => ({
   singleRecipe: state.singleRecipe,
   user: state.user.user,
+  authId: state.auth.id,
 })
 
 const mapDispatch = (dispatch) => ({
