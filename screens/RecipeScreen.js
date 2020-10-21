@@ -7,7 +7,9 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  TextInput,
 } from 'react-native'
+import { useForm, Controller } from 'react-hook-form'
 import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
 import {
@@ -18,7 +20,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/native'
 import Likes from '../components/Likes'
 
-import { getSingleRecipe, gotUser } from '../redux'
+import { getSingleRecipe, gotUser, addComment, removeComment } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
@@ -28,6 +30,8 @@ const RecipeScreen = ({
   getSingleRecipe,
   user,
   gotUser,
+  addComment,
+  removeComment,
 }) => {
   const isFocused = useIsFocused()
 
@@ -37,6 +41,13 @@ const RecipeScreen = ({
     // I already know who I am in there... causes unwanted 500 without this conditional
     route.params.userId && gotUser(route.params.userId)
   }, [isFocused])
+
+  const { control, handleSubmit, getValues } = useForm()
+
+  function onSubmit() {
+    const value = getValues()
+    addComment(route.params.recipeId, value)
+  }
 
   let [fontsLoaded] = useFonts({
     CoveredByYourGrace_400Regular,
@@ -98,6 +109,57 @@ const RecipeScreen = ({
                 </View>
               ))}
             </View>
+            {/* Comments: */}
+            <View style={styles.recipesContentSection}>
+              <Text style={[styles.commentHeading]}>Comments</Text>
+              {singleRecipe.comments.length ? (
+                singleRecipe.comments.map((comment) => (
+                  <View key={comment.id} style={styles.commentView}>
+                    <View style={styles.commentUserView}>
+                      <Image
+                        source={{ uri: comment.user.profileImageUrl }}
+                        style={styles.profileImgcomment}
+                      />
+                      <Text
+                        style={[defaultStyles.text, styles.commentUsername]}
+                      >
+                        {comment.user.username}
+                      </Text>
+                    </View>
+                    <Text style={styles.singleDirectionComment}>
+                      {comment.body}
+                    </Text>
+                  </View>
+                ))
+              ) : (
+                <Text style={styles.singleDirectionComment}>
+                  There are no comments!
+                </Text>
+              )}
+              {/* Comment input Form, addComment is already imported and passed to the function.  We just need to add a form that sends the info into the addComment thunk and test to see if the reducer is good money.  Deleting a comment will be more difficult to solve, but that was imported into the function aswell.*/}
+              <Controller
+                control={control}
+                render={({ onChange, value }) => (
+                  <TextInput
+                    style={styles.formInput}
+                    placeholder="Type Comment Here!"
+                    placeholderTextColor={colors.lightGray}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    multiline={true}
+                  />
+                )}
+                name="comment"
+              />
+              <View style={styles.submitBtnView}>
+                <TouchableOpacity
+                  style={styles.submitBtn}
+                  onPress={handleSubmit(onSubmit)}
+                >
+                  <Text style={styles.submitBtnText}>Post</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -114,6 +176,8 @@ const mapState = (state) => ({
 const mapDispatch = (dispatch) => ({
   getSingleRecipe: (recipeId) => dispatch(getSingleRecipe(recipeId)),
   gotUser: (userId) => dispatch(gotUser(userId)),
+  addComment: (recipeId, comment) => dispatch(addComment(recipeId, comment)),
+  removeComment: (commentId) => dispatch(removeComment(commentId)),
 })
 
 export default connect(mapState, mapDispatch)(RecipeScreen)
@@ -130,6 +194,42 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 25,
   },
+  //COMENTS SECTION
+  commentHeading: {
+    color: colors.white,
+    fontWeight: 'bold',
+    fontSize: 22,
+    letterSpacing: 2,
+    marginBottom: 10,
+  },
+  commentUsername: {
+    color: 'dodgerblue',
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
+  commentUserView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 2,
+  },
+  commentView: {
+    flexDirection: 'column',
+    marginBottom: 10,
+    borderBottomWidth: 0.27,
+    borderColor: colors.lightGray,
+  },
+  profileImgcomment: {
+    width: 14,
+    height: 14,
+    borderRadius: 75,
+    marginRight: 7,
+  },
+  singleDirectionComment: {
+    fontSize: 15,
+    color: colors.white,
+    marginBottom: 10,
+  },
+  //COMMENTS AREA ENDS
   recipeContent: {
     margin: 20,
   },
@@ -158,7 +258,6 @@ const styles = StyleSheet.create({
   },
   singleDirectionView: {
     flexDirection: 'row',
-    marginTop: 15,
   },
   singleDirection: {
     fontSize: 15,
@@ -174,5 +273,28 @@ const styles = StyleSheet.create({
   time: {
     color: colors.white,
     marginLeft: 5,
+  },
+  formInput: {
+    backgroundColor: colors.light,
+    borderRadius: 25,
+    height: 70,
+    paddingHorizontal: 20,
+    marginVertical: 20,
+    fontSize: 16,
+    color: colors.white,
+  },
+  submitBtn: {
+    backgroundColor: colors.pink,
+    borderRadius: 75,
+    paddingVertical: 10,
+    width: '50%',
+    height: 40,
+    alignSelf: 'center',
+  },
+  submitBtnText: {
+    textAlign: 'center',
+    color: colors.white,
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 })

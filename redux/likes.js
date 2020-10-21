@@ -34,7 +34,7 @@ export const getLikeObject = () => async (dispatch) => {
 
 export const addLikeObject = (recipeId) => async (dispatch) => {
   try {
-    const { data: likeObject } = await axios.put(
+    const { data: likeObject } = await axios.post(
       `${URL}/api/recipes/like/${recipeId}`
     )
     dispatch(addedLikeObject(likeObject))
@@ -68,7 +68,6 @@ export default function (state = initialState, action) {
       let newerState = state.filter(
         (singleLikeObject) => singleLikeObject.recipeId !== action.recipeId
       )
-      console.log(newerState)
       return newerState
     default:
       return state
