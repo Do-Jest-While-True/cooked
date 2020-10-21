@@ -53,7 +53,6 @@ const Likes = ({
   if (userLikes) {
     return (
       <View style={styles.likeView}>
-        <Text style={styles.likeText}>{userLikes.length}</Text>
         <TouchableOpacity onPress={() => liked()}>
           {isLiked ? (
             <MaterialIcons name="favorite" size={24} color={colors.pink} />

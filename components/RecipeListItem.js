@@ -86,12 +86,7 @@ const styles = StyleSheet.create({
     margin: 15,
   },
   contentView: {
-    flex: 5,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  likeView: {
-    flex: 1,
+    flex: 7,
     flexDirection: 'column',
     justifyContent: 'center',
   },
@@ -113,11 +108,6 @@ const styles = StyleSheet.create({
   },
   timeView: {
     flexDirection: 'row',
-  },
-  likeText: {
-    color: colors.white,
-    fontSize: 20,
-    marginLeft: 8,
   },
   timeAgoView: {
     flex: 1,
