@@ -46,7 +46,6 @@ const RecipeScreen = ({
   if (!fontsLoaded || !singleRecipe.id || (route.params.userId && !user.user)) {
     return <AppLoading />
   } else {
-    console.log(singleRecipe.createdAt)
     return (
       <SafeAreaView style={defaultStyles.container}>
         <ScrollView>

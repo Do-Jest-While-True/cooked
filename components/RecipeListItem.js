@@ -1,10 +1,8 @@
-import React, { useState } from 'react'
-import axios from 'axios'
+import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { AppLoading } from 'expo'
-import { URL } from '../redux/serverUrl'
 import TimeAgo from 'react-native-timeago'
 import Likes from './Likes'
 
@@ -19,7 +17,6 @@ const RecipeListItem = ({
   time,
   nav,
   user,
-  likes,
   userId,
   authId,
 }) => {
