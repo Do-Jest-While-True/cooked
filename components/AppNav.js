@@ -21,6 +21,7 @@ import RecipeScreen from '../screens/RecipeScreen'
 import UserProfileScreen from '../screens/UserProfileScreen'
 import ExtUserProfileScreen from '../screens/ExtUserProfileScreen'
 import EditUserProfileScreen from '../screens/EditUserProfileScreen'
+import AllThreadsScreen from '../screens/AllThreadsScreen'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
@@ -122,6 +123,16 @@ const ProfileScreenDrawer = () => (
   </Drawer.Navigator>
 )
 
+const DirectMessageStack = () => {
+  ;<Stack.Navigator>
+    <Stack.Screen
+      name="All Messages"
+      component={AllThreadsScreen}
+      options={headerStyle}
+    />
+  </Stack.Navigator>
+}
+
 export const TabNavigator = () => (
   <Tab.Navigator
     tabBarOptions={{
@@ -153,6 +164,15 @@ export const TabNavigator = () => (
       options={{
         tabBarIcon: () => (
           <FontAwesome name="user" size={35} color={colors.white} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="All Messages"
+      component={DirectMessageStack}
+      options={{
+        tabBarIcon: () => (
+          <FontAwesome name="envelope" size={35} color={colors.white} />
         ),
       }}
     />
