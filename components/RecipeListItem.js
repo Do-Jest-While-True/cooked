@@ -5,11 +5,13 @@ import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { AppLoading } from 'expo'
 import { URL } from '../redux/serverUrl'
+import TimeAgo from 'react-native-timeago'
 
 import colors from '../config/colors'
 import { screenWidth } from '../config/dimensions'
 
 const RecipeListItem = ({
+  item,
   recipeId,
   name,
   imageUrl,
@@ -47,7 +49,7 @@ const RecipeListItem = ({
       >
         {/* IMAGE */}
         <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
-        <View>
+        <View style={styles.contentView}>
           <Text style={styles.listItemName}>{name}</Text>
           {/* TIME */}
           <View style={styles.timeView}>
@@ -56,26 +58,29 @@ const RecipeListItem = ({
           </View>
           {/* USERNAME */}
           <Text style={styles.userName}>@{user.username}</Text>
+          {/* TIME AGO */}
           <View>
-            {/* LIKES */}
-            <View style={styles.likeView}>
-              <TouchableOpacity onPress={() => liked()}>
-                {isLiked ? (
-                  <MaterialIcons
-                    name="favorite"
-                    size={18}
-                    color={colors.white}
-                  />
-                ) : (
-                  <MaterialIcons
-                    name="favorite-border"
-                    size={18}
-                    color={colors.white}
-                  />
-                )}
-              </TouchableOpacity>
-              <Text style={styles.likeText}>{likeCount}</Text>
-            </View>
+            <Text style={styles.timeAgoText}>
+              <TimeAgo time={item.createdAt} hideAgo={true} />
+            </Text>
+          </View>
+          <View />
+        </View>
+        <View style={styles.likeView}>
+          {/* LIKES */}
+          <View style={styles.likeView}>
+            <TouchableOpacity onPress={() => liked()}>
+              {isLiked ? (
+                <MaterialIcons name="favorite" size={24} color={colors.white} />
+              ) : (
+                <MaterialIcons
+                  name="favorite-border"
+                  size={24}
+                  color={colors.white}
+                />
+              )}
+            </TouchableOpacity>
+            <Text style={styles.likeText}>{likeCount}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -106,6 +111,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 15,
   },
+  contentView: {
+    flex: 5,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  likeView: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
   listItemName: {
     fontSize: 15,
     fontWeight: 'bold',
@@ -125,12 +140,17 @@ const styles = StyleSheet.create({
   timeView: {
     flexDirection: 'row',
   },
-  likeView: {
-    flex: 1,
-    flexDirection: 'row',
-  },
   likeText: {
     color: colors.white,
+    fontSize: 20,
     marginLeft: 8,
+  },
+  timeAgoView: {
+    flex: 1,
+    flexDirection: 'row',
+    alignContent: 'flex-end',
+  },
+  timeAgoText: {
+    color: colors.white,
   },
 })
