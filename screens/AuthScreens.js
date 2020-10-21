@@ -56,6 +56,7 @@ const AuthScreens = ({ name, getUser, auth }) => {
         <View style={styles.formContainer}>
           {name === 'signup' ? (
             <React.Fragment>
+              {/* FIRST NAME ----------------------------------------- */}
               {firstNameFieldWarning && (
                 <Text style={[defaultStyles.text, styles.warning]}>
                   Please enter your first name!
@@ -74,9 +75,9 @@ const AuthScreens = ({ name, getUser, auth }) => {
                   />
                 )}
                 name="firstName"
-                // rules={{ required: true }}
                 defaultValue=""
               />
+              {/* LAST NAME ----------------------------------------- */}
               {lastNameFieldWarning && (
                 <Text style={[defaultStyles.text, styles.warning]}>
                   Please enter your last name!
@@ -95,9 +96,9 @@ const AuthScreens = ({ name, getUser, auth }) => {
                   />
                 )}
                 name="lastName"
-                // rules={{ required: true }}
                 defaultValue=""
               />
+              {/* USERNAME ----------------------------------------- */}
               {usernameFieldWarning && (
                 <Text style={[defaultStyles.text, styles.warning]}>
                   Please enter your username!
@@ -116,11 +117,11 @@ const AuthScreens = ({ name, getUser, auth }) => {
                   />
                 )}
                 name="username"
-                // rules={{ required: true }}
                 defaultValue=""
               />
             </React.Fragment>
           ) : null}
+          {/* EMAIL ----------------------------------------- */}
           {emailFieldWarning && (
             <Text style={[defaultStyles.text, styles.warning]}>
               Please enter a valid email address!
@@ -134,17 +135,17 @@ const AuthScreens = ({ name, getUser, auth }) => {
                 placeholder="Email"
                 placeholderTextColor={colors.lightGray}
                 onChangeText={(value) => onChange(value)}
-                value={value}
+                value={value.toLowerCase()}
                 clearButtonMode="always"
               />
             )}
             name="email"
-            // rules={{ required: true }}
             defaultValue=""
           />
+          {/* PASSWORD ----------------------------------------- */}
           {passwordFieldWarning && (
             <Text style={[defaultStyles.text, styles.warning]}>
-               Password must be at least 8 characters!
+              Password must be at least 8 characters!
             </Text>
           )}
           <Controller
@@ -157,18 +158,20 @@ const AuthScreens = ({ name, getUser, auth }) => {
                 onChangeText={(value) => onChange(value)}
                 value={value}
                 clearButtonMode="always"
+                secureTextEntry={true}
                 onSubmitEditing={onSubmit}
               />
             )}
             name="password"
-            // rules={{ required: true }}
             defaultValue=""
           />
+          {/* WORKING ON IT MESSAGE ----------------------------------------- */}
           {auth.isLoggingIn && (
             <Text style={[defaultStyles.text, styles.loggingInMsg]}>
               Working on it...
             </Text>
           )}
+          {/* LOGIN / SIGN UP BTN ----------------------------------------- */}
           <View style={styles.submitBtnView}>
             <TouchableOpacity
               style={styles.submitBtn}
