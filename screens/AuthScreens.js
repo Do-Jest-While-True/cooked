@@ -144,7 +144,7 @@ const AuthScreens = ({ name, getUser, auth }) => {
           />
           {passwordFieldWarning && (
             <Text style={[defaultStyles.text, styles.warning]}>
-               Password must be at least 8 characters!
+              Password must be at least 8 characters!
             </Text>
           )}
           <Controller

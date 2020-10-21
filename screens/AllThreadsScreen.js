@@ -1,17 +1,25 @@
 import React, { useEffect } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import { getAllThreads } from '../redux'
+import defaultStyles from '../config/defaultStyles'
 
 const AllThreadsScreen = ({ directMessages, getThreads }) => {
   useEffect(() => {
     getThreads()
   }, [])
 
-  console.log('DMs from AllThreads React-----', directMessages)
+  console.log('directMessages from allthreadsscreen=======', directMessages)
+  // directMessages loads all of the other users info
   return (
-    <View>
-      <Text>All Thread Screen</Text>
+    <View style={defaultStyles.container}>
+      <FlatList
+        data={directMessages}
+        keyExtractor={(thread) => thread.id.toString()}
+        renderItem={({ item }) => (
+          <Text style={defaultStyles.text}>{item.user.username}</Text>
+        )}
+      />
     </View>
   )
 }
