@@ -32,6 +32,9 @@ const Stack = createStackNavigator()
 const ExploreTab = createMaterialTopTabNavigator()
 const Drawer = createDrawerNavigator()
 
+// STACKS / TABS // DRAWER
+// ==============================================
+
 const AllAndSingleRecipeStack = () => (
   <Stack.Navigator>
     <Stack.Screen
@@ -134,19 +137,23 @@ const DirectMessageStack = () => (
   </Stack.Navigator>
 )
 
+// TAB BAR
+// ==================================================
+
 export const TabNavigator = () => (
   <Tab.Navigator
     tabBarOptions={{
       showLabel: false,
       style: styles.navbar,
       activeTintColor: '#000',
+      activeBackgroundColor: colors.mainFaded,
     }}
   >
     <Tab.Screen
       name="Explore"
       component={ExploreTabs}
       options={{
-        tabBarIcon: () => <Entypo name="bowl" size={35} color={colors.white} />,
+        tabBarIcon: () => <Entypo name="bowl" size={33} color={colors.white} />,
         unmountOnBlur: true,
       }}
     />
@@ -155,7 +162,7 @@ export const TabNavigator = () => (
       component={SearchScreen}
       options={{
         tabBarIcon: () => (
-          <FontAwesome name="search" size={35} color={colors.white} />
+          <FontAwesome name="search" size={33} color={colors.white} />
         ),
       }}
     />
@@ -173,8 +180,9 @@ export const TabNavigator = () => (
       component={DirectMessageStack}
       options={{
         tabBarIcon: () => (
-          <FontAwesome name="envelope" size={35} color={colors.white} />
+          <FontAwesome name="envelope" size={33} color={colors.white} />
         ),
+        tabBarBadge: 2,
       }}
     />
     <Tab.Screen
@@ -182,7 +190,7 @@ export const TabNavigator = () => (
       component={ProfileScreenDrawer}
       options={{
         tabBarIcon: () => (
-          <FontAwesome name="user" size={35} color={colors.white} />
+          <FontAwesome name="user" size={33} color={colors.white} />
         ),
       }}
     />

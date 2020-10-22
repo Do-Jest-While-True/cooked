@@ -2,6 +2,7 @@
 export default {
   // ⬇ app theme ⬇
   main: '#141d26',
+  mainFaded: '#18232e',
   pink: '#c51f5d',
   // ⬆ app theme ⬆
 

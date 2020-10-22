@@ -63,20 +63,26 @@ const RecipeScreen = ({
           {/* Recipe Image: */}
           <Image source={{ uri: singleRecipe.imageUrl }} style={styles.img} />
           <View style={styles.recipeContent}>
-            <Likes recipeId={singleRecipe.id} />
-            {/* Username: */}
-            {/* don't render username when clicking in from my user profile */}
-            {route.params.userId && (
-              <TouchableOpacity
-                onPress={() =>
-                  route.params.nav.navigate('Ext User Profile', { user })
-                }
-              >
-                <Text style={[defaultStyles.text, styles.username]}>
-                  @{user.user.username}
-                </Text>
-              </TouchableOpacity>
-            )}
+            {/* USERNAME & LIKE FLEX */}
+            <View style={styles.usernameLikeRow}>
+              {/* Username: */}
+              {/* don't render username when clicking in from my user profile */}
+              {route.params.userId && (
+                <TouchableOpacity
+                  onPress={() =>
+                    route.params.nav.navigate('Ext User Profile', { user })
+                  }
+                >
+                  <Text style={[defaultStyles.text, styles.username]}>
+                    @{user.user.username}
+                  </Text>
+                </TouchableOpacity>
+              )}
+              {/* Likes */}
+              <View>
+                <Likes recipeId={singleRecipe.id} />
+              </View>
+            </View>
             {/* Recipe Name: */}
             <Text style={[styles.recipesHeadings, styles.recipeTitle]}>
               {singleRecipe.name}
@@ -188,6 +194,12 @@ const styles = StyleSheet.create({
     width: '100%',
     resizeMode: 'cover',
     opacity: 0.75,
+  },
+  usernameLikeRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
   },
   username: {
     color: colors.pink,

@@ -87,7 +87,6 @@ const styles = StyleSheet.create({
   likeView: {
     flex: 1,
     flexDirection: 'row',
-    marginRight: 8,
   },
   likeText: {
     color: colors.white,
