@@ -15,8 +15,10 @@ import { Entypo } from '@expo/vector-icons'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const AllThreadsScreen = ({ directMessages, getThreads }) => {
+const AllThreadsScreen = ({ directMessages, getThreads, navigation, me }) => {
   const [displayNewMsgForm, setDisplayNewMsgForm] = useState(false)
+  const [emptyWarning, setEmptyWarning] = useState(false)
+  const [usernameInput, setUsernameInput] = useState('')
 
   useEffect(() => {
     getThreads()
@@ -30,7 +32,28 @@ const AllThreadsScreen = ({ directMessages, getThreads }) => {
     }
   }
 
-  // console.log('dm -->', directMessages)
+  const handleStartMessage = () => {
+    if (!usernameInput) {
+      return setEmptyWarning(true)
+    }
+
+    // findOrCreate thread with me and username entered
+
+    // navigate to thread
+
+    setEmptyWarning(false)
+  }
+
+  const handleNavToSingleThread = (messages) => {
+    navigation.navigate('Chat', { messages })
+  }
+
+  // console.log('dm -->', directMessages);
+  // console.log('-----------------------------------');
+  // console.log('me.user -->', me.user);
+  // console.log('-----------------------------------');
+  // console.log('usernameInput -->', usernameInput);
+
   return (
     <View style={defaultStyles.container}>
       {/* OPEN NEW MSG FORM BTN */}
@@ -41,28 +64,42 @@ const AllThreadsScreen = ({ directMessages, getThreads }) => {
       </TouchableOpacity>
       {/* NEW MESSAGE FORM */}
       {displayNewMsgForm && (
-        <View style={styles.newMsgFormView}>
-          <TextInput
-            placeholder="Enter username"
-            placeholderTextColor={colors.lightGray}
-            style={[styles.formInput]}
-            clearButtonMode="always"
-            // onSubmitEditing={handleSaveChanges}
-            // onChangeText={(val) => {
-            // 	setNewUsername(val);
-            // }}
-            // value={newUsername}
-          />
-          <TouchableOpacity style={styles.startMsgBtn}>
-            <Entypo name="new-message" size={28} color={colors.white} />
-          </TouchableOpacity>
+        <View>
+          {emptyWarning && (
+            <Text style={[defaultStyles.smallText, styles.warningMsg]}>
+              Enter username to start message!
+            </Text>
+          )}
+          <View style={styles.newMsgFormView}>
+            <TextInput
+              placeholder="Enter username"
+              placeholderTextColor={colors.lightGray}
+              style={[styles.formInput]}
+              clearButtonMode="always"
+              onSubmitEditing={handleStartMessage}
+              onChangeText={(val) => {
+                setUsernameInput(val)
+              }}
+              value={usernameInput}
+            />
+            <TouchableOpacity
+              style={styles.startMsgBtn}
+              onPress={handleStartMessage}
+            >
+              <Entypo name="new-message" size={28} color={colors.white} />
+            </TouchableOpacity>
+          </View>
         </View>
       )}
+      {/* MESSAGE LIST: */}
       <FlatList
         data={directMessages}
         keyExtractor={(thread) => thread.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.singleThreadView}>
+          <TouchableOpacity
+            style={styles.singleThreadView}
+            onPress={() => handleNavToSingleThread(item.messages)}
+          >
             <Image
               source={{ uri: item.user.profileImageUrl }}
               style={styles.profileImage}
@@ -87,6 +124,7 @@ const AllThreadsScreen = ({ directMessages, getThreads }) => {
 }
 
 const mapState = (state) => ({
+  me: state.user.me,
   directMessages: state.directMessages,
 })
 
@@ -113,22 +151,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     // THIS IS TEMPORARY -- NOT DYNAMIC:
-    marginLeft: 40,
+    marginLeft: 45,
+  },
+  warningMsg: {
+    textAlign: 'center',
+    marginBottom: 20,
+    color: colors.pink,
   },
   formInput: {
     backgroundColor: colors.light,
     borderRadius: 25,
-    height: 50,
+    height: 40,
     width: '60%',
     paddingHorizontal: 20,
     marginBottom: 20,
     fontSize: 16,
     color: colors.white,
     alignSelf: 'center',
+    textAlign: 'center',
   },
 
   startMsgBtn: {
-    margin: 10,
+    // THIS IS TEMPORARY -- NOT DYNAMIC:
+    margin: 12,
+    marginTop: 5,
   },
   singleThreadView: {
     flexDirection: 'row',

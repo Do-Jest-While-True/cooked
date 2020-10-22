@@ -23,6 +23,7 @@ import ExtUserProfileScreen from '../screens/ExtUserProfileScreen'
 import EditUserProfileScreen from '../screens/EditUserProfileScreen'
 import AllThreadsScreen from '../screens/AllThreadsScreen'
 import SearchScreen from '../screens/SearchScreen'
+import SingleThreadScreen from '../screens/SingleThreadScreen'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
@@ -130,8 +131,13 @@ const ProfileScreenDrawer = () => (
 const DirectMessageStack = () => (
   <Stack.Navigator>
     <Stack.Screen
-      name="All Messages"
+      name="Messages"
       component={AllThreadsScreen}
+      options={headerStyle}
+    />
+    <Stack.Screen
+      name="Chat"
+      component={SingleThreadScreen}
       options={headerStyle}
     />
   </Stack.Navigator>
