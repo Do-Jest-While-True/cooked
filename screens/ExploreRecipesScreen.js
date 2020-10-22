@@ -3,7 +3,6 @@ import {
   StyleSheet,
   FlatList,
   SafeAreaView,
-  ScrollView,
   RefreshControl,
   Text,
 } from 'react-native'
@@ -41,7 +40,8 @@ const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
 
   return (
     <SafeAreaView style={defaultStyles.container}>
-      <ScrollView
+      {/* I looked into the warning about nesting Virtualized lists inside of a scroll view and it said that it's redundant because they both are doing the same thing. So I took the pull to refresh properties out of scroll view and threw them directly in the FlatList and it works the same, and without the warning! */}
+      {/* <ScrollView
         ref={ref}
         refreshControl={
           <RefreshControl
@@ -50,33 +50,41 @@ const ExploreRecipesScreen = ({ navigation, getRecipes, recipes }) => {
             tintColor={colors.white}
           />
         }
-      >
-        {!recipes.length && (
-          <Text style={[defaultStyles.text, styles.noRecipesMsg]}>
-            No Recipes to Display!
-          </Text>
-        )}
-        {recipes && (
-          <FlatList
-            ref={ref}
-            data={recipes}
-            keyExtractor={(recipe) => recipe.id.toString()}
-            renderItem={({ item }) => (
-              <RecipeListItem
-                item={item}
-                name={item.name}
-                imageUrl={item.imageUrl}
-                time={item.time}
-                recipeId={item.id}
-                user={item.user}
-                nav={navigation}
-                userId={item.userId}
-                likes={item.likes}
-              />
-            )}
-          />
-        )}
-      </ScrollView>
+      > */}
+      {!recipes.length && (
+        <Text style={[defaultStyles.text, styles.noRecipesMsg]}>
+          No Recipes to Display!
+        </Text>
+      )}
+      {recipes && (
+        <FlatList
+          ref={ref}
+          // Added this from ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={colors.white}
+            />
+          }
+          data={recipes}
+          keyExtractor={(recipe) => recipe.id.toString()}
+          renderItem={({ item }) => (
+            <RecipeListItem
+              item={item}
+              name={item.name}
+              imageUrl={item.imageUrl}
+              time={item.time}
+              recipeId={item.id}
+              user={item.user}
+              nav={navigation}
+              userId={item.userId}
+              likes={item.likes}
+            />
+          )}
+        />
+      )}
+      {/* </ScrollView> */}
     </SafeAreaView>
   )
 }
@@ -99,12 +107,14 @@ const mapDispatchAll = (dispatch) => ({
 
 export const FeedRecipesScreen = connect(
   mapStateFeed,
-  mapDispatchFeed
+  // eslint-disable-next-line prettier/prettier
+  mapDispatchFeed,
 )(ExploreRecipesScreen)
 
 export const AllRecipesScreen = connect(
   mapStateAll,
-  mapDispatchAll
+  // eslint-disable-next-line prettier/prettier
+  mapDispatchAll,
 )(ExploreRecipesScreen)
 
 const styles = StyleSheet.create({

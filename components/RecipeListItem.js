@@ -45,17 +45,27 @@ const RecipeListItem = ({
             <Text style={styles.listItemTime}>{time}</Text>
           </View>
           {/* USERNAME */}
-          <Text style={styles.userName}>@{user.username}</Text>
+          <View style={styles.user}>
+            <Image
+              style={styles.userImg}
+              source={{ uri: user.profileImageUrl }}
+            />
+            <Text style={styles.userName}>{user.username}</Text>
+          </View>
+          <View />
+        </View>
+        <View style={styles.likesTime}>
+          {/* LIKES */}
+          <View style={styles.like}>
+            <Likes recipeId={recipeId} />
+          </View>
           {/* TIME AGO */}
-          <View>
+          <View style={styles.timeAgoView}>
             <Text style={styles.timeAgoText}>
               <TimeAgo time={item.createdAt} />
             </Text>
           </View>
-          <View />
         </View>
-        {/* LIKES */}
-        <Likes recipeId={recipeId} />
       </TouchableOpacity>
     )
   }
@@ -72,7 +82,6 @@ const styles = StyleSheet.create({
   listItemView: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
     borderTopWidth: 0.25,
     borderBottomWidth: 0.3,
     borderColor: colors.lightGray,
@@ -86,7 +95,7 @@ const styles = StyleSheet.create({
     margin: 15,
   },
   contentView: {
-    flex: 7,
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
   },
@@ -109,13 +118,23 @@ const styles = StyleSheet.create({
   timeView: {
     flexDirection: 'row',
   },
-  timeAgoView: {
-    flex: 1,
-    flexDirection: 'row',
-    alignContent: 'flex-end',
+  likesTime: {
+    marginRight: 8,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
   timeAgoText: {
     color: colors.white,
     fontSize: 11,
+  },
+  user: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userImg: {
+    width: 20,
+    height: 20,
+    borderRadius: 75,
+    marginRight: 7,
   },
 })

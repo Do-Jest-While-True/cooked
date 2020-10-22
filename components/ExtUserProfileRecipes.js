@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { FlatGrid } from 'react-native-super-grid'
-import { AppLoading } from 'expo'
 import { useIsFocused } from '@react-navigation/native'
 
 import { getMyRecipes } from '../redux'
@@ -12,7 +11,7 @@ const ExtUserProfileRecipes = ({ user, myRecipes, getMyRecipes, nav }) => {
   const isFocused = useIsFocused()
 
   useEffect(() => {
-    ;(async () => await getMyRecipes(user.id))()
+    getMyRecipes(user.id)
   }, [isFocused])
 
   return (
