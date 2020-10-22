@@ -119,7 +119,7 @@ const RecipeScreen = ({
               </Text>
               {singleRecipe.directions.map((direction, i) => (
                 <View key={i} style={styles.singleDirectionView}>
-                  <Text style={styles.singleDirection}>{i + 1}. </Text>
+                  <Text style={styles.singleDirectionBold}>{i + 1}. </Text>
                   <Text style={styles.singleDirection}>{direction}</Text>
                 </View>
               ))}
@@ -316,6 +316,12 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 15,
     color: colors.white,
+  },
+  singleDirectionBold: {
+    marginTop: 5,
+    fontSize: 16,
+    color: colors.white,
+    fontWeight: 'bold',
   },
   timeView: {
     flexDirection: 'row',

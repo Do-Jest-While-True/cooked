@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native'
-import axios from 'axios'
+import React, { useEffect } from 'react'
+import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import {
-  URL,
   getLikeObject,
   addLikeObject,
   removeLikeObject,
@@ -84,11 +82,6 @@ const mapDispatch = (dispatch) => ({
 export default connect(mapState, mapDispatch)(Likes)
 
 const styles = StyleSheet.create({
-  // likeView: {
-  //   flex: 1,
-  //   flexDirection: 'row',
-  //   marginRight: 8,
-  // },
   likeText: {
     color: colors.white,
     marginRight: 8,

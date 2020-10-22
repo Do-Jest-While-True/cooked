@@ -45,7 +45,13 @@ const RecipeListItem = ({
             <Text style={styles.listItemTime}>{time}</Text>
           </View>
           {/* USERNAME */}
-          <Text style={styles.userName}>@{user.username}</Text>
+          <View style={styles.user}>
+            <Image
+              style={styles.userImg}
+              source={{ uri: user.profileImageUrl }}
+            />
+            <Text style={styles.userName}>{user.username}</Text>
+          </View>
           <View />
         </View>
         <View style={styles.likesTime}>
@@ -76,7 +82,6 @@ const styles = StyleSheet.create({
   listItemView: {
     flex: 1,
     flexDirection: 'row',
-    // alignItems: 'center',
     borderTopWidth: 0.25,
     borderBottomWidth: 0.3,
     borderColor: colors.lightGray,
@@ -118,15 +123,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly',
   },
-  like: {
-    // alignSelf: 'center',
-  },
-  timeAgoView: {
-    // alignSelf: 'flex-end',
-    // marginTop: 40,
-  },
   timeAgoText: {
     color: colors.white,
     fontSize: 11,
+  },
+  user: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userImg: {
+    width: 20,
+    height: 20,
+    borderRadius: 75,
+    marginRight: 7,
   },
 })
