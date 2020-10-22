@@ -49,9 +49,7 @@ export const addComment = (recipeId, comment) => async (dispatch) => {
 
 export const removeComment = (commentId) => async (dispatch) => {
   try {
-    const { data: comment } = await axios.delete(
-      `${URL}/api/comments/${commentId}`
-    )
+    await axios.delete(`${URL}/api/comments/${commentId}`)
     dispatch(removedComment(commentId))
   } catch (error) {
     console.error(error)

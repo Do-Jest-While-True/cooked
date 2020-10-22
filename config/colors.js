@@ -12,6 +12,7 @@ export default {
   light: '#4a5e75',
   // light gray for placeholder text:
   lightGray: '#a6a6a6',
+  blue: 'dodgerblue',
 }
 // ORIGINAL THEME ____________________
 // export default {
