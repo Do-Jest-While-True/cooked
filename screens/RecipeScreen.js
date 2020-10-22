@@ -23,6 +23,7 @@ import Likes from '../components/Likes'
 import { getSingleRecipe, gotUser, addComment, removeComment } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
+import { color } from 'react-native-reanimated'
 
 const RecipeScreen = ({
   route,
@@ -104,7 +105,7 @@ const RecipeScreen = ({
               ))}
             </View>
             {/* Directions: */}
-            <View style={styles.recipesContentSection}>
+            <View style={[styles.recipesContentSection, styles.directionView]}>
               <Text style={[styles.recipesHeadings, styles.recipeSubHeading]}>
                 Directions
               </Text>
@@ -116,7 +117,7 @@ const RecipeScreen = ({
               ))}
             </View>
             {/* Comments: */}
-            <View style={styles.recipesContentSection}>
+            <View style={styles.commentsView}>
               <Text style={[styles.commentHeading]}>Comments</Text>
               {singleRecipe.comments.length ? (
                 singleRecipe.comments.map((comment) => (
@@ -124,7 +125,7 @@ const RecipeScreen = ({
                     <View style={styles.commentUserView}>
                       <Image
                         source={{ uri: comment.user.profileImageUrl }}
-                        style={styles.profileImgcomment}
+                        style={styles.profileImgComment}
                       />
                       <Text
                         style={[defaultStyles.text, styles.commentUsername]}
@@ -132,17 +133,13 @@ const RecipeScreen = ({
                         {comment.user.username}
                       </Text>
                     </View>
-                    <Text style={styles.singleDirectionComment}>
-                      {comment.body}
-                    </Text>
+                    <Text style={styles.singleComment}>{comment.body}</Text>
                   </View>
                 ))
               ) : (
-                <Text style={styles.singleDirectionComment}>
-                  There are no comments!
-                </Text>
+                <Text style={styles.singleComment}>There are no comments!</Text>
               )}
-              {/* Comment input Form, addComment is already imported and passed to the function.  We just need to add a form that sends the info into the addComment thunk and test to see if the reducer is good money.  Deleting a comment will be more difficult to solve, but that was imported into the function aswell.*/}
+              {/* Comment input Form, addComment is already imported and passed to the function.  We just need to add a form that sends the info into the addComment thunk and test to see if the reducer is good money.  Deleting a comment will be more difficult to solve, but that was imported into the function as well.*/}
               <Controller
                 control={control}
                 render={({ onChange, value }) => (
@@ -162,7 +159,7 @@ const RecipeScreen = ({
                   style={styles.submitBtn}
                   onPress={handleSubmit(onSubmit)}
                 >
-                  <Text style={styles.submitBtnText}>Post</Text>
+                  <Text style={styles.submitBtnText}>Submit</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -206,42 +203,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 25,
   },
-  //COMENTS SECTION
-  commentHeading: {
-    color: colors.white,
-    fontWeight: 'bold',
-    fontSize: 22,
-    letterSpacing: 2,
-    marginBottom: 10,
-  },
-  commentUsername: {
-    color: 'dodgerblue',
-    fontWeight: 'bold',
-    fontSize: 12,
-  },
-  commentUserView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 2,
-  },
-  commentView: {
-    flexDirection: 'column',
-    marginBottom: 10,
-    borderBottomWidth: 0.27,
-    borderColor: colors.lightGray,
-  },
-  profileImgcomment: {
-    width: 14,
-    height: 14,
-    borderRadius: 75,
-    marginRight: 7,
-  },
-  singleDirectionComment: {
-    fontSize: 15,
-    color: colors.white,
-    marginBottom: 10,
-  },
-  //COMMENTS AREA ENDS
   recipeContent: {
     margin: 20,
   },
@@ -264,14 +225,18 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
   singleIngredient: {
-    marginTop: 10,
+    marginTop: 12,
     fontSize: 15,
     color: colors.white,
+  },
+  directionView: {
+    borderBottomWidth: 2,
   },
   singleDirectionView: {
     flexDirection: 'row',
   },
   singleDirection: {
+    marginTop: 12,
     fontSize: 15,
     color: colors.white,
   },
@@ -286,10 +251,47 @@ const styles = StyleSheet.create({
     color: colors.white,
     marginLeft: 5,
   },
+  // COMMENTS SECTION
+  commentsView: {},
+  commentHeading: {
+    color: colors.white,
+    fontWeight: 'bold',
+    fontSize: 22,
+    letterSpacing: 2,
+    marginBottom: 10,
+  },
+  commentUsername: {
+    color: colors.lightBlue,
+    fontWeight: 'bold',
+    fontSize: 13,
+    marginBottom: 7,
+  },
+  commentUserView: {
+    flexDirection: 'row',
+    marginBottom: 2,
+  },
+  commentView: {
+    flexDirection: 'column',
+    marginBottom: 10,
+    borderBottomWidth: 0.3,
+    borderColor: colors.lightGray,
+    paddingVertical: 8,
+  },
+  profileImgComment: {
+    width: 14,
+    height: 14,
+    borderRadius: 75,
+    marginRight: 7,
+  },
+  singleComment: {
+    fontSize: 15,
+    color: colors.white,
+    marginBottom: 10,
+  },
   formInput: {
     backgroundColor: colors.light,
-    borderRadius: 25,
-    height: 70,
+    borderRadius: 15,
+    height: 80,
     paddingHorizontal: 20,
     marginVertical: 20,
     fontSize: 16,
@@ -299,9 +301,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.pink,
     borderRadius: 75,
     paddingVertical: 10,
-    width: '50%',
-    height: 40,
+    width: '80%',
     alignSelf: 'center',
+    marginBottom: 200,
   },
   submitBtnText: {
     textAlign: 'center',

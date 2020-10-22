@@ -8,6 +8,7 @@ export default {
 
   white: '#e8e8e8',
   red: '#ff4f42',
+  lightBlue: 'dodgerblue',
 
   // text inputs background
   light: '#4a5e75',
