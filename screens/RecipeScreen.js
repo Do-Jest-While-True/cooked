@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   StyleSheet,
   SafeAreaView,
@@ -18,9 +18,16 @@ import {
 } from '@expo-google-fonts/covered-by-your-grace'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/native'
-import Likes from '../components/Likes'
+import { Feather } from '@expo/vector-icons'
 
-import { getSingleRecipe, gotUser, addComment, removeComment } from '../redux'
+import Likes from '../components/Likes'
+import {
+  getSingleRecipe,
+  gotUser,
+  addComment,
+  removeComment,
+  editComment,
+} from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
@@ -30,10 +37,16 @@ const RecipeScreen = ({
   getSingleRecipe,
   user,
   gotUser,
+  authId,
   addComment,
   removeComment,
+  editComment,
 }) => {
   const isFocused = useIsFocused()
+
+  const [editMode, setEditMode] = useState(false)
+  const [number, setNumber] = useState()
+  const [commentInfo, setCommentInfo] = useState()
 
   useEffect(() => {
     getSingleRecipe(route.params.recipeId)
@@ -49,6 +62,16 @@ const RecipeScreen = ({
   function onSubmit() {
     const value = getValues()
     addComment(route.params.recipeId, value)
+  }
+
+  const deleteComment = (comment) => {
+    removeComment(comment.id)
+  }
+
+  const pressEditComment = (comment) => {
+    console.log(editMode)
+    setEditMode(true)
+    console.log(comment)
   }
 
   let [fontsLoaded] = useFonts({
@@ -150,22 +173,76 @@ const RecipeScreen = ({
                 </TouchableOpacity>
               </View>
               {singleRecipe.comments.length ? (
-                singleRecipe.comments.map((comment) => (
-                  <View key={comment.id} style={styles.commentView}>
-                    <View style={styles.commentUserView}>
-                      <Image
-                        source={{ uri: comment.user.profileImageUrl }}
-                        style={styles.commentProfileImg}
+                singleRecipe.comments.map((comment, i) => {
+                  return editMode ? (
+                    <View id={i}>
+                      <Controller
+                        control={control}
+                        render={({ onChange, value }) => (
+                          <TextInput
+                            style={styles.commentFormInput}
+                            placeholder="Edit Comment Here!"
+                            placeholderTextColor={colors.lightGray}
+                            onChangeText={(value) => onChange(value)}
+                            value={value}
+                            multiline={true}
+                          />
+                        )}
+                        name="comment"
                       />
-                      <Text
-                        style={[defaultStyles.text, styles.commentUsername]}
-                      >
-                        {comment.user.username}
-                      </Text>
+                      <View style={styles.submitBtnView}>
+                        <TouchableOpacity
+                          style={styles.submitBtn}
+                          onPress={handleSubmit()}
+                        >
+                          <Text style={styles.submitBtnText}>Post</Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
-                    <Text style={styles.singleComment}>{comment.body}</Text>
-                  </View>
-                ))
+                  ) : (
+                    <View key={comment.id} style={styles.commentView}>
+                      <View style={styles.commentUserView}>
+                        <Image
+                          source={{ uri: comment.user.profileImageUrl }}
+                          style={styles.commentProfileImg}
+                        />
+                        <Text
+                          style={[defaultStyles.text, styles.commentUsername]}
+                        >
+                          {comment.user.username}
+                        </Text>
+                        {comment.userId === authId ? (
+                          <View style={styles.deleteCommentView}>
+                            {/* EDIT COMMENT */}
+                            <View>
+                              <TouchableOpacity
+                                onPress={() => pressEditComment(comment)}
+                                style={styles.commentButton}
+                              >
+                                <Feather name="edit" size={20} color="yellow" />
+                              </TouchableOpacity>
+                            </View>
+                            {/* DELETE COMMENT */}
+                            <View>
+                              <TouchableOpacity
+                                onPress={() => deleteComment(comment)}
+                                style={styles.commentButton}
+                              >
+                                <Feather
+                                  style={styles.deleteCommentText}
+                                  name="x-circle"
+                                  size={20}
+                                  color="black"
+                                />
+                              </TouchableOpacity>
+                            </View>
+                          </View>
+                        ) : null}
+                      </View>
+                      <Text style={styles.singleComment}>{comment.body}</Text>
+                    </View>
+                  )
+                })
               ) : (
                 <Text style={styles.singleComment}>There are no comments!</Text>
               )}
@@ -189,6 +266,8 @@ const mapDispatch = (dispatch) => ({
   gotUser: (userId) => dispatch(gotUser(userId)),
   addComment: (recipeId, comment) => dispatch(addComment(recipeId, comment)),
   removeComment: (commentId) => dispatch(removeComment(commentId)),
+  editComment: (commentId, comment) =>
+    dispatch(editComment(commentId, comment)),
 })
 
 export default connect(mapState, mapDispatch)(RecipeScreen)
@@ -281,6 +360,18 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  deleteCommentView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginRight: 5,
+  },
+  deleteCommentText: {
+    color: colors.red,
+  },
+  commentButton: {
+    marginHorizontal: 10,
   },
   //COMMENTS AREA END
   recipeContent: {
