@@ -56,8 +56,8 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
 
   const handleReset = () => {
     Alert.alert(
-      'Resetting Form',
-      'Are you sure you want to clear your entire post?',
+      'Reset Form',
+      "All of your changes will be discarded, are you sure you'd like to proceed?",
       [
         {
           text: 'Cancel',
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   resetBtn: {
-    backgroundColor: colors.red,
+    backgroundColor: colors.lightBlue,
     borderRadius: 25,
     marginVertical: 90,
     padding: 12,

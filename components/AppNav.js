@@ -180,7 +180,7 @@ export const TabNavigator = () => (
       component={DirectMessageStack}
       options={{
         tabBarIcon: () => (
-          <FontAwesome name="envelope" size={33} color={colors.white} />
+          <FontAwesome name="envelope" size={31} color={colors.white} />
         ),
         tabBarBadge: 2,
       }}
@@ -190,7 +190,7 @@ export const TabNavigator = () => (
       component={ProfileScreenDrawer}
       options={{
         tabBarIcon: () => (
-          <FontAwesome name="user" size={33} color={colors.white} />
+          <FontAwesome name="user" size={36} color={colors.white} />
         ),
       }}
     />
