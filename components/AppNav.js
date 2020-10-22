@@ -188,7 +188,7 @@ export const TabNavigator = () => (
         tabBarIcon: () => (
           <FontAwesome name="envelope" size={31} color={colors.white} />
         ),
-        tabBarBadge: 2,
+        // tabBarBadge: 2,
       }}
     />
     <Tab.Screen

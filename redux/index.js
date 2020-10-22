@@ -9,9 +9,9 @@ import auth from './auth'
 import user from './user'
 import singleRecipe from './singleRecipe'
 import myRecipes from './myRecipes'
-import serverUrl from './serverUrl'
 import userLikes from './likes'
 import directMessages from './directMessages'
+import singleThread from './singleThread'
 
 const appReducer = combineReducers({
   auth,
@@ -23,6 +23,7 @@ const appReducer = combineReducers({
   recipe,
   userLikes,
   directMessages,
+  singleThread,
 })
 
 const store = createStore(appReducer, applyMiddleware(thunkMiddleware))
@@ -37,3 +38,4 @@ export * from './recipe'
 export * from './serverUrl'
 export * from './likes'
 export * from './directMessages'
+export * from './singleThread'

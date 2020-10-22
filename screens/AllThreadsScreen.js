@@ -44,8 +44,8 @@ const AllThreadsScreen = ({ directMessages, getThreads, navigation, me }) => {
     setEmptyWarning(false)
   }
 
-  const handleNavToSingleThread = (messages) => {
-    navigation.navigate('Chat', { messages })
+  const handleNavToSingleThread = (thread) => {
+    navigation.navigate('Chat', { thread })
   }
 
   // console.log('dm -->', directMessages);
@@ -98,7 +98,7 @@ const AllThreadsScreen = ({ directMessages, getThreads, navigation, me }) => {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.singleThreadView}
-            onPress={() => handleNavToSingleThread(item.messages)}
+            onPress={() => handleNavToSingleThread(item)}
           >
             <Image
               source={{ uri: item.user.profileImageUrl }}
