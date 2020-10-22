@@ -19,6 +19,7 @@ import {
 import { MaterialIcons } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/native'
 import { Feather } from '@expo/vector-icons'
+import TimeAgo from 'react-native-timeago'
 
 import Likes from '../components/Likes'
 import {
@@ -55,13 +56,15 @@ const RecipeScreen = ({
     route.params.userId && gotUser(route.params.userId)
   }, [isFocused])
 
-  const { control, handleSubmit, getValues } = useForm({
-    defaultValues: { comment: '' },
+  const { control, handleSubmit, getValues, reset } = useForm({
+    defaultValues: { comment: '', updatedComment: '' },
+    mode: 'onChange',
   })
 
   function onSubmit() {
-    const value = getValues()
-    addComment(route.params.recipeId, value)
+    const comment = getValues()
+    addComment(route.params.recipeId, comment)
+    reset()
   }
 
   const deleteComment = (comment) => {
@@ -69,17 +72,24 @@ const RecipeScreen = ({
   }
 
   const pressEditComment = (comment) => {
-    console.log(editMode)
     setEditMode(true)
-    console.log(comment)
+    setNumber(comment.id)
+    setCommentInfo(comment.body)
+  }
+
+  const sendUpdatedComment = (comment) => {
+    const values = getValues()
+    if (values.updatedComment === '') {
+      setEditMode(false)
+    } else {
+      editComment(comment.id, values)
+      setEditMode(false)
+    }
   }
 
   let [fontsLoaded] = useFonts({
     CoveredByYourGrace_400Regular,
   })
-
-  // const sorted = singleRecipe.comments.sort((a, b) => a.createdAt - b.createdAt)
-  // singleRecipe.comments.forEach((comment) => console.log(comment.createdAt))
 
   // the last conditional here says, only care about checking for user.user if coming from the feeds -- if coming from the profile, theres no userId passing through the route obj (and user is not used in the return -- see line 44) so don't worry about checking for user.user
   if (!fontsLoaded || !singleRecipe.id || (route.params.userId && !user.user)) {
@@ -149,7 +159,7 @@ const RecipeScreen = ({
             </View>
             {/* Comments: */}
             <View>
-              <Text style={[styles.commentHeading]}>Comments</Text>
+              <Text style={styles.commentHeading}>Comments</Text>
               <Controller
                 control={control}
                 render={({ onChange, value }) => (
@@ -173,29 +183,36 @@ const RecipeScreen = ({
                 </TouchableOpacity>
               </View>
               {singleRecipe.comments.length ? (
-                singleRecipe.comments.map((comment, i) => {
-                  return editMode ? (
-                    <View id={i}>
+                singleRecipe.comments.map((comment) => {
+                  return editMode && number === comment.id ? (
+                    <View key={comment.id}>
                       <Controller
                         control={control}
                         render={({ onChange, value }) => (
                           <TextInput
                             style={styles.commentFormInput}
-                            placeholder="Edit Comment Here!"
-                            placeholderTextColor={colors.lightGray}
                             onChangeText={(value) => onChange(value)}
                             value={value}
                             multiline={true}
                           />
                         )}
-                        name="comment"
+                        name="updatedComment"
+                        defaultValue={commentInfo}
                       />
-                      <View style={styles.submitBtnView}>
+                      <View style={styles.commentBtnView}>
                         <TouchableOpacity
                           style={styles.submitBtn}
-                          onPress={handleSubmit()}
+                          onPress={() => setEditMode(false)}
                         >
-                          <Text style={styles.submitBtnText}>Post</Text>
+                          <Text style={styles.submitBtnText}>Cancel</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.submitBtn}
+                          onPress={handleSubmit(() =>
+                            sendUpdatedComment(comment)
+                          )}
+                        >
+                          <Text style={styles.submitBtnText}>Update</Text>
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -240,6 +257,12 @@ const RecipeScreen = ({
                         ) : null}
                       </View>
                       <Text style={styles.singleComment}>{comment.body}</Text>
+                      {/* TIME AGO */}
+                      <View style={styles.timeAgoView}>
+                        <Text style={styles.timeAgoText}>
+                          <TimeAgo time={comment.createdAt} />
+                        </Text>
+                      </View>
                     </View>
                   )
                 })
@@ -370,8 +393,20 @@ const styles = StyleSheet.create({
   deleteCommentText: {
     color: colors.red,
   },
+  commentBtnView: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
   commentButton: {
     marginHorizontal: 10,
+  },
+  timeAgoView: {
+    alignItems: 'flex-end',
+  },
+  timeAgoText: {
+    color: colors.lightGray,
+    fontSize: 11,
+    marginBottom: 3,
   },
   //COMMENTS AREA END
   recipeContent: {

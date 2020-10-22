@@ -34,7 +34,11 @@ export const getSingleRecipe = (recipeId) => async (dispatch) => {
     const { data: singleRecipe } = await axios.get(
       `${URL}/api/recipes/singlerecipe/${recipeId}`
     )
-    dispatch(gotSingleRecipe(singleRecipe))
+    const recipeObj = {
+      ...singleRecipe.recipe,
+      comments: singleRecipe.comments,
+    }
+    dispatch(gotSingleRecipe(recipeObj))
   } catch (error) {
     console.error(error)
   }
@@ -64,7 +68,7 @@ export const removeComment = (commentId) => async (dispatch) => {
 export const editComment = (commentId, comment) => async (dispatch) => {
   try {
     const { data: updatedComment } = await axios.put(
-      `${URL}/api/comments/${commentId}}`,
+      `${URL}/api/comments/${commentId}`,
       comment
     )
     dispatch(editedComment(updatedComment))

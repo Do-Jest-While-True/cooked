@@ -60,7 +60,7 @@ const RecipeListItem = ({
             <Likes recipeId={recipeId} />
           </View>
           {/* TIME AGO */}
-          <View style={styles.timeAgoView}>
+          <View>
             <Text style={styles.timeAgoText}>
               <TimeAgo time={item.createdAt} />
             </Text>
