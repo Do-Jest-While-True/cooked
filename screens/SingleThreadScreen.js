@@ -14,8 +14,6 @@ const SingleThreadScreen = ({ route, postNewMessage, getThread, singleThread, au
 	const threadId = route.params.thread.id;
 	const otherUser = route.params.thread.user;
 
-	// REFACTOR to accept only username and fetch based on that
-
 	useEffect(() => {
 		getThread(threadId);
 	}, []);

@@ -17,9 +17,6 @@ const AllThreadsScreen = ({ directMessages, getThreads, navigation, auth, postNe
 		getThreads();
 	}, []);
 
-	// console.log('dm------>', directMessages);
-	// console.log('-------------------------');
-
 	const toggleNewMsgForm = () => {
 		if (displayNewMsgForm) {
 			setDisplayNewMsgForm(false);
@@ -35,9 +32,9 @@ const AllThreadsScreen = ({ directMessages, getThreads, navigation, auth, postNe
 
 		postNewThread(auth.id, usernameInput);
 
-		let thread = directMessages[directMessages.length - 1];
+		// let thread = directMessages[directMessages.length - 1];
 
-		navigation.navigate('Chat', { thread });
+		// navigation.navigate('Chat', { thread });
 
 		setUsernameInput('');
 		setEmptyWarning(false);
@@ -67,7 +64,7 @@ const AllThreadsScreen = ({ directMessages, getThreads, navigation, auth, postNe
 							placeholderTextColor={colors.lightGray}
 							style={[ styles.formInput ]}
 							clearButtonMode="always"
-							// onSubmitEditing={handleStartMessage}
+							onSubmitEditing={handleStartMessage}
 							onChangeText={(val) => {
 								setUsernameInput(val);
 							}}
@@ -93,7 +90,7 @@ const AllThreadsScreen = ({ directMessages, getThreads, navigation, auth, postNe
 							<Text style={[ defaultStyles.text, styles.username ]}>@{item.user.username}</Text>
 							<Text style={defaultStyles.smallText}>
 								{item.messages.length} message
-								{item.messages.length > 1 && 's'}
+								{(item.messages.length < 1 && 's') || (item.messages.length > 1 && 's')}
 							</Text>
 						</View>
 					</TouchableOpacity>
