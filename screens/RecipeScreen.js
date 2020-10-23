@@ -31,7 +31,6 @@ import {
 } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
-import { color } from 'react-native-reanimated'
 
 const RecipeScreen = ({
   route,
@@ -93,6 +92,7 @@ const RecipeScreen = ({
   })
 
   // the last conditional here says, only care about checking for user.user if coming from the feeds -- if coming from the profile, theres no userId passing through the route obj (and user is not used in the return -- see line 44) so don't worry about checking for user.user
+
   if (!fontsLoaded || !singleRecipe.id || (route.params.userId && !user.user)) {
     return <AppLoading />
   } else {
@@ -106,22 +106,12 @@ const RecipeScreen = ({
             <View style={styles.usernameLikeRow}>
               {/* Username: */}
               {/* don't render username when clicking in from my user profile */}
-              {/* <View style={styles.outerUserView}> */}
-
               {route.params.userId && (
                 <TouchableOpacity
                   onPress={() =>
                     route.params.nav.navigate('Ext User Profile', { user })
                   }
                 >
-                  {/* <Text style={[defaultStyles.text, styles.username]}>
-                     @{user.user.username}
-                   </Text>
-                 </TouchableOpacity>
-               )} */}
-                  {/* Likes */}
-                  {/* <View>
-                 <Likes recipeId={singleRecipe.id} /> */}
                   <View style={styles.userView}>
                     <Image
                       style={styles.userImg}
@@ -133,6 +123,7 @@ const RecipeScreen = ({
                   </View>
                 </TouchableOpacity>
               )}
+              {/* Likes */}
               <View>
                 <Likes style={styles.like} recipeId={singleRecipe.id} />
               </View>
@@ -172,22 +163,7 @@ const RecipeScreen = ({
             {/* Comments: */}
             <View>
               <Text style={styles.commentHeading}>Comments</Text>
-              <Controller
-                control={control}
-                render={({ onChange, value }) => (
-                  <TextInput
-                    style={styles.commentFormInput}
-                    placeholder="Type Comment Here!"
-                    placeholderTextColor={colors.lightGray}
-                    onChangeText={(value) => onChange(value)}
-                    value={value}
-                    multiline={true}
-                  />
-                      {/*<View style={styles.commentsView}>
-              <Text style={[styles.commentHeading]}>Comments</Text>
-              {/* Comment input Form, addComment is already imported and passed to the function.  We just need to add a form that sends the info into the addComment thunk and test to see if the reducer is good money.  Deleting a comment will be more difficult to solve, but that was imported into the function as well.*/}
               <View>
-                {/* <Text style={[styles.commentHeading]}>Comments</Text> */}
                 <Controller
                   control={control}
                   render={({ onChange, value }) => (
@@ -210,28 +186,6 @@ const RecipeScreen = ({
                     <Text style={styles.submitBtnText}>Submit</Text>
                   </TouchableOpacity>
                 </View>
-                {singleRecipe.comments.length ? (
-                  singleRecipe.comments.map((comment) => (
-                    <View key={comment.id} style={styles.commentView}>
-                      <View style={styles.commentUserView}>
-                        <Image
-                          source={{ uri: comment.user.profileImageUrl }}
-                          style={styles.commentProfileImg}
-                        />
-                        <Text
-                          style={[defaultStyles.text, styles.commentUsername]}
-                        >
-                          {comment.user.username}
-                        </Text>
-                      </View>
-                      <Text style={styles.singleComment}>{comment.body}</Text>
-                    </View>
-                  ))
-                ) : (
-                  <Text style={styles.singleComment}>
-                    There are no comments!
-                  </Text> */}
-                )}
               </View>
               {singleRecipe.comments.length ? (
                 singleRecipe.comments.map((comment) => {
@@ -520,64 +474,4 @@ const styles = StyleSheet.create({
     color: colors.white,
     marginLeft: 5,
   },
-  // COMMENTS SECTION
-  //   commentsView: {},
-  //   commentHeading: {
-  //     color: colors.white,
-  //     fontWeight: 'bold',
-  //     fontSize: 22,
-  //     letterSpacing: 2,
-  //     marginBottom: 10,
-  //   },
-  //   commentUsername: {
-  //     color: colors.lightBlue,
-  //     fontWeight: 'bold',
-  //     fontSize: 13,
-  //     marginBottom: 7,
-  //   },
-  //   commentUserView: {
-  //     flexDirection: 'row',
-  //     marginBottom: 2,
-  //   },
-  //   commentView: {
-  //     flexDirection: 'column',
-  //     marginBottom: 10,
-  //     borderBottomWidth: 0.3,
-  //     borderColor: colors.lightGray,
-  //     paddingVertical: 8,
-  //   },
-  //   profileImgComment: {
-  //     width: 14,
-  //     height: 14,
-  //     borderRadius: 75,
-  //     marginRight: 7,
-  //   },
-  //   singleComment: {
-  //     fontSize: 15,
-  //     color: colors.white,
-  //     marginBottom: 10,
-  //   },
-  //   formInput: {
-  //     backgroundColor: colors.light,
-  //     borderRadius: 15,
-  //     height: 80,
-  //     paddingHorizontal: 20,
-  //     marginVertical: 20,
-  //     fontSize: 16,
-  //     color: colors.white,
-  //   },
-  //   submitBtn: {
-  //     backgroundColor: colors.pink,
-  //     borderRadius: 75,
-  //     paddingVertical: 10,
-  //     width: '80%',
-  //     alignSelf: 'center',
-  //     marginBottom: 200,
-  //   },
-  //   submitBtnText: {
-  //     textAlign: 'center',
-  //     color: colors.white,
-  //     fontSize: 16,
-  //     fontWeight: 'bold',
-  //   },
 })
