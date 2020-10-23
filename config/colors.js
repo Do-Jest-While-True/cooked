@@ -14,7 +14,41 @@ export default {
   light: '#4a5e75',
   // light gray for placeholder text:
   lightGray: '#a6a6a6',
+  blue: 'dodgerblue',
 }
+
+export const darkTheme = {
+  // ⬇ app theme ⬇
+  main: '#141d26',
+  pink: '#c51f5d',
+  // ⬆ app theme ⬆
+
+  white: '#e8e8e8',
+  red: '#ff4f42',
+
+  // text inputs background
+  light: '#4a5e75',
+  // light gray for placeholder text:
+  lightGray: '#a6a6a6',
+  blue: 'dodgerblue',
+}
+
+export const lightTheme = {
+  // ⬇ app theme ⬇
+  main: '#FAF8F8',
+  pink: '#c51f5d',
+  // ⬆ app theme ⬆
+
+  white: '#313030',
+  red: '#ff4f42',
+
+  // text inputs background
+  light: '#c8d4e3',
+  // light gray for placeholder text:
+  lightGray: '#171717',
+  blue: 'dodgerblue',
+}
+
 // ORIGINAL THEME ____________________
 // export default {
 // 	// ⬇ app theme ⬇

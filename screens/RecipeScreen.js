@@ -43,7 +43,9 @@ const RecipeScreen = ({
     route.params.userId && gotUser(route.params.userId)
   }, [isFocused])
 
-  const { control, handleSubmit, getValues } = useForm()
+  const { control, handleSubmit, getValues } = useForm({
+    defaultValues: { comment: '' },
+  })
 
   function onSubmit() {
     const value = getValues()
@@ -53,6 +55,9 @@ const RecipeScreen = ({
   let [fontsLoaded] = useFonts({
     CoveredByYourGrace_400Regular,
   })
+
+  // const sorted = singleRecipe.comments.sort((a, b) => a.createdAt - b.createdAt)
+  // singleRecipe.comments.forEach((comment) => console.log(comment.createdAt))
 
   // the last conditional here says, only care about checking for user.user if coming from the feeds -- if coming from the profile, theres no userId passing through the route obj (and user is not used in the return -- see line 44) so don't worry about checking for user.user
   if (!fontsLoaded || !singleRecipe.id || (route.params.userId && !user.user)) {
@@ -68,20 +73,35 @@ const RecipeScreen = ({
             <View style={styles.usernameLikeRow}>
               {/* Username: */}
               {/* don't render username when clicking in from my user profile */}
+//             <View style={styles.outerUserView}>
+
               {route.params.userId && (
                 <TouchableOpacity
                   onPress={() =>
                     route.params.nav.navigate('Ext User Profile', { user })
                   }
                 >
-                  <Text style={[defaultStyles.text, styles.username]}>
-                    @{user.user.username}
-                  </Text>
+//                   <Text style={[defaultStyles.text, styles.username]}>
+//                     @{user.user.username}
+//                   </Text>
+//                 </TouchableOpacity>
+//               )}
+//               {/* Likes */}
+//               <View>
+//                 <Likes recipeId={singleRecipe.id} />
+                  <View style={styles.userView}>
+                    <Image
+                      style={styles.userImg}
+                      source={{ uri: user.user.profileImageUrl }}
+                    />
+                    <Text style={[defaultStyles.text, styles.username]}>
+                      {user.user.username}
+                    </Text>
+                  </View>
                 </TouchableOpacity>
               )}
-              {/* Likes */}
               <View>
-                <Likes recipeId={singleRecipe.id} />
+                <Likes style={styles.like} recipeId={singleRecipe.id} />
               </View>
             </View>
             {/* Recipe Name: */}
@@ -111,7 +131,7 @@ const RecipeScreen = ({
               </Text>
               {singleRecipe.directions.map((direction, i) => (
                 <View key={i} style={styles.singleDirectionView}>
-                  <Text style={styles.singleDirection}>- </Text>
+                  <Text style={styles.singleDirectionBold}>{i + 1}. </Text>
                   <Text style={styles.singleDirection}>{direction}</Text>
                 </View>
               ))}
@@ -140,11 +160,13 @@ const RecipeScreen = ({
                 <Text style={styles.singleComment}>There are no comments!</Text>
               )}
               {/* Comment input Form, addComment is already imported and passed to the function.  We just need to add a form that sends the info into the addComment thunk and test to see if the reducer is good money.  Deleting a comment will be more difficult to solve, but that was imported into the function as well.*/}
+            <View>
+//               <Text style={[styles.commentHeading]}>Comments</Text>
               <Controller
                 control={control}
                 render={({ onChange, value }) => (
                   <TextInput
-                    style={styles.formInput}
+                    style={styles.commentFormInput}
                     placeholder="Type Comment Here!"
                     placeholderTextColor={colors.lightGray}
                     onChangeText={(value) => onChange(value)}
@@ -162,7 +184,28 @@ const RecipeScreen = ({
                   <Text style={styles.submitBtnText}>Submit</Text>
                 </TouchableOpacity>
               </View>
+              {singleRecipe.comments.length ? (
+                singleRecipe.comments.map((comment) => (
+                  <View key={comment.id} style={styles.commentView}>
+                    <View style={styles.commentUserView}>
+                      <Image
+                        source={{ uri: comment.user.profileImageUrl }}
+                        style={styles.commentProfileImg}
+                      />
+                      <Text
+                        style={[defaultStyles.text, styles.commentUsername]}
+                      >
+                        {comment.user.username}
+                      </Text>
+                    </View>
+                    <Text style={styles.singleComment}>{comment.body}</Text>
+                  </View>
+                ))
+              ) : (
+                <Text style={styles.singleComment}>There are no comments!</Text>
+              )}
             </View>
+            {/* End Comments View */}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -197,12 +240,89 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
+  outerUserView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  userView: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   username: {
     color: colors.pink,
     fontWeight: 'bold',
-    marginBottom: 25,
+    fontSize: 22,
   },
+  userImg: {
+    width: 45,
+    height: 45,
+    borderRadius: 75,
+    marginRight: 7,
+  },
+  //COMMENTS SECTION
+  commentHeading: {
+    color: colors.white,
+    fontWeight: 'bold',
+    fontSize: 22,
+    letterSpacing: 2,
+    marginBottom: 10,
+  },
+  commentUserView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  commentProfileImg: {
+    width: 20,
+    height: 20,
+    borderRadius: 75,
+    marginRight: 7,
+  },
+  commentUsername: {
+    color: colors.blue,
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  commentView: {
+    flexDirection: 'column',
+    marginBottom: 10,
+    borderBottomWidth: 0.3,
+    borderColor: colors.lightGray,
+  },
+  singleComment: {
+    fontSize: 15,
+    color: colors.white,
+    marginBottom: 10,
+  },
+  commentFormInput: {
+    backgroundColor: colors.light,
+    borderRadius: 10,
+    height: 70,
+    paddingHorizontal: 20,
+    marginVertical: 10,
+    paddingTop: 10,
+    paddingBottom: 15,
+    fontSize: 16,
+    color: colors.white,
+  },
+  submitBtn: {
+    backgroundColor: colors.pink,
+    borderRadius: 75,
+    paddingVertical: 10,
+    marginBottom: 30,
+    width: '30%',
+    height: 40,
+    alignSelf: 'center',
+  },
+  submitBtnText: {
+    textAlign: 'center',
+    color: colors.white,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  //COMMENTS AREA END
   recipeContent: {
     margin: 20,
   },
@@ -214,8 +334,8 @@ const styles = StyleSheet.create({
   },
   recipeTitle: {
     fontFamily: 'CoveredByYourGrace_400Regular',
-    letterSpacing: 3,
-    fontSize: 25,
+    letterSpacing: 2,
+    fontSize: 24,
     marginBottom: 18,
   },
   recipesHeadings: {
@@ -225,7 +345,8 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
   singleIngredient: {
-    marginTop: 12,
+//     marginTop: 12,
+    marginTop: 5,
     fontSize: 15,
     color: colors.white,
   },
@@ -236,9 +357,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   singleDirection: {
-    marginTop: 12,
+//     marginTop: 12,
+    marginTop: 5,
     fontSize: 15,
     color: colors.white,
+  },
+  singleDirectionBold: {
+    marginTop: 5,
+    fontSize: 16,
+    color: colors.white,
+    fontWeight: 'bold',
   },
   timeView: {
     flexDirection: 'row',
@@ -252,63 +380,63 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   // COMMENTS SECTION
-  commentsView: {},
-  commentHeading: {
-    color: colors.white,
-    fontWeight: 'bold',
-    fontSize: 22,
-    letterSpacing: 2,
-    marginBottom: 10,
-  },
-  commentUsername: {
-    color: colors.lightBlue,
-    fontWeight: 'bold',
-    fontSize: 13,
-    marginBottom: 7,
-  },
-  commentUserView: {
-    flexDirection: 'row',
-    marginBottom: 2,
-  },
-  commentView: {
-    flexDirection: 'column',
-    marginBottom: 10,
-    borderBottomWidth: 0.3,
-    borderColor: colors.lightGray,
-    paddingVertical: 8,
-  },
-  profileImgComment: {
-    width: 14,
-    height: 14,
-    borderRadius: 75,
-    marginRight: 7,
-  },
-  singleComment: {
-    fontSize: 15,
-    color: colors.white,
-    marginBottom: 10,
-  },
-  formInput: {
-    backgroundColor: colors.light,
-    borderRadius: 15,
-    height: 80,
-    paddingHorizontal: 20,
-    marginVertical: 20,
-    fontSize: 16,
-    color: colors.white,
-  },
-  submitBtn: {
-    backgroundColor: colors.pink,
-    borderRadius: 75,
-    paddingVertical: 10,
-    width: '80%',
-    alignSelf: 'center',
-    marginBottom: 200,
-  },
-  submitBtnText: {
-    textAlign: 'center',
-    color: colors.white,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+//   commentsView: {},
+//   commentHeading: {
+//     color: colors.white,
+//     fontWeight: 'bold',
+//     fontSize: 22,
+//     letterSpacing: 2,
+//     marginBottom: 10,
+//   },
+//   commentUsername: {
+//     color: colors.lightBlue,
+//     fontWeight: 'bold',
+//     fontSize: 13,
+//     marginBottom: 7,
+//   },
+//   commentUserView: {
+//     flexDirection: 'row',
+//     marginBottom: 2,
+//   },
+//   commentView: {
+//     flexDirection: 'column',
+//     marginBottom: 10,
+//     borderBottomWidth: 0.3,
+//     borderColor: colors.lightGray,
+//     paddingVertical: 8,
+//   },
+//   profileImgComment: {
+//     width: 14,
+//     height: 14,
+//     borderRadius: 75,
+//     marginRight: 7,
+//   },
+//   singleComment: {
+//     fontSize: 15,
+//     color: colors.white,
+//     marginBottom: 10,
+//   },
+//   formInput: {
+//     backgroundColor: colors.light,
+//     borderRadius: 15,
+//     height: 80,
+//     paddingHorizontal: 20,
+//     marginVertical: 20,
+//     fontSize: 16,
+//     color: colors.white,
+//   },
+//   submitBtn: {
+//     backgroundColor: colors.pink,
+//     borderRadius: 75,
+//     paddingVertical: 10,
+//     width: '80%',
+//     alignSelf: 'center',
+//     marginBottom: 200,
+//   },
+//   submitBtnText: {
+//     textAlign: 'center',
+//     color: colors.white,
+//     fontSize: 16,
+//     fontWeight: 'bold',
+//   },
 })

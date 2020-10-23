@@ -62,8 +62,27 @@ const RecipeListItem = ({
                 <TimeAgo time={item.createdAt} />
               </Text>
             </View>
+//           {/* USERNAME */}
+//           <View style={styles.user}>
+//             <Image
+//               style={styles.userImg}
+//               source={{ uri: user.profileImageUrl }}
+//             />
+//             <Text style={styles.userName}>{user.username}</Text>
+//           </View>
+//           <View />
+//         </View>
+//         <View style={styles.likesTime}>
+//           {/* LIKES */}
+//           <View style={styles.like}>
+//             <Likes recipeId={recipeId} />
+//           </View>
+//           {/* TIME AGO */}
+//           <View style={styles.timeAgoView}>
+//             <Text style={styles.timeAgoText}>
+//               <TimeAgo time={item.createdAt} />
+//             </Text>
           </View>
-          <View />
         </View>
       </TouchableOpacity>
     )
@@ -82,7 +101,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    borderTopWidth: 0.3,
+    borderTopWidth: 0.25,
     borderBottomWidth: 0.3,
     borderColor: colors.lightGray,
     backgroundColor: colors.mainFaded,
@@ -126,9 +145,26 @@ const styles = StyleSheet.create({
   },
   cookTimeView: {
     flexDirection: 'row',
+  timeView: {
+    flexDirection: 'row',
+  },
+  likesTime: {
+    marginRight: 8,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
   timeAgoText: {
     color: colors.white,
     fontSize: 13,
+  },
+  user: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userImg: {
+    width: 20,
+    height: 20,
+    borderRadius: 75,
+    marginRight: 7,
   },
 })
