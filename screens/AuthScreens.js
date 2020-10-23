@@ -9,7 +9,7 @@ import { auth } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const AuthScreens = ({ name, getUser, auth }) => {
+const AuthScreens = ({ name, getUser, auth, error }) => {
   // for validations:
   const [emailFieldWarning, setEmailFieldWarning] = useState(false)
   const [passwordFieldWarning, setPasswordFieldWarning] = useState(false)
@@ -49,6 +49,10 @@ const AuthScreens = ({ name, getUser, auth }) => {
     setFirstNameFieldWarning(false)
     setLastNameFieldWarning(false)
   }
+
+  // console.log('auth------->', auth);
+  // console.log('unique msg------->', auth.uniqueEmailMsg);
+  // console.log('error---->', error);
 
   return (
     <SafeAreaView style={defaultStyles.container}>
@@ -120,11 +124,14 @@ const AuthScreens = ({ name, getUser, auth }) => {
             </React.Fragment>
           ) : null}
           {/* EMAIL ----------------------------------------- */}
+          {/* empty email warning */}
           {emailFieldWarning && (
             <Text style={[defaultStyles.text, styles.warning]}>
               Please enter a valid email address!
             </Text>
           )}
+          {/* non-unique email warning */}
+          {/* {auth && <Text style={[ defaultStyles.text, styles.warning ]}>{auth}</Text>} */}
           <Controller
             control={control}
             render={({ onChange, value }) => (

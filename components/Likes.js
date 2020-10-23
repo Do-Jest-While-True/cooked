@@ -50,7 +50,7 @@ const Likes = ({
 
   if (userLikes) {
     return (
-      <View style={styles.likeView}>
+      <View>
         <TouchableOpacity onPress={() => liked()}>
           {isLiked ? (
             <MaterialIcons name="favorite" size={28} color={colors.pink} />
@@ -82,6 +82,10 @@ const mapDispatch = (dispatch) => ({
 export default connect(mapState, mapDispatch)(Likes)
 
 const styles = StyleSheet.create({
+  likeView: {
+    flex: 1,
+    flexDirection: 'row',
+  },
   likeText: {
     color: colors.white,
     marginRight: 8,

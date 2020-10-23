@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, View, Text, Image } from 'react-native'
+import { StyleSheet, View, Text, Image, Alert } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
@@ -19,7 +19,17 @@ const UserProfileInfo = ({ logout, me, authId, getMe, nav }) => {
   }, [isFocused])
 
   let handleSubmit = () => {
-    logout()
+    Alert.alert('Log Out', 'Are you sure you want to log out?', [
+      {
+        text: 'Cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          logout()
+        },
+      },
+    ])
   }
 
   if (!me.user) {

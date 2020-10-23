@@ -35,35 +35,53 @@ const RecipeListItem = ({
           })
         }
       >
-        {/* IMAGE */}
+        {/* Image */}
         <Image source={{ uri: imageUrl }} style={styles.listItemImg} />
         <View style={styles.contentView}>
-          <Text style={styles.listItemName}>{name}</Text>
-          {/* TIME */}
-          <View style={styles.timeView}>
+          {/* RECIPE NAME / LIKES FLEX BOX */}
+          <View style={styles.recipeNameLikeView}>
+            {/* Recipe Name */}
+            <Text style={styles.recipeName}>{name}</Text>
+            {/* Likes */}
+            <View>
+              <Likes recipeId={recipeId} />
+            </View>
+          </View>
+          {/* Cook Time */}
+          <View style={styles.cookTimeView}>
             <MaterialIcons name="timer" size={18} color={colors.white} />
-            <Text style={styles.listItemTime}>{time}</Text>
+            <Text style={styles.cookTime}>{time}</Text>
           </View>
-          {/* USERNAME */}
-          <View style={styles.user}>
-            <Image
-              style={styles.userImg}
-              source={{ uri: user.profileImageUrl }}
-            />
-            <Text style={styles.userName}>{user.username}</Text>
-          </View>
-          <View />
-        </View>
-        <View style={styles.likesTime}>
-          {/* LIKES */}
-          <View style={styles.like}>
-            <Likes recipeId={recipeId} />
-          </View>
-          {/* TIME AGO */}
-          <View>
-            <Text style={styles.timeAgoText}>
-              <TimeAgo time={item.createdAt} />
-            </Text>
+          {/* USERNAME / TIME AGO FLEX BOX */}
+          <View style={styles.userNameTimeAgoView}>
+            {/* Username */}
+            <Text style={styles.userName}>@{user.username}</Text>
+            {/* Time Ago */}
+            <View>
+              <Text style={styles.timeAgoText}>
+                <TimeAgo time={item.createdAt} />
+              </Text>
+            </View>
+            {/* USERNAME */}
+            {/* <View style={styles.user}>
+             <Image
+               style={styles.userImg}
+               source={{ uri: user.profileImageUrl }}
+             />
+             <Text style={styles.userName}>{user.username}</Text>
+           </View>
+           <View />
+         </View>
+         <View style={styles.likesTime}> */}
+            {/* LIKES */}
+            {/* <View style={styles.like}>
+             <Likes recipeId={recipeId} />
+           </View> */}
+            {/* TIME AGO */}
+            {/* <View style={styles.timeAgoView}>
+             <Text style={styles.timeAgoText}>
+               <TimeAgo time={item.createdAt} />
+             </Text> */}
           </View>
         </View>
       </TouchableOpacity>
@@ -82,38 +100,51 @@ const styles = StyleSheet.create({
   listItemView: {
     flex: 1,
     flexDirection: 'row',
+    alignItems: 'center',
     borderTopWidth: 0.25,
     borderBottomWidth: 0.3,
     borderColor: colors.lightGray,
-    backgroundColor: '#18232e',
-    paddingVertical: 5,
+    backgroundColor: colors.mainFaded,
+    padding: 15,
   },
   listItemImg: {
     width: screenWidth / 4,
     height: screenWidth / 4,
     borderRadius: 10,
-    margin: 15,
+    marginRight: 15,
   },
   contentView: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    height: '100%',
   },
-  listItemName: {
-    fontSize: 15,
+  recipeNameLikeView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  recipeName: {
+    fontSize: 19,
     fontWeight: 'bold',
-    marginVertical: 8,
     color: colors.white,
+    width: '85%',
+  },
+  userNameTimeAgoView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   userName: {
     fontSize: 15,
     fontWeight: 'bold',
-    marginVertical: 8,
     color: colors.pink,
   },
-  listItemTime: {
-    color: '#fff',
+  cookTime: {
+    color: colors.white,
     marginLeft: 5,
+  },
+  cookTimeView: {
+    flexDirection: 'row',
   },
   timeView: {
     flexDirection: 'row',
@@ -125,7 +156,7 @@ const styles = StyleSheet.create({
   },
   timeAgoText: {
     color: colors.white,
-    fontSize: 11,
+    fontSize: 13,
   },
   user: {
     flexDirection: 'row',

@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, SafeAreaView } from 'react-native'
+import { StackActions } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -23,6 +24,7 @@ import ExtUserProfileScreen from '../screens/ExtUserProfileScreen'
 import EditUserProfileScreen from '../screens/EditUserProfileScreen'
 import AllThreadsScreen from '../screens/AllThreadsScreen'
 import SearchScreen from '../screens/SearchScreen'
+import SingleThreadScreen from '../screens/SingleThreadScreen'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
@@ -31,6 +33,9 @@ const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 const ExploreTab = createMaterialTopTabNavigator()
 const Drawer = createDrawerNavigator()
+
+// STACKS / TABS // DRAWER
+// ==============================================
 
 const AllAndSingleRecipeStack = () => (
   <Stack.Navigator>
@@ -127,12 +132,20 @@ const ProfileScreenDrawer = () => (
 const DirectMessageStack = () => (
   <Stack.Navigator>
     <Stack.Screen
-      name="All Messages"
+      name="Messages"
       component={AllThreadsScreen}
+      options={headerStyle}
+    />
+    <Stack.Screen
+      name="Chat"
+      component={SingleThreadScreen}
       options={headerStyle}
     />
   </Stack.Navigator>
 )
+
+// TAB BAR
+// ==================================================
 
 export const TabNavigator = () => (
   <Tab.Navigator
@@ -140,22 +153,29 @@ export const TabNavigator = () => (
       showLabel: false,
       style: styles.navbar,
       activeTintColor: '#000',
+      activeBackgroundColor: colors.mainFaded,
     }}
   >
     <Tab.Screen
       name="Explore"
       component={ExploreTabs}
       options={{
-        tabBarIcon: () => <Entypo name="bowl" size={35} color={colors.white} />,
+        tabBarIcon: () => <Entypo name="bowl" size={33} color={colors.white} />,
         unmountOnBlur: true,
       }}
+      // creates dev warning when already at base stack
+      listeners={({ navigation }) => ({
+        tabPress: () => {
+          navigation.dispatch(StackActions.popToTop())
+        },
+      })}
     />
     <Tab.Screen
       name="Search"
       component={SearchScreen}
       options={{
         tabBarIcon: () => (
-          <FontAwesome name="search" size={35} color={colors.white} />
+          <FontAwesome name="search" size={33} color={colors.white} />
         ),
       }}
     />
@@ -173,8 +193,9 @@ export const TabNavigator = () => (
       component={DirectMessageStack}
       options={{
         tabBarIcon: () => (
-          <FontAwesome name="envelope" size={35} color={colors.white} />
+          <FontAwesome name="envelope" size={31} color={colors.white} />
         ),
+        // tabBarBadge: 2,
       }}
     />
     <Tab.Screen
@@ -182,9 +203,15 @@ export const TabNavigator = () => (
       component={ProfileScreenDrawer}
       options={{
         tabBarIcon: () => (
-          <FontAwesome name="user" size={35} color={colors.white} />
+          <FontAwesome name="user" size={36} color={colors.white} />
         ),
       }}
+      // creates dev warning when already at base stack
+      listeners={({ navigation }) => ({
+        tabPress: () => {
+          navigation.dispatch(StackActions.popToTop())
+        },
+      })}
     />
   </Tab.Navigator>
 )
