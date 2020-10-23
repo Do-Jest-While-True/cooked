@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  RefreshControl,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { FontAwesome } from '@expo/vector-icons'
@@ -15,6 +16,12 @@ import { getThreadMessages, postNewMessage } from '../redux'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
+
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout)
+  })
+}
 
 // to make the new message nav issue work:
 
@@ -29,10 +36,17 @@ const SingleThreadScreen = ({
   singleThreadMessages,
   auth,
 }) => {
+  const [refreshing, setRefreshing] = React.useState(false)
   const [messageInput, setMessageInput] = useState('')
 
   const threadId = route.params.thread.id
   const otherUser = route.params.thread.user
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+    wait(1000).then(() => setRefreshing(false))
+    getThreadMessages(threadId)
+  }, [])
 
   useEffect(() => {
     getThreadMessages(threadId)
@@ -67,6 +81,13 @@ const SingleThreadScreen = ({
       {/* CHAT MESSAGES */}
       {singleThreadMessages && (
         <FlatList
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={colors.white}
+            />
+          }
           data={singleThreadMessages}
           keyExtractor={(message) => message.id.toString()}
           renderItem={({ item }) => (

@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  RefreshControl,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Entypo } from '@expo/vector-icons'
@@ -16,6 +17,12 @@ import { getAllThreads, postNewThread } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout)
+  })
+}
+
 const AllThreadsScreen = ({
   directMessages,
   getThreads,
@@ -23,9 +30,16 @@ const AllThreadsScreen = ({
   auth,
   postNewThread,
 }) => {
+  const [refreshing, setRefreshing] = React.useState(false)
   const [displayNewMsgForm, setDisplayNewMsgForm] = useState(false)
   const [emptyWarning, setEmptyWarning] = useState(false)
   const [usernameInput, setUsernameInput] = useState('')
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+    wait(1000).then(() => setRefreshing(false))
+    getThreads()
+  }, [])
 
   useEffect(() => {
     getThreads()
@@ -97,6 +111,13 @@ const AllThreadsScreen = ({
       )}
       {/* MESSAGE LIST: */}
       <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.white}
+          />
+        }
         data={directMessages}
         keyExtractor={(thread) => thread.id.toString()}
         renderItem={({ item }) => (
