@@ -21,7 +21,14 @@ import { getMe, updateUsername } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-const UserProfileScreen = ({ navigation, auth, getMe, me, updateUsername }) => {
+const UserProfileScreen = ({
+  navigation,
+  auth,
+  getMe,
+  me,
+  updateUsername,
+  errorMsg,
+}) => {
   const [newUsername, setNewUsername] = useState('')
 
   // for validations / messages:
@@ -32,11 +39,17 @@ const UserProfileScreen = ({ navigation, auth, getMe, me, updateUsername }) => {
     getMe(auth.id)
   }, [])
 
+  // console.log('errorMsg------------->', errorMsg);
+
   const handleSaveChanges = () => {
     // for validations:
     if (!newUsername) {
       return setUsernameFieldWarning(true)
     }
+    // if (me.errorMsg.length) {
+    // 	console.log(me.errorMsg);
+    // 	return;
+    // }
     // make axios call:
     updateUsername(newUsername)
     // reset fields:
@@ -108,6 +121,7 @@ const UserProfileScreen = ({ navigation, auth, getMe, me, updateUsername }) => {
                   placeholderTextColor={colors.lightGray}
                   style={[styles.formInput]}
                   clearButtonMode="always"
+                  onSubmitEditing={handleSaveChanges}
                   onChangeText={(val) => {
                     setNewUsername(val)
                   }}
@@ -134,6 +148,7 @@ const UserProfileScreen = ({ navigation, auth, getMe, me, updateUsername }) => {
 const mapState = (state) => ({
   auth: state.auth,
   me: state.user.me,
+  errorMsg: state.user.errorMsg,
 })
 
 const mapDispatch = (dispatch) => ({
@@ -190,18 +205,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
     borderRadius: 25,
     height: 50,
-    width: '100%',
+    width: '80%',
     paddingHorizontal: 20,
     marginVertical: 20,
     fontSize: 20,
     color: colors.white,
   },
   saveBtn: {
-    width: '100%',
+    width: '80%',
     marginTop: 20,
     paddingVertical: 10,
     borderRadius: 20,
-    backgroundColor: colors.pink,
+    backgroundColor: colors.lightBlue,
   },
   saveBtnText: {
     fontWeight: 'bold',

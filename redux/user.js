@@ -9,7 +9,7 @@ const GET_ME = 'GET_ME'
 const GET_USER = 'GET_USER'
 const GET_USERS = 'GET_USER'
 const ADD_PROFILE_IMAGE_URL = 'ADD_PROFILE_IMAGE_URL'
-// const UPDATE_USERNAME = 'UPDATE_USERNAME'
+// const SET_ERROR_MSG = 'SET_ERROR_MSG';
 
 /**
  * ACTION CREATORS
@@ -21,6 +21,7 @@ const addedProfileImageUrl = (profileImageUrl) => ({
   type: ADD_PROFILE_IMAGE_URL,
   profileImageUrl,
 })
+// const setErrorMsg = (msg) => ({ type: SET_ERROR_MSG, msg });
 
 /**
  * THUNK CREATORS
@@ -46,7 +47,12 @@ export const addProfileImageUrl = (profileImageUrl) => async (dispatch) => {
 
 export const updateUsername = (newUsername) => async () => {
   try {
-    await axios.put(`${URL}/api/users/username`, { newUsername })
+    const res = await axios.put(`${URL}/api/users/username`, { newUsername })
+    // console.log('res in username thunk-->', res.data);
+    // if (res.data === 'Username already taken!') {
+    // 	console.log('conditional hit');
+    // 	setErrorMsg('testing');
+    // }
   } catch (error) {
     console.error(error)
   }
@@ -93,6 +99,7 @@ const defaultUser = {
   me: {},
   user: {},
   users: [],
+  // errorMsg: ''
 }
 
 /**
@@ -115,6 +122,9 @@ export default function (state = defaultUser, action) {
       return { ...state, user: action.user }
     case GET_USERS:
       return { ...state, users: action.users }
+    // case SET_ERROR_MSG:
+    // 	console.log('reducer hit');
+    // 	return { ...state, errorMsg: action.msg };
     default:
       return state
   }

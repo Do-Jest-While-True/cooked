@@ -23,6 +23,7 @@ import Likes from '../components/Likes'
 import { getSingleRecipe, gotUser, addComment, removeComment } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
+import { color } from 'react-native-reanimated'
 
 const RecipeScreen = ({
   route,
@@ -68,15 +69,26 @@ const RecipeScreen = ({
           {/* Recipe Image: */}
           <Image source={{ uri: singleRecipe.imageUrl }} style={styles.img} />
           <View style={styles.recipeContent}>
-            {/* Username: */}
-            {/* don't render username when clicking in from my user profile */}
-            <View style={styles.outerUserView}>
+            {/* USERNAME & LIKE FLEX */}
+            <View style={styles.usernameLikeRow}>
+              {/* Username: */}
+              {/* don't render username when clicking in from my user profile */}
+//             <View style={styles.outerUserView}>
+
               {route.params.userId && (
                 <TouchableOpacity
                   onPress={() =>
                     route.params.nav.navigate('Ext User Profile', { user })
                   }
                 >
+//                   <Text style={[defaultStyles.text, styles.username]}>
+//                     @{user.user.username}
+//                   </Text>
+//                 </TouchableOpacity>
+//               )}
+//               {/* Likes */}
+//               <View>
+//                 <Likes recipeId={singleRecipe.id} />
                   <View style={styles.userView}>
                     <Image
                       style={styles.userImg}
@@ -113,7 +125,7 @@ const RecipeScreen = ({
               ))}
             </View>
             {/* Directions: */}
-            <View style={styles.recipesContentSection}>
+            <View style={[styles.recipesContentSection, styles.directionView]}>
               <Text style={[styles.recipesHeadings, styles.recipeSubHeading]}>
                 Directions
               </Text>
@@ -125,8 +137,31 @@ const RecipeScreen = ({
               ))}
             </View>
             {/* Comments: */}
-            <View>
+            <View style={styles.commentsView}>
               <Text style={[styles.commentHeading]}>Comments</Text>
+              {singleRecipe.comments.length ? (
+                singleRecipe.comments.map((comment) => (
+                  <View key={comment.id} style={styles.commentView}>
+                    <View style={styles.commentUserView}>
+                      <Image
+                        source={{ uri: comment.user.profileImageUrl }}
+                        style={styles.profileImgComment}
+                      />
+                      <Text
+                        style={[defaultStyles.text, styles.commentUsername]}
+                      >
+                        {comment.user.username}
+                      </Text>
+                    </View>
+                    <Text style={styles.singleComment}>{comment.body}</Text>
+                  </View>
+                ))
+              ) : (
+                <Text style={styles.singleComment}>There are no comments!</Text>
+              )}
+              {/* Comment input Form, addComment is already imported and passed to the function.  We just need to add a form that sends the info into the addComment thunk and test to see if the reducer is good money.  Deleting a comment will be more difficult to solve, but that was imported into the function as well.*/}
+            <View>
+//               <Text style={[styles.commentHeading]}>Comments</Text>
               <Controller
                 control={control}
                 render={({ onChange, value }) => (
@@ -146,7 +181,7 @@ const RecipeScreen = ({
                   style={styles.submitBtn}
                   onPress={handleSubmit(onSubmit)}
                 >
-                  <Text style={styles.submitBtnText}>Post</Text>
+                  <Text style={styles.submitBtnText}>Submit</Text>
                 </TouchableOpacity>
               </View>
               {singleRecipe.comments.length ? (
@@ -200,6 +235,11 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     opacity: 0.75,
   },
+  usernameLikeRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
   outerUserView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -305,14 +345,19 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
   singleIngredient: {
+//     marginTop: 12,
     marginTop: 5,
     fontSize: 15,
     color: colors.white,
+  },
+  directionView: {
+    borderBottomWidth: 2,
   },
   singleDirectionView: {
     flexDirection: 'row',
   },
   singleDirection: {
+//     marginTop: 12,
     marginTop: 5,
     fontSize: 15,
     color: colors.white,
@@ -334,4 +379,64 @@ const styles = StyleSheet.create({
     color: colors.white,
     marginLeft: 5,
   },
+  // COMMENTS SECTION
+//   commentsView: {},
+//   commentHeading: {
+//     color: colors.white,
+//     fontWeight: 'bold',
+//     fontSize: 22,
+//     letterSpacing: 2,
+//     marginBottom: 10,
+//   },
+//   commentUsername: {
+//     color: colors.lightBlue,
+//     fontWeight: 'bold',
+//     fontSize: 13,
+//     marginBottom: 7,
+//   },
+//   commentUserView: {
+//     flexDirection: 'row',
+//     marginBottom: 2,
+//   },
+//   commentView: {
+//     flexDirection: 'column',
+//     marginBottom: 10,
+//     borderBottomWidth: 0.3,
+//     borderColor: colors.lightGray,
+//     paddingVertical: 8,
+//   },
+//   profileImgComment: {
+//     width: 14,
+//     height: 14,
+//     borderRadius: 75,
+//     marginRight: 7,
+//   },
+//   singleComment: {
+//     fontSize: 15,
+//     color: colors.white,
+//     marginBottom: 10,
+//   },
+//   formInput: {
+//     backgroundColor: colors.light,
+//     borderRadius: 15,
+//     height: 80,
+//     paddingHorizontal: 20,
+//     marginVertical: 20,
+//     fontSize: 16,
+//     color: colors.white,
+//   },
+//   submitBtn: {
+//     backgroundColor: colors.pink,
+//     borderRadius: 75,
+//     paddingVertical: 10,
+//     width: '80%',
+//     alignSelf: 'center',
+//     marginBottom: 200,
+//   },
+//   submitBtnText: {
+//     textAlign: 'center',
+//     color: colors.white,
+//     fontSize: 16,
+//     fontWeight: 'bold',
+//   },
 })
