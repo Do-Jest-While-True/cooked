@@ -62,26 +62,26 @@ const RecipeListItem = ({
                 <TimeAgo time={item.createdAt} />
               </Text>
             </View>
-//           {/* USERNAME */}
-//           <View style={styles.user}>
-//             <Image
-//               style={styles.userImg}
-//               source={{ uri: user.profileImageUrl }}
-//             />
-//             <Text style={styles.userName}>{user.username}</Text>
-//           </View>
-//           <View />
-//         </View>
-//         <View style={styles.likesTime}>
-//           {/* LIKES */}
-//           <View style={styles.like}>
-//             <Likes recipeId={recipeId} />
-//           </View>
-//           {/* TIME AGO */}
-//           <View style={styles.timeAgoView}>
-//             <Text style={styles.timeAgoText}>
-//               <TimeAgo time={item.createdAt} />
-//             </Text>
+            {/* USERNAME */}
+            {/* <View style={styles.user}>
+             <Image
+               style={styles.userImg}
+               source={{ uri: user.profileImageUrl }}
+             />
+             <Text style={styles.userName}>{user.username}</Text>
+           </View>
+           <View />
+         </View>
+         <View style={styles.likesTime}> */}
+            {/* LIKES */}
+            {/* <View style={styles.like}>
+             <Likes recipeId={recipeId} />
+           </View> */}
+            {/* TIME AGO */}
+            {/* <View style={styles.timeAgoView}>
+             <Text style={styles.timeAgoText}>
+               <TimeAgo time={item.createdAt} />
+             </Text> */}
           </View>
         </View>
       </TouchableOpacity>
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
   },
   cookTimeView: {
     flexDirection: 'row',
+  },
   timeView: {
     flexDirection: 'row',
   },
