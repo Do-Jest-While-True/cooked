@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   StyleSheet,
   SafeAreaView,
@@ -18,9 +18,17 @@ import {
 } from '@expo-google-fonts/covered-by-your-grace'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/native'
-import Likes from '../components/Likes'
+import { Feather } from '@expo/vector-icons'
+import TimeAgo from 'react-native-timeago'
 
-import { getSingleRecipe, gotUser, addComment, removeComment } from '../redux'
+import Likes from '../components/Likes'
+import {
+  getSingleRecipe,
+  gotUser,
+  addComment,
+  removeComment,
+  editComment,
+} from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 import { color } from 'react-native-reanimated'
@@ -31,10 +39,16 @@ const RecipeScreen = ({
   getSingleRecipe,
   user,
   gotUser,
+  authId,
   addComment,
   removeComment,
+  editComment,
 }) => {
   const isFocused = useIsFocused()
+
+  const [editMode, setEditMode] = useState(false)
+  const [number, setNumber] = useState()
+  const [commentInfo, setCommentInfo] = useState()
 
   useEffect(() => {
     getSingleRecipe(route.params.recipeId)
@@ -43,21 +57,40 @@ const RecipeScreen = ({
     route.params.userId && gotUser(route.params.userId)
   }, [isFocused])
 
-  const { control, handleSubmit, getValues } = useForm({
-    defaultValues: { comment: '' },
+  const { control, handleSubmit, getValues, reset } = useForm({
+    defaultValues: { comment: '', updatedComment: '' },
+    mode: 'onChange',
   })
 
   function onSubmit() {
-    const value = getValues()
-    addComment(route.params.recipeId, value)
+    const comment = getValues()
+    addComment(route.params.recipeId, comment)
+    reset()
+  }
+
+  const deleteComment = (comment) => {
+    removeComment(comment.id)
+  }
+
+  const pressEditComment = (comment) => {
+    setEditMode(true)
+    setNumber(comment.id)
+    setCommentInfo(comment.body)
+  }
+
+  const sendUpdatedComment = (comment) => {
+    const values = getValues()
+    if (values.updatedComment === '') {
+      setEditMode(false)
+    } else {
+      editComment(comment.id, values)
+      setEditMode(false)
+    }
   }
 
   let [fontsLoaded] = useFonts({
     CoveredByYourGrace_400Regular,
   })
-
-  // const sorted = singleRecipe.comments.sort((a, b) => a.createdAt - b.createdAt)
-  // singleRecipe.comments.forEach((comment) => console.log(comment.createdAt))
 
   // the last conditional here says, only care about checking for user.user if coming from the feeds -- if coming from the profile, theres no userId passing through the route obj (and user is not used in the return -- see line 44) so don't worry about checking for user.user
   if (!fontsLoaded || !singleRecipe.id || (route.params.userId && !user.user)) {
@@ -137,7 +170,20 @@ const RecipeScreen = ({
               ))}
             </View>
             {/* Comments: */}
-            <View style={styles.commentsView}>
+            <View>
+              <Text style={styles.commentHeading}>Comments</Text>
+              <Controller
+                control={control}
+                render={({ onChange, value }) => (
+                  <TextInput
+                    style={styles.commentFormInput}
+                    placeholder="Type Comment Here!"
+                    placeholderTextColor={colors.lightGray}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    multiline={true}
+                  />
+                      {/*<View style={styles.commentsView}>
               <Text style={[styles.commentHeading]}>Comments</Text>
               {/* Comment input Form, addComment is already imported and passed to the function.  We just need to add a form that sends the info into the addComment thunk and test to see if the reducer is good money.  Deleting a comment will be more difficult to solve, but that was imported into the function as well.*/}
               <View>
@@ -184,9 +230,96 @@ const RecipeScreen = ({
                 ) : (
                   <Text style={styles.singleComment}>
                     There are no comments!
-                  </Text>
+                  </Text> */}
                 )}
               </View>
+              {singleRecipe.comments.length ? (
+                singleRecipe.comments.map((comment) => {
+                  return editMode && number === comment.id ? (
+                    <View key={comment.id}>
+                      <Controller
+                        control={control}
+                        render={({ onChange, value }) => (
+                          <TextInput
+                            style={styles.commentFormInput}
+                            onChangeText={(value) => onChange(value)}
+                            value={value}
+                            multiline={true}
+                          />
+                        )}
+                        name="updatedComment"
+                        defaultValue={commentInfo}
+                      />
+                      <View style={styles.commentBtnView}>
+                        <TouchableOpacity
+                          style={styles.submitBtn}
+                          onPress={() => setEditMode(false)}
+                        >
+                          <Text style={styles.submitBtnText}>Cancel</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.submitBtn}
+                          onPress={handleSubmit(() =>
+                            sendUpdatedComment(comment)
+                          )}
+                        >
+                          <Text style={styles.submitBtnText}>Update</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  ) : (
+                    <View key={comment.id} style={styles.commentView}>
+                      <View style={styles.commentUserView}>
+                        <Image
+                          source={{ uri: comment.user.profileImageUrl }}
+                          style={styles.commentProfileImg}
+                        />
+                        <Text
+                          style={[defaultStyles.text, styles.commentUsername]}
+                        >
+                          {comment.user.username}
+                        </Text>
+                        {comment.userId === authId ? (
+                          <View style={styles.deleteCommentView}>
+                            {/* EDIT COMMENT */}
+                            <View>
+                              <TouchableOpacity
+                                onPress={() => pressEditComment(comment)}
+                                style={styles.commentButton}
+                              >
+                                <Feather name="edit" size={20} color="yellow" />
+                              </TouchableOpacity>
+                            </View>
+                            {/* DELETE COMMENT */}
+                            <View>
+                              <TouchableOpacity
+                                onPress={() => deleteComment(comment)}
+                                style={styles.commentButton}
+                              >
+                                <Feather
+                                  style={styles.deleteCommentText}
+                                  name="x-circle"
+                                  size={20}
+                                  color="black"
+                                />
+                              </TouchableOpacity>
+                            </View>
+                          </View>
+                        ) : null}
+                      </View>
+                      <Text style={styles.singleComment}>{comment.body}</Text>
+                      {/* TIME AGO */}
+                      <View style={styles.timeAgoView}>
+                        <Text style={styles.timeAgoText}>
+                          <TimeAgo time={comment.createdAt} />
+                        </Text>
+                      </View>
+                    </View>
+                  )
+                })
+              ) : (
+                <Text style={styles.singleComment}>There are no comments!</Text>
+              )}
               {/* End Comments View */}
             </View>
           </View>
@@ -207,6 +340,8 @@ const mapDispatch = (dispatch) => ({
   gotUser: (userId) => dispatch(gotUser(userId)),
   addComment: (recipeId, comment) => dispatch(addComment(recipeId, comment)),
   removeComment: (commentId) => dispatch(removeComment(commentId)),
+  editComment: (commentId, comment) =>
+    dispatch(editComment(commentId, comment)),
 })
 
 export default connect(mapState, mapDispatch)(RecipeScreen)
@@ -305,6 +440,30 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  deleteCommentView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginRight: 5,
+  },
+  deleteCommentText: {
+    color: colors.red,
+  },
+  commentBtnView: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  commentButton: {
+    marginHorizontal: 10,
+  },
+  timeAgoView: {
+    alignItems: 'flex-end',
+  },
+  timeAgoText: {
+    color: colors.lightGray,
+    fontSize: 11,
+    marginBottom: 3,
   },
   //COMMENTS AREA END
   recipeContent: {

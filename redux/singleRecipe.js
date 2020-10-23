@@ -5,6 +5,7 @@ import { URL } from './serverUrl'
 const GET_SINGLE_RECIPE = 'GET_RECIPE_FEED'
 const ADD_COMMENT = 'ADD_COMMENT'
 const REMOVE_COMMENT = 'REMOVE_COMMENT'
+const EDIT_COMMENT = 'EDIT_COMMENT'
 
 // ACTION CREATORS
 export const gotSingleRecipe = (singleRecipe) => ({
@@ -22,13 +23,22 @@ export const removedComment = (commentId) => ({
   commentId,
 })
 
+export const editedComment = (comment) => ({
+  type: EDIT_COMMENT,
+  comment,
+})
+
 // THUNK CREATORS
 export const getSingleRecipe = (recipeId) => async (dispatch) => {
   try {
     const { data: singleRecipe } = await axios.get(
       `${URL}/api/recipes/singlerecipe/${recipeId}`
     )
-    dispatch(gotSingleRecipe(singleRecipe))
+    const recipeObj = {
+      ...singleRecipe.recipe,
+      comments: singleRecipe.comments,
+    }
+    dispatch(gotSingleRecipe(recipeObj))
   } catch (error) {
     console.error(error)
   }
@@ -40,7 +50,6 @@ export const addComment = (recipeId, comment) => async (dispatch) => {
       `${URL}/api/comments/${recipeId}`,
       comment
     )
-    console.log(returnedComment)
     dispatch(addedComment(returnedComment))
   } catch (error) {
     console.error(error)
@@ -51,6 +60,18 @@ export const removeComment = (commentId) => async (dispatch) => {
   try {
     await axios.delete(`${URL}/api/comments/${commentId}`)
     dispatch(removedComment(commentId))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const editComment = (commentId, comment) => async (dispatch) => {
+  try {
+    const { data: updatedComment } = await axios.put(
+      `${URL}/api/comments/${commentId}`,
+      comment
+    )
+    dispatch(editedComment(updatedComment))
   } catch (error) {
     console.error(error)
   }
@@ -71,6 +92,19 @@ export default function (state = initialState, action) {
         (comment) => comment.id !== action.commentId
       )
       return { ...state, comments: newerComments }
+    case EDIT_COMMENT:
+      return {
+        ...state,
+        comments: [
+          ...state.comments.map((comment) => {
+            if (comment.id === action.comment.id) {
+              return action.comment
+            } else {
+              return comment
+            }
+          }),
+        ],
+      }
     default:
       return state
   }

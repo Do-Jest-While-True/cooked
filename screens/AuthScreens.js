@@ -75,7 +75,6 @@ const AuthScreens = ({ name, getUser, auth, error }) => {
                     placeholderTextColor={colors.lightGray}
                     onChangeText={(value) => onChange(value)}
                     value={value}
-                    clearButtonMode="always"
                   />
                 )}
                 name="firstName"
@@ -96,7 +95,6 @@ const AuthScreens = ({ name, getUser, auth, error }) => {
                     placeholderTextColor={colors.lightGray}
                     onChangeText={(value) => onChange(value)}
                     value={value}
-                    clearButtonMode="always"
                   />
                 )}
                 name="lastName"
