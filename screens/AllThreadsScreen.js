@@ -32,7 +32,7 @@ const AllThreadsScreen = ({ directMessages, getThreads, navigation, auth, postNe
 
 		postNewThread(auth.id, usernameInput);
 
-		// let thread = directMessages[directMessages.length - 1];
+		// let thread = directMessages[0];
 
 		// navigation.navigate('Chat', { thread });
 
@@ -128,8 +128,10 @@ const styles = StyleSheet.create({
 	newMsgFormView: {
 		flexDirection: 'row',
 		justifyContent: 'center',
+		borderBottomColor: colors.lightGray,
+		borderBottomWidth: 0.25,
 		// THIS IS TEMPORARY -- NOT DYNAMIC:
-		marginLeft: 45
+		paddingLeft: 45
 	},
 	warningMsg: {
 		textAlign: 'center',
@@ -157,7 +159,7 @@ const styles = StyleSheet.create({
 	singleThreadView: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingVertical: 12,
+		paddingVertical: 9,
 		borderTopWidth: 0.25,
 		borderBottomWidth: 0.25,
 		borderTopColor: colors.lightGray,

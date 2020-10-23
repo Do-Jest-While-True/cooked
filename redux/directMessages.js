@@ -20,6 +20,16 @@ const postedNewThread = (thread) => ({
 export const getAllThreads = () => async (dispatch) => {
 	try {
 		const { data: threads } = await axios.get(`${URL}/api/directMessage/threads`);
+
+		// const sortedThreads = threads.sort((a, b) => {
+		// 	if (a.messages.length && b.messages.lengths) {
+		// 		a.messages[messages.length - 1].updatedAt - b.messages[messages.length - 1].updatedAt;
+		// 	}
+		// });
+		// console.log('--------------------------------------');
+		// console.log(sortedThreads);
+		// console.log('--------------------------------------');
+
 		dispatch(gotAllThreads(threads));
 	} catch (error) {
 		console.error(error);
@@ -44,7 +54,7 @@ export default function(state = initialState, action) {
 		case GET_ALL_THREADS:
 			return action.threads;
 		case POST_NEW_THREAD:
-			return [ ...state, action.thread ];
+			return [ action.thread, ...state ];
 		default:
 			return state;
 	}

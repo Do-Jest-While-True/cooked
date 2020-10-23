@@ -2,7 +2,7 @@ import axios from 'axios';
 import { URL } from './serverUrl';
 
 // ACTION TYPE
-const GET_THREAD = 'GET_THREAD';
+const GET_THREAD_MESSAGES = 'GET_THREAD_MESSAGES';
 const POST_NEW_MESSAGE = 'POST_NEW_MESSAGE';
 
 // ACTION CREATOR
@@ -11,9 +11,9 @@ const postedNewMessage = (msg) => ({
 	msg
 });
 
-const gotThread = (thread) => ({
-	type: GET_THREAD,
-	thread
+const gotThreadMessages = (threadMessages) => ({
+	type: GET_THREAD_MESSAGES,
+	threadMessages
 });
 
 // THUNK CREATOR
@@ -26,10 +26,10 @@ export const postNewMessage = (newMessage) => async (dispatch) => {
 	}
 };
 
-export const getThread = (threadId) => async (dispatch) => {
+export const getThreadMessages = (threadId) => async (dispatch) => {
 	try {
-		const { data: thread } = await axios.get(`${URL}/api/directMessage/singleThread/${threadId}`);
-		dispatch(gotThread(thread));
+		const { data: threadMsgs } = await axios.get(`${URL}/api/directMessage/singleThread/${threadId}`);
+		dispatch(gotThreadMessages(threadMsgs));
 	} catch (error) {
 		console.error(error);
 	}
@@ -41,8 +41,8 @@ const initialState = [];
 // REDUCER
 export default function(state = initialState, action) {
 	switch (action.type) {
-		case GET_THREAD:
-			return action.thread;
+		case GET_THREAD_MESSAGES:
+			return action.threadMessages;
 		case POST_NEW_MESSAGE:
 			return [ ...state, action.msg ];
 		default:

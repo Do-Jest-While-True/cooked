@@ -3,19 +3,25 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, TextInput } 
 import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 
-import { getThread, postNewMessage } from '../redux';
+import { getThreadMessages, postNewMessage } from '../redux';
 
 import colors from '../config/colors';
 import defaultStyles from '../config/defaultStyles';
 
-const SingleThreadScreen = ({ route, postNewMessage, getThread, singleThread, auth }) => {
+// to make the new message nav issue work:
+
+// change getThreadMessages slice to utilize a username instead of other users ID
+
+// don't rely on otherUser info to be passed down through route, just fetch it with gotUser() -- but that GET route wants a user's id so that will also need to be refactor to accept a username OR make another getUserByUsername route.........
+
+const SingleThreadScreen = ({ route, postNewMessage, getThreadMessages, singleThreadMessages, auth }) => {
 	const [ messageInput, setMessageInput ] = useState('');
 
 	const threadId = route.params.thread.id;
 	const otherUser = route.params.thread.user;
 
 	useEffect(() => {
-		getThread(threadId);
+		getThreadMessages(threadId);
 	}, []);
 
 	const handleSendMessage = () => {
@@ -42,9 +48,9 @@ const SingleThreadScreen = ({ route, postNewMessage, getThread, singleThread, au
 				</View>
 			</View>
 			{/* CHAT MESSAGES */}
-			{singleThread && (
+			{singleThreadMessages && (
 				<FlatList
-					data={singleThread}
+					data={singleThreadMessages}
 					keyExtractor={(message) => message.id.toString()}
 					renderItem={({ item }) => (
 						<View
@@ -83,11 +89,11 @@ const SingleThreadScreen = ({ route, postNewMessage, getThread, singleThread, au
 
 const mapState = (state) => ({
 	auth: state.auth,
-	singleThread: state.singleThread
+	singleThreadMessages: state.singleThreadMessages
 });
 
 const mapDispatch = (dispatch) => ({
-	getThread: (threadId) => dispatch(getThread(threadId)),
+	getThreadMessages: (threadId) => dispatch(getThreadMessages(threadId)),
 	postNewMessage: (msg) => dispatch(postNewMessage(msg))
 });
 
