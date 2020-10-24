@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   TextInput,
   RefreshControl,
+  KeyboardAvoidingView,
+  Keyboard,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { FontAwesome } from '@expo/vector-icons'
@@ -24,7 +26,7 @@ const wait = (timeout) => {
 }
 
 // to make the new message nav issue work:
-
+// ---------------------------------------
 // change getThreadMessages slice to utilize a username instead of other users ID
 
 // don't rely on otherUser info to be passed down through route, just fetch it with gotUser() -- but that GET route wants a user's id so that will also need to be refactor to accept a username OR make another getUserByUsername route.........
@@ -41,6 +43,8 @@ const SingleThreadScreen = ({
 
   const threadId = route.params.thread.id
   const otherUser = route.params.thread.user
+
+  const scrollViewRef = useRef()
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true)
@@ -61,10 +65,15 @@ const SingleThreadScreen = ({
     }
     postNewMessage(newMessageData)
     setMessageInput('')
+    Keyboard.dismiss()
   }
 
   return (
-    <View style={[defaultStyles.container, styles.container]}>
+    <KeyboardAvoidingView
+      style={[defaultStyles.container, styles.container]}
+      behavior="padding"
+      keyboardVerticalOffset={80}
+    >
       {/* TOP ROW USER INFO */}
       <View style={styles.otherUserRow}>
         <Image
@@ -81,6 +90,10 @@ const SingleThreadScreen = ({
       {/* CHAT MESSAGES */}
       {singleThreadMessages && (
         <FlatList
+          ref={scrollViewRef}
+          onContentSizeChange={() =>
+            scrollViewRef.current.scrollToEnd({ animated: true })
+          }
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
@@ -105,6 +118,7 @@ const SingleThreadScreen = ({
           )}
         />
       )}
+      {/* MESSAGE INPUT */}
       <View style={styles.sendMessageRow}>
         <TextInput
           placeholder="Enter Message"
@@ -126,7 +140,7 @@ const SingleThreadScreen = ({
           />
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -185,8 +199,13 @@ const styles = StyleSheet.create({
   sendMessageRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginVertical: 20,
+    // same can be accomplished with paddingVertical but
+    // this gives better exp w keyboard:
+    paddingTop: 30,
+    marginBottom: 30,
     width: '100%',
+    borderTopWidth: 0.25,
+    borderTopColor: colors.lightBorder,
   },
   formInput: {
     backgroundColor: colors.light,
@@ -194,7 +213,6 @@ const styles = StyleSheet.create({
     minHeight: 45,
     maxHeight: 100,
     width: '70%',
-    marginBottom: 10,
     paddingTop: 15,
     paddingBottom: 15,
     paddingHorizontal: 20,
