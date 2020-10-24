@@ -53,6 +53,7 @@ const AllThreadsScreen = ({
     }
   }
 
+  // needs a 500 frontend message
   const handleStartMessage = () => {
     // prevent empty thread:
     if (!usernameInput) {

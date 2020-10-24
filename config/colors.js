@@ -14,6 +14,7 @@ export default {
   light: '#4a5e75',
   // light gray for placeholder text:
   lightGray: '#a6a6a6',
+  lightBorder: '#4d6073',
   blue: 'dodgerblue',
 }
 
