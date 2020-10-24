@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Alert,
   KeyboardAvoidingView,
+  Platform,
 } from 'react-native'
 import { useScrollToTop } from '@react-navigation/native'
 import { connect } from 'react-redux'
@@ -143,8 +144,9 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
         style={[defaultStyles.container, styles.container]}
         behavior="padding"
         keyboardVerticalOffset={110}
+        enabled={Platform.OS === 'ios' ? true : false}
       >
-        <SafeAreaView>
+        <SafeAreaView style={[defaultStyles.container, styles.container]}>
           <ScrollView ref={ref}>
             {/* ImageInput __________________________________________*/}
             {imageFieldWarning && (

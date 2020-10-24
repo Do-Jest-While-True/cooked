@@ -10,6 +10,7 @@ import {
   RefreshControl,
   KeyboardAvoidingView,
   Keyboard,
+  Platform,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { FontAwesome } from '@expo/vector-icons'
@@ -74,72 +75,75 @@ const SingleThreadScreen = ({
       style={[defaultStyles.container, styles.container]}
       behavior="padding"
       keyboardVerticalOffset={80}
+      enabled={Platform.OS === 'ios' ? true : false}
     >
-      {/* TOP ROW USER INFO */}
-      <View style={styles.otherUserRow}>
-        <Image
-          source={{ uri: otherUser.profileImageUrl }}
-          style={styles.profileImage}
-        />
-        <View>
-          <Text style={defaultStyles.text}>
-            {otherUser.firstName} {otherUser.lastName}
-          </Text>
-          <Text style={styles.username}>@{otherUser.username}</Text>
-        </View>
-      </View>
-      {/* CHAT MESSAGES */}
-      {singleThreadMessages && (
-        <FlatList
-          ref={scrollViewRef}
-          onContentSizeChange={() =>
-            scrollViewRef.current.scrollToEnd({ animated: true })
-          }
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor={colors.white}
-            />
-          }
-          data={singleThreadMessages}
-          keyExtractor={(message) => message.id.toString()}
-          renderItem={({ item }) => (
-            <View
-              style={
-                item.sentTo === otherUser.id
-                  ? [styles.msgBubble, styles.msgBubbleRight]
-                  : styles.msgBubble
-              }
-            >
-              <Text style={[defaultStyles.text, styles.msgText]}>
-                {item.body}
-              </Text>
-            </View>
-          )}
-        />
-      )}
-      {/* MESSAGE INPUT */}
-      <View style={styles.sendMessageRow}>
-        <TextInput
-          placeholder="Enter Message"
-          placeholderTextColor={colors.lightGray}
-          style={[styles.formInput]}
-          clearButtonMode="always"
-          multiline={true}
-          onChangeText={(val) => {
-            setMessageInput(val)
-          }}
-          value={messageInput}
-        />
-        <TouchableOpacity onPress={handleSendMessage}>
-          <FontAwesome
-            name="send"
-            size={24}
-            color={colors.white}
-            style={styles.sendMsgBtn}
+      <View style={[defaultStyles.container, styles.container]}>
+        {/* TOP ROW USER INFO */}
+        <View style={styles.otherUserRow}>
+          <Image
+            source={{ uri: otherUser.profileImageUrl }}
+            style={styles.profileImage}
           />
-        </TouchableOpacity>
+          <View>
+            <Text style={defaultStyles.text}>
+              {otherUser.firstName} {otherUser.lastName}
+            </Text>
+            <Text style={styles.username}>@{otherUser.username}</Text>
+          </View>
+        </View>
+        {/* CHAT MESSAGES */}
+        {singleThreadMessages && (
+          <FlatList
+            ref={scrollViewRef}
+            onContentSizeChange={() =>
+              scrollViewRef.current.scrollToEnd({ animated: true })
+            }
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={colors.white}
+              />
+            }
+            data={singleThreadMessages}
+            keyExtractor={(message) => message.id.toString()}
+            renderItem={({ item }) => (
+              <View
+                style={
+                  item.sentTo === otherUser.id
+                    ? [styles.msgBubble, styles.msgBubbleRight]
+                    : styles.msgBubble
+                }
+              >
+                <Text style={[defaultStyles.text, styles.msgText]}>
+                  {item.body}
+                </Text>
+              </View>
+            )}
+          />
+        )}
+        {/* MESSAGE INPUT */}
+        <View style={styles.sendMessageRow}>
+          <TextInput
+            placeholder="Enter Message"
+            placeholderTextColor={colors.lightGray}
+            style={[styles.formInput]}
+            clearButtonMode="always"
+            multiline={true}
+            onChangeText={(val) => {
+              setMessageInput(val)
+            }}
+            value={messageInput}
+          />
+          <TouchableOpacity onPress={handleSendMessage}>
+            <FontAwesome
+              name="send"
+              size={24}
+              color={colors.white}
+              style={styles.sendMsgBtn}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </KeyboardAvoidingView>
   )

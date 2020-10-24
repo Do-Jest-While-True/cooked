@@ -9,6 +9,7 @@ import {
   Image,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Platform,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
@@ -73,8 +74,9 @@ const UserProfileScreen = ({
         style={defaultStyles.container}
         behavior="padding"
         keyboardVerticalOffset={20}
+        enabled={Platform.OS === 'ios' ? true : false}
       >
-        <SafeAreaView>
+        <SafeAreaView style={defaultStyles.container}>
           <ScrollView ref={ref}>
             <View style={styles.container}>
               <View style={styles.topRowBtnsView}>

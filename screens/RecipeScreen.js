@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
   username: {
     color: colors.pink,
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 20,
   },
   userImg: {
     width: 40,

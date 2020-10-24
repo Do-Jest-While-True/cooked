@@ -6,6 +6,7 @@ import {
   View,
   Text,
   KeyboardAvoidingView,
+  Platform,
 } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { useForm, Controller } from 'react-hook-form'
@@ -66,8 +67,9 @@ const AuthScreens = ({ name, getUser, auth, error }) => {
       style={defaultStyles.container}
       behavior="padding"
       keyboardVerticalOffset={100}
+      enabled={Platform.OS === 'ios' ? true : false}
     >
-      <SafeAreaView>
+      <SafeAreaView style={defaultStyles.container}>
         <ScrollView>
           <View style={styles.formContainer}>
             {name === 'signup' ? (
