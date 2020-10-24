@@ -294,7 +294,6 @@ export default connect(mapState, mapDispatch)(RecipePostForm)
 const styles = StyleSheet.create({
   recipeContent: {
     margin: 20,
-    // minHeight: 750 // this is for UX -- adds room to scroll when inputting directions
   },
   singleIngredient: {
     marginTop: 10,
