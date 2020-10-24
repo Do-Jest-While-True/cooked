@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   container: {
     height: 375,
     borderBottomWidth: 0.25,
-    borderBottomColor: colors.white,
+    borderBottomColor: colors.lightBorder,
     alignItems: 'center',
   },
   settingsBtn: {

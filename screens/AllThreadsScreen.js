@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   newMsgFormView: {
     flexDirection: 'row',
     justifyContent: 'center',
-    borderBottomColor: colors.lightGray,
+    borderBottomColor: colors.lightBorder,
     borderBottomWidth: 0.25,
     // THIS IS TEMPORARY -- NOT DYNAMIC:
     paddingLeft: 45,
@@ -222,8 +222,8 @@ const styles = StyleSheet.create({
     paddingVertical: 9,
     borderTopWidth: 0.25,
     borderBottomWidth: 0.25,
-    borderTopColor: colors.lightGray,
-    borderBottomColor: colors.lightGray,
+    borderTopColor: colors.lightBorder,
+    borderBottomColor: colors.lightBorder,
   },
   profileImage: {
     width: 80,

@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   otherUserRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomColor: colors.darkGray,
+    borderBottomColor: colors.white,
     borderBottomWidth: 0.25,
     backgroundColor: colors.mainFaded,
     marginBottom: 20,
@@ -167,13 +167,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   msgBubble: {
-    // flex: -1,
     backgroundColor: '#26384a',
     padding: 15,
     paddingHorizontal: 20,
     margin: 10,
     borderRadius: 30,
     maxWidth: '70%',
+    alignSelf: 'flex-start',
   },
   msgBubbleRight: {
     alignSelf: 'flex-end',

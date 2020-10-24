@@ -25,6 +25,7 @@ import Likes from '../components/Likes'
 import {
   getSingleRecipe,
   gotUser,
+  getMe,
   addComment,
   removeComment,
   editComment,
@@ -36,6 +37,8 @@ const RecipeScreen = ({
   route,
   singleRecipe,
   getSingleRecipe,
+  me,
+  getMe,
   user,
   gotUser,
   authId,
@@ -106,7 +109,7 @@ const RecipeScreen = ({
             <View style={styles.usernameLikeRow}>
               {/* Username: */}
               {/* don't render username when clicking in from my user profile */}
-              {route.params.userId && (
+              {route.params.userId ? (
                 <TouchableOpacity
                   onPress={() =>
                     route.params.nav.navigate('Ext User Profile', { user })
@@ -122,6 +125,16 @@ const RecipeScreen = ({
                     </Text>
                   </View>
                 </TouchableOpacity>
+              ) : (
+                <View style={styles.userView}>
+                  <Image
+                    style={styles.userImg}
+                    source={{ uri: me.user.profileImageUrl }}
+                  />
+                  <Text style={[defaultStyles.text, styles.username]}>
+                    @{me.user.username}
+                  </Text>
+                </View>
               )}
               {/* Likes */}
               <View>
@@ -161,7 +174,7 @@ const RecipeScreen = ({
               <Text style={[styles.recipesHeadings, styles.commentsHeading]}>
                 Comments
               </Text>
-              <View>
+              <View style={styles.commentFormBtnSection}>
                 <Controller
                   control={control}
                   render={({ onChange, value }) => (
@@ -239,7 +252,11 @@ const RecipeScreen = ({
                                 onPress={() => pressEditComment(comment)}
                                 style={styles.commentButton}
                               >
-                                <Feather name="edit" size={20} color="yellow" />
+                                <Feather
+                                  name="edit"
+                                  size={20}
+                                  color={colors.yellow}
+                                />
                               </TouchableOpacity>
                             </View>
                             {/* DELETE COMMENT */}
@@ -252,7 +269,7 @@ const RecipeScreen = ({
                                   style={styles.deleteCommentText}
                                   name="x-circle"
                                   size={20}
-                                  color="black"
+                                  color={colors.red}
                                 />
                               </TouchableOpacity>
                             </View>
@@ -270,7 +287,9 @@ const RecipeScreen = ({
                   )
                 })
               ) : (
-                <Text style={styles.singleComment}>There are no comments!</Text>
+                <View style={styles.noCommentsView}>
+                  <Text style={defaultStyles.text}>There are no comments!</Text>
+                </View>
               )}
               {/* End Comments View */}
             </View>
@@ -285,6 +304,7 @@ const mapState = (state) => ({
   singleRecipe: state.singleRecipe,
   user: state.user.user,
   authId: state.auth.id,
+  me: state.user.me,
 })
 
 const mapDispatch = (dispatch) => ({
@@ -351,7 +371,7 @@ const styles = StyleSheet.create({
   recipesHeadings: {
     color: colors.white,
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 22,
     letterSpacing: 2,
   },
   ingredientView: {
@@ -392,11 +412,43 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   // COMMENTS ------------------------------------
-  // this heading is also tied to recipeHeading above
   commentsHeading: {
+    // comments heading is also taking from recipesHeadings
     marginTop: 20,
     marginBottom: 10,
   },
+  commentFormBtnSection: {
+    borderBottomWidth: 0.25,
+    borderBottomColor: colors.lightBorder,
+  },
+  commentFormInput: {
+    backgroundColor: colors.light,
+    borderRadius: 20,
+    minHeight: 90,
+    paddingHorizontal: 20,
+    marginVertical: 16,
+    paddingTop: 15,
+    paddingBottom: 15,
+    fontSize: 16,
+    color: colors.white,
+  },
+  submitBtn: {
+    backgroundColor: colors.pink,
+    borderRadius: 75,
+    paddingVertical: 8,
+    paddingHorizontal: 30,
+    width: '35%',
+    marginTop: 10,
+    marginBottom: 30,
+    alignSelf: 'center',
+  },
+  submitBtnText: {
+    textAlign: 'center',
+    color: colors.white,
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  // single comments -------
   commentUserView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -411,11 +463,10 @@ const styles = StyleSheet.create({
   commentUsername: {
     color: colors.blue,
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 16,
   },
   commentView: {
     flexDirection: 'column',
-    borderTopWidth: 0.3,
     borderBottomWidth: 0.3,
     borderColor: colors.lightBorder,
     paddingTop: 22,
@@ -426,34 +477,9 @@ const styles = StyleSheet.create({
     color: colors.white,
     marginBottom: 10,
   },
-  commentFormInput: {
-    backgroundColor: colors.light,
-    borderRadius: 20,
-    minHeight: 90,
-    paddingHorizontal: 20,
-    marginVertical: 10,
-    paddingTop: 15,
-    paddingBottom: 15,
-    fontSize: 16,
-    color: colors.white,
-    // width: '85%',
-    // alignSelf: 'center'
-  },
-  submitBtn: {
-    backgroundColor: colors.pink,
-    borderRadius: 75,
-    paddingVertical: 8,
-    paddingHorizontal: 30,
-    width: '50%',
-    marginTop: 15,
-    marginBottom: 30,
-    alignSelf: 'center',
-  },
-  submitBtnText: {
-    textAlign: 'center',
-    color: colors.white,
-    fontSize: 15,
-    fontWeight: 'bold',
+  noCommentsView: {
+    paddingVertical: 20,
+    alignItems: 'center',
   },
   deleteCommentView: {
     flex: 1,
@@ -461,9 +487,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginRight: 5,
   },
-  deleteCommentText: {
-    color: colors.red,
-  },
+  // deleteCommentText: {
+  // 	color: colors.red
+  // },
   commentBtnView: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',

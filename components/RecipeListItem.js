@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopWidth: 0.25,
     borderBottomWidth: 0.3,
-    borderColor: colors.lightGray,
+    borderColor: colors.lightBorder,
     backgroundColor: colors.mainFaded,
     padding: 15,
   },
@@ -139,12 +139,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.pink,
   },
+  cookTimeView: {
+    flexDirection: 'row',
+    marginBottom: 15,
+  },
   cookTime: {
     color: colors.white,
     marginLeft: 5,
-  },
-  cookTimeView: {
-    flexDirection: 'row',
   },
   timeView: {
     flexDirection: 'row',
