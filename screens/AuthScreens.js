@@ -234,7 +234,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.main,
     marginTop: '20%',
-    // minHeight: 950
   },
   formInput: {
     backgroundColor: colors.light,

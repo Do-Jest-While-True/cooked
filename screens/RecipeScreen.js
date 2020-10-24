@@ -25,7 +25,6 @@ import Likes from '../components/Likes'
 import {
   getSingleRecipe,
   gotUser,
-  getMe,
   addComment,
   removeComment,
   editComment,
@@ -38,7 +37,6 @@ const RecipeScreen = ({
   singleRecipe,
   getSingleRecipe,
   me,
-  getMe,
   user,
   gotUser,
   authId,

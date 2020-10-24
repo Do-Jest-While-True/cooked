@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     height: 150,
     borderWidth: 0.5,
     borderRadius: 75,
-    borderColor: colors.white,
+    borderColor: colors.lightBorder,
     marginBottom: 10,
   },
   textMargin: {
