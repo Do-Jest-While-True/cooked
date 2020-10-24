@@ -44,6 +44,7 @@ const SingleThreadScreen = ({
   const threadId = route.params.thread.id
   const otherUser = route.params.thread.user
 
+  // used for scroll to bottom after sending message
   const scrollViewRef = useRef()
 
   const onRefresh = React.useCallback(() => {

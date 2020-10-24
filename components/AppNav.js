@@ -28,6 +28,7 @@ import SingleThreadScreen from '../screens/SingleThreadScreen'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
+import { startClock } from 'react-native-reanimated'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -92,6 +93,16 @@ const ExploreTabs = () => (
       <Tab.Screen name="Global" component={AllAndSingleRecipeStack} />
     </ExploreTab.Navigator>
   </SafeAreaView>
+)
+
+const RecipeFormStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Add Recipe Post!"
+      component={RecipePostForm}
+      options={headerStyle}
+    />
+  </Stack.Navigator>
 )
 
 const ProfileAndPostStack = () => (
@@ -181,7 +192,7 @@ export const TabNavigator = () => (
     />
     <Tab.Screen
       name="New Recipe"
-      component={RecipePostForm}
+      component={RecipeFormStack}
       options={{
         tabBarIcon: () => (
           <Entypo name="circle-with-plus" size={35} color={colors.white} />

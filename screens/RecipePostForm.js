@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  KeyboardAvoidingView,
 } from 'react-native'
 import { useScrollToTop } from '@react-navigation/native'
 import { connect } from 'react-redux'
@@ -138,135 +139,143 @@ const RecipePostForm = ({ recipe, postRecipe, removeImageUrl, navigation }) => {
     return <AppLoading />
   } else {
     return (
-      <SafeAreaView style={defaultStyles.container}>
-        <ScrollView ref={ref}>
-          {/* ImageInput __________________________________________*/}
-          {imageFieldWarning && (
-            <Text style={[defaultStyles.text, styles.warning]}>
-              Please Add an Image!
-            </Text>
-          )}
-          <ImageInput />
-          <View style={styles.recipeContent}>
-            {/* Recipe Name: ________________________________________*/}
-            {nameFieldWarning && (
+      <KeyboardAvoidingView
+        style={[defaultStyles.container, styles.container]}
+        behavior="padding"
+        keyboardVerticalOffset={110}
+      >
+        <SafeAreaView>
+          <ScrollView ref={ref}>
+            {/* ImageInput __________________________________________*/}
+            {imageFieldWarning && (
               <Text style={[defaultStyles.text, styles.warning]}>
-                Please Enter a Recipe Title!
+                Please Add an Image!
               </Text>
             )}
-            <TextInput
-              placeholder="Enter Recipe Title"
-              placeholderTextColor={colors.lightGray}
-              style={[styles.formInput, styles.formInputFullWidth]}
-              clearButtonMode="always"
-              onChangeText={(val) => {
-                setRecipeName(val)
-              }}
-              value={recipeName}
-            />
-            {/* Cook Time ___________________________________________*/}
-            {timeFieldWarning && (
-              <Text style={[defaultStyles.text, styles.warning]}>
-                Please Enter a Cook Time!
-              </Text>
-            )}
-            <TextInput
-              placeholder="Enter Cook Time: ex: '5 minutes'"
-              placeholderTextColor={colors.lightGray}
-              style={[styles.formInput, styles.formInputFullWidth]}
-              clearButtonMode="always"
-              onChangeText={(val) => {
-                setTime(val)
-              }}
-              value={time}
-            />
-            {/* Ingredients: ________________________________________*/}
-            {ingredientsFieldWarning && (
-              <Text style={[defaultStyles.text, styles.warning]}>
-                No Ingredients!
-              </Text>
-            )}
-            <View>
-              <View style={styles.formInputView}>
-                <TextInput
-                  placeholder="Add Ingredient"
-                  placeholderTextColor={colors.lightGray}
-                  style={[styles.formInput]}
-                  clearButtonMode="always"
-                  onChangeText={(val) => {
-                    setIngredient(val)
-                  }}
-                  // return btn on keyboard acts same as clicking +
-                  onSubmitEditing={addIngredient}
-                  value={ingredient}
-                />
-                <TouchableOpacity>
-                  <AntDesign
-                    name="pluscircleo"
-                    size={30}
-                    color={colors.white}
-                    onPress={addIngredient}
+            <ImageInput />
+            <View style={styles.recipeContent}>
+              {/* Recipe Name: ________________________________________*/}
+              {nameFieldWarning && (
+                <Text style={[defaultStyles.text, styles.warning]}>
+                  Please Enter a Recipe Title!
+                </Text>
+              )}
+              <TextInput
+                placeholder="Enter Recipe Title"
+                placeholderTextColor={colors.lightGray}
+                style={[styles.formInput, styles.formInputFullWidth]}
+                clearButtonMode="always"
+                onChangeText={(val) => {
+                  setRecipeName(val)
+                }}
+                value={recipeName}
+              />
+              {/* Cook Time ___________________________________________*/}
+              {timeFieldWarning && (
+                <Text style={[defaultStyles.text, styles.warning]}>
+                  Please Enter a Cook Time!
+                </Text>
+              )}
+              <TextInput
+                placeholder="Enter Cook Time: ex: '5 minutes'"
+                placeholderTextColor={colors.lightGray}
+                style={[styles.formInput, styles.formInputFullWidth]}
+                clearButtonMode="always"
+                onChangeText={(val) => {
+                  setTime(val)
+                }}
+                value={time}
+              />
+              {/* Ingredients: ________________________________________*/}
+              {ingredientsFieldWarning && (
+                <Text style={[defaultStyles.text, styles.warning]}>
+                  No Ingredients!
+                </Text>
+              )}
+              <View>
+                <View style={styles.formInputView}>
+                  <TextInput
+                    placeholder="Add Ingredient"
+                    placeholderTextColor={colors.lightGray}
+                    style={[styles.formInput]}
+                    clearButtonMode="always"
+                    onChangeText={(val) => {
+                      setIngredient(val)
+                    }}
+                    // return btn on keyboard acts same as clicking +
+                    onSubmitEditing={addIngredient}
+                    value={ingredient}
                   />
+                  <TouchableOpacity>
+                    <AntDesign
+                      name="pluscircleo"
+                      size={30}
+                      color={colors.white}
+                      onPress={addIngredient}
+                    />
+                  </TouchableOpacity>
+                </View>
+                {/* render list of ingredients inputted */}
+                {/* refactor to UUID for key!!!! */}
+                {/* need a DELETE single button */}
+                {ingredients.map((item, i) => (
+                  <Text key={i} style={styles.singleIngredientDirection}>
+                    - {item}
+                  </Text>
+                ))}
+              </View>
+              {/* Directions: ________________________________________*/}
+              {directionsFieldWarning && (
+                <Text style={[defaultStyles.text, styles.warning]}>
+                  No Directions!
+                </Text>
+              )}
+              <View>
+                <View style={styles.formInputView}>
+                  <TextInput
+                    placeholder="Add Direction"
+                    placeholderTextColor={colors.lightGray}
+                    style={[styles.formInput]}
+                    clearButtonMode="always"
+                    onChangeText={(val) => {
+                      setDirection(val)
+                    }}
+                    // return btn on keyboard acts same as clicking +
+                    onSubmitEditing={addDirection}
+                    value={direction}
+                  />
+                  <TouchableOpacity>
+                    <AntDesign
+                      name="pluscircleo"
+                      size={30}
+                      color={colors.white}
+                      onPress={addDirection}
+                    />
+                  </TouchableOpacity>
+                </View>
+                {/* render list of directions inputted */}
+                {/* refactor to UUID for key!!!! */}
+                {/* need a DELETE single button */}
+                {directions.map((item, i) => (
+                  <Text key={i} style={styles.singleIngredientDirection}>
+                    - {item}
+                  </Text>
+                ))}
+              </View>
+              {/* Post Button ____________________________________*/}
+              <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
+                <Text style={styles.postBtnText}>cook'd!</Text>
+              </TouchableOpacity>
+              {/* Reset Form Button */}
+              <View style={styles.resetBtnView}>
+                <TouchableOpacity style={styles.resetBtn} onPress={handleReset}>
+                  <Text style={styles.resetBtnText}>Reset</Text>
                 </TouchableOpacity>
               </View>
-              {/* render list of ingredients inputted */}
-              {/* refactor to UUID for key!!!! */}
-              {/* need a DELETE single button */}
-              {ingredients.map((item, i) => (
-                <Text key={i} style={styles.singleIngredientDirection}>
-                  - {item}
-                </Text>
-              ))}
             </View>
-            {/* Directions: ________________________________________*/}
-            {directionsFieldWarning && (
-              <Text style={[defaultStyles.text, styles.warning]}>
-                No Directions!
-              </Text>
-            )}
-            <View>
-              <View style={styles.formInputView}>
-                <TextInput
-                  placeholder="Add Direction"
-                  placeholderTextColor={colors.lightGray}
-                  style={[styles.formInput]}
-                  clearButtonMode="always"
-                  onChangeText={(val) => {
-                    setDirection(val)
-                  }}
-                  // return btn on keyboard acts same as clicking +
-                  onSubmitEditing={addDirection}
-                  value={direction}
-                />
-                <TouchableOpacity>
-                  <AntDesign
-                    name="pluscircleo"
-                    size={30}
-                    color={colors.white}
-                    onPress={addDirection}
-                  />
-                </TouchableOpacity>
-              </View>
-              {/* render list of directions inputted */}
-              {/* refactor to UUID for key!!!! */}
-              {/* need a DELETE single button */}
-              {directions.map((item, i) => (
-                <Text key={i} style={styles.singleIngredientDirection}>
-                  - {item}
-                </Text>
-              ))}
-            </View>
-            {/* Post Button ____________________________________*/}
-            <TouchableOpacity style={styles.postBtn} onPress={handlePost}>
-              <Text style={styles.postBtnText}>cook'd!</Text>
-            </TouchableOpacity>
-            {/* Reset Form Button */}
-            <TouchableOpacity style={styles.resetBtn} onPress={handleReset}>
-              <Text style={styles.resetBtnText}>Reset</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+          </ScrollView>
+        </SafeAreaView>
+      </KeyboardAvoidingView>
     )
   }
 }
@@ -285,7 +294,7 @@ export default connect(mapState, mapDispatch)(RecipePostForm)
 const styles = StyleSheet.create({
   recipeContent: {
     margin: 20,
-    minHeight: 750, // this is for UX -- adds room to scroll when inputting directions
+    // minHeight: 750 // this is for UX -- adds room to scroll when inputting directions
   },
   singleIngredient: {
     marginTop: 10,
@@ -333,7 +342,7 @@ const styles = StyleSheet.create({
   postBtn: {
     backgroundColor: colors.pink,
     borderRadius: 25,
-    marginVertical: 20,
+    marginTop: 20,
     padding: 12,
   },
   postBtnText: {
@@ -342,10 +351,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  resetBtnView: {
+    borderTopWidth: 2,
+    borderTopColor: colors.lightBorder,
+    marginTop: 40,
+    paddingTop: 40,
+  },
   resetBtn: {
     backgroundColor: colors.lightBlue,
     borderRadius: 25,
-    marginVertical: 90,
     padding: 12,
   },
   resetBtnText: {
