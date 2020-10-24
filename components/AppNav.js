@@ -121,20 +121,18 @@ const ProfileAndPostStack = () => (
 )
 
 const ProfileScreenDrawer = () => (
-  <Drawer.Navigator
-    drawerPosition="right"
-    drawerContent={(props) => {
-      return (
-        <DrawerContentScrollView {...props}>
-          <DrawerItemList {...props} />
-          <DrawerItem
-            label="Logout (not functioning)"
-            onPress={() => console.log('logout clicked')}
-          />
-        </DrawerContentScrollView>
-      )
-    }}
-  >
+  <Drawer.Navigator drawerPosition="right">
+    {/* // drawerContent={(props) => {
+    //   return (
+    //     <DrawerContentScrollView {...props}>
+    //       <DrawerItemList {...props} />
+    //       <DrawerItem
+    //         label="Logout (not functioning)"
+    //         onPress={() => console.log('logout clicked')}
+    //       />
+    //     </DrawerContentScrollView>
+    //   )
+    // }} */}
     <Drawer.Screen name="Your Profile" component={ProfileAndPostStack} />
     <Drawer.Screen name="Edit User Profile" component={EditUserProfileScreen} />
   </Drawer.Navigator>
