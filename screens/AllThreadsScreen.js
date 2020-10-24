@@ -54,16 +54,26 @@ const AllThreadsScreen = ({
   }
 
   const handleStartMessage = () => {
+    // prevent empty thread:
     if (!usernameInput) {
       return setEmptyWarning(true)
     }
+    // prevent duplicate thread and jump to existing if exists
+    let existingThreadWithUser = directMessages.find(
+      (thread) => thread.user.username === usernameInput
+    )
+    if (existingThreadWithUser) {
+      navigation.navigate('Chat', { thread: existingThreadWithUser })
+      existingThreadWithUser = null
+      setUsernameInput('')
+      setEmptyWarning(false)
+      return
+    }
 
+    // post and render new thread:
     postNewThread(auth.id, usernameInput)
 
-    // let thread = directMessages[0];
-
-    // navigation.navigate('Chat', { thread });
-
+    // reset vars
     setUsernameInput('')
     setEmptyWarning(false)
   }
