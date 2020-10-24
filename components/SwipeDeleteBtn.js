@@ -1,15 +1,17 @@
 import React from 'react'
-import { StyleSheet, Text } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 
-import { deleteRecipe } from '../redux'
+import { deleteThread } from '../redux'
 
 import colors from '../config/colors'
 
-const SwipeDeleteBtn = ({ id, deleteRecipe }) => {
+const SwipeDeleteBtn = ({ threadId, deleteThread }) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={() => deleteRecipe(id)}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => deleteThread(threadId)}
+    >
       <Text style={styles.text}>Delete</Text>
     </TouchableOpacity>
   )
@@ -17,21 +19,20 @@ const SwipeDeleteBtn = ({ id, deleteRecipe }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.red,
+    backgroundColor: colors.pink,
   },
   text: {
     color: colors.white,
     fontWeight: 'bold',
     fontSize: 15,
-    padding: 30,
+    padding: 50,
   },
 })
 
 const mapDispatch = (dispatch) => ({
-  deleteRecipe: (id) => dispatch(deleteRecipe(id)),
+  deleteThread: (threadId) => dispatch(deleteThread(threadId)),
 })
 
 export default connect(null, mapDispatch)(SwipeDeleteBtn)

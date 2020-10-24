@@ -9,9 +9,11 @@ import {
   TextInput,
   RefreshControl,
 } from 'react-native'
+import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { connect } from 'react-redux'
 import { Entypo } from '@expo/vector-icons'
 
+import SwipeDeleteBtn from '../components/SwipeDeleteBtn'
 import { getAllThreads, postNewThread } from '../redux'
 
 import colors from '../config/colors'
@@ -55,7 +57,7 @@ const AllThreadsScreen = ({
 
   // needs a 500 frontend message
   const handleStartMessage = () => {
-    // prevent empty thread:
+    // prevent no input:
     if (!usernameInput) {
       return setEmptyWarning(true)
     }
@@ -132,28 +134,33 @@ const AllThreadsScreen = ({
         data={directMessages}
         keyExtractor={(thread) => thread.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.singleThreadView}
-            onPress={() => handleNavToSingleThread(item)}
+          <Swipeable
+            renderRightActions={() => <SwipeDeleteBtn threadId={item.id} />}
+            onSwipeableRightOpen={() => console.log('delete opened')}
           >
-            <Image
-              source={{ uri: item.user.profileImageUrl }}
-              style={styles.profileImage}
-            />
-            <View>
-              <Text style={defaultStyles.text}>
-                {item.user.firstName} {item.user.lastName}
-              </Text>
-              <Text style={[defaultStyles.text, styles.username]}>
-                @{item.user.username}
-              </Text>
-              <Text style={defaultStyles.smallText}>
-                {item.messages.length} message
-                {(item.messages.length < 1 && 's') ||
-                  (item.messages.length > 1 && 's')}
-              </Text>
-            </View>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.singleThreadView}
+              onPress={() => handleNavToSingleThread(item)}
+            >
+              <Image
+                source={{ uri: item.user.profileImageUrl }}
+                style={styles.profileImage}
+              />
+              <View>
+                <Text style={defaultStyles.text}>
+                  {item.user.firstName} {item.user.lastName}
+                </Text>
+                <Text style={[defaultStyles.text, styles.username]}>
+                  @{item.user.username}
+                </Text>
+                <Text style={defaultStyles.smallText}>
+                  {item.messages.length} message
+                  {(item.messages.length < 1 && 's') ||
+                    (item.messages.length > 1 && 's')}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </Swipeable>
         )}
       />
     </View>
