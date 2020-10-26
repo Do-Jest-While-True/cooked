@@ -8,6 +8,8 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
@@ -68,79 +70,86 @@ const UserProfileScreen = ({
     return <AppLoading />
   } else {
     return (
-      <SafeAreaView style={defaultStyles.container}>
-        <ScrollView ref={ref}>
-          <View style={styles.container}>
-            <View style={styles.topRowBtnsView}>
-              <TouchableOpacity
-                style={styles.backBtn}
-                onPress={() => {
-                  setUploadMessage(false)
-                  navigation.navigate('Your Profile')
-                }}
-              >
-                <Ionicons
-                  name="ios-arrow-back"
-                  size={38}
-                  color={colors.white}
-                />
-              </TouchableOpacity>
-              {/* SETTINGS BUTTON */}
-              <Feather
-                name="settings"
-                size={28}
-                color={colors.white}
-                style={styles.settingsBtn}
-                onPress={() => navigation.openDrawer()}
-              />
-            </View>
-            <View style={styles.formContentContainer}>
-              {/* PROFILE IMAGE */}
-              <Image
-                source={{ uri: me.user.profileImageUrl }}
-                style={styles.profileImg}
-              />
-              {/* EDIT PROFILE BTN & UPLOAD SUCCESS MSG*/}
-              <ProfileImageInput
-                uploadMessage={uploadMessage}
-                setUploadMessage={setUploadMessage}
-              />
-              {/* USERNAME */}
-              <View style={styles.usernameSection}>
-                <Text style={[defaultStyles.text, styles.textBold]}>
-                  @{me.user.username}
-                </Text>
-                {usernameFieldWarning && (
-                  <Text style={[defaultStyles.text, styles.warning]}>
-                    Please Enter a New Username!
-                  </Text>
-                )}
-                {/* USERNAME INPUT */}
-                <TextInput
-                  placeholder="Enter Username"
-                  placeholderTextColor={colors.lightGray}
-                  style={[styles.formInput]}
-                  clearButtonMode="always"
-                  onSubmitEditing={handleSaveChanges}
-                  onChangeText={(val) => {
-                    setNewUsername(val)
-                  }}
-                  value={newUsername}
-                />
-                {/* SUBMIT USERNAME BTN */}
+      <KeyboardAvoidingView
+        style={defaultStyles.container}
+        behavior="padding"
+        keyboardVerticalOffset={20}
+        enabled={Platform.OS === 'ios' ? true : false}
+      >
+        <SafeAreaView style={defaultStyles.container}>
+          <ScrollView ref={ref}>
+            <View style={styles.container}>
+              <View style={styles.topRowBtnsView}>
                 <TouchableOpacity
-                  style={styles.saveBtn}
-                  onPress={handleSaveChanges}
+                  style={styles.backBtn}
+                  onPress={() => {
+                    setUploadMessage(false)
+                    navigation.navigate('Your Profile')
+                  }}
                 >
-                  <Text style={[defaultStyles.text, styles.saveBtnText]}>
-                    Submit Username
-                  </Text>
+                  <Ionicons
+                    name="ios-arrow-back"
+                    size={38}
+                    color={colors.white}
+                  />
                 </TouchableOpacity>
+                {/* SETTINGS BUTTON */}
+                <Feather
+                  name="settings"
+                  size={28}
+                  color={colors.white}
+                  style={styles.settingsBtn}
+                  onPress={() => navigation.openDrawer()}
+                />
+              </View>
+              <View style={styles.formContentContainer}>
+                {/* PROFILE IMAGE */}
+                <Image
+                  source={{ uri: me.user.profileImageUrl }}
+                  style={styles.profileImg}
+                />
+                {/* EDIT PROFILE BTN & UPLOAD SUCCESS MSG*/}
+                <ProfileImageInput
+                  uploadMessage={uploadMessage}
+                  setUploadMessage={setUploadMessage}
+                />
+                {/* USERNAME */}
+                <View style={styles.usernameSection}>
+                  <Text style={[defaultStyles.text, styles.textBold]}>
+                    @{me.user.username}
+                  </Text>
+                  {usernameFieldWarning && (
+                    <Text style={[defaultStyles.text, styles.warning]}>
+                      Please Enter a New Username!
+                    </Text>
+                  )}
+                  {/* USERNAME INPUT */}
+                  <TextInput
+                    placeholder="Enter Username"
+                    placeholderTextColor={colors.lightGray}
+                    style={[styles.formInput]}
+                    clearButtonMode="always"
+                    onSubmitEditing={handleSaveChanges}
+                    onChangeText={(val) => {
+                      setNewUsername(val)
+                    }}
+                    value={newUsername}
+                  />
+                  {/* SUBMIT USERNAME BTN */}
+                  <TouchableOpacity
+                    style={styles.saveBtn}
+                    onPress={handleSaveChanges}
+                  >
+                    <Text style={[defaultStyles.text, styles.saveBtnText]}>
+                      Submit Username
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+          </ScrollView>
+        </SafeAreaView>
+      </KeyboardAvoidingView>
     )
   }
 }
@@ -161,7 +170,6 @@ export default connect(mapState, mapDispatch)(UserProfileScreen)
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    minHeight: 1000,
   },
   topRowBtnsView: {
     flexDirection: 'row',
@@ -185,7 +193,7 @@ const styles = StyleSheet.create({
     height: 150,
     borderWidth: 0.5,
     borderRadius: 75,
-    borderColor: colors.white,
+    borderColor: colors.lightBorder,
     marginVertical: 20,
   },
   textBold: {
@@ -195,10 +203,8 @@ const styles = StyleSheet.create({
     marginTop: 50,
     paddingVertical: 50,
     alignItems: 'center',
-    borderTopWidth: 0.25,
-    borderTopColor: colors.white,
-    borderBottomWidth: 0.25,
-    borderBottomColor: colors.white,
+    borderTopWidth: 1,
+    borderTopColor: colors.lightBorder,
     width: '88%',
   },
   formInput: {

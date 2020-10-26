@@ -28,6 +28,7 @@ import SingleThreadScreen from '../screens/SingleThreadScreen'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
+import { startClock } from 'react-native-reanimated'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -94,6 +95,16 @@ const ExploreTabs = () => (
   </SafeAreaView>
 )
 
+const RecipeFormStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Add Recipe Post!"
+      component={RecipePostForm}
+      options={headerStyle}
+    />
+  </Stack.Navigator>
+)
+
 const ProfileAndPostStack = () => (
   <Stack.Navigator>
     <Stack.Screen
@@ -110,20 +121,18 @@ const ProfileAndPostStack = () => (
 )
 
 const ProfileScreenDrawer = () => (
-  <Drawer.Navigator
-    drawerPosition="right"
-    drawerContent={(props) => {
-      return (
-        <DrawerContentScrollView {...props}>
-          <DrawerItemList {...props} />
-          <DrawerItem
-            label="Logout (not functioning)"
-            onPress={() => console.log('logout clicked')}
-          />
-        </DrawerContentScrollView>
-      )
-    }}
-  >
+  <Drawer.Navigator drawerPosition="right">
+    {/* // drawerContent={(props) => {
+    //   return (
+    //     <DrawerContentScrollView {...props}>
+    //       <DrawerItemList {...props} />
+    //       <DrawerItem
+    //         label="Logout (not functioning)"
+    //         onPress={() => console.log('logout clicked')}
+    //       />
+    //     </DrawerContentScrollView>
+    //   )
+    // }} */}
     <Drawer.Screen name="Your Profile" component={ProfileAndPostStack} />
     <Drawer.Screen name="Edit User Profile" component={EditUserProfileScreen} />
   </Drawer.Navigator>
@@ -181,7 +190,7 @@ export const TabNavigator = () => (
     />
     <Tab.Screen
       name="New Recipe"
-      component={RecipePostForm}
+      component={RecipeFormStack}
       options={{
         tabBarIcon: () => (
           <Entypo name="circle-with-plus" size={35} color={colors.white} />

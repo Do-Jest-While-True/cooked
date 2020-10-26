@@ -9,11 +9,13 @@ export default {
   white: '#e8e8e8',
   red: '#ff4f42',
   lightBlue: 'dodgerblue',
+  yellow: '#fffd80',
 
   // text inputs background
   light: '#4a5e75',
   // light gray for placeholder text:
   lightGray: '#a6a6a6',
+  lightBorder: '#4d6073',
   blue: 'dodgerblue',
 }
 

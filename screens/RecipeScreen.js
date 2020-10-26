@@ -36,6 +36,7 @@ const RecipeScreen = ({
   route,
   singleRecipe,
   getSingleRecipe,
+  me,
   user,
   gotUser,
   authId,
@@ -102,11 +103,11 @@ const RecipeScreen = ({
           {/* Recipe Image: */}
           <Image source={{ uri: singleRecipe.imageUrl }} style={styles.img} />
           <View style={styles.recipeContent}>
-            {/* USERNAME & LIKE FLEX */}
+            {/* USERNAME & LIKE ROW */}
             <View style={styles.usernameLikeRow}>
               {/* Username: */}
               {/* don't render username when clicking in from my user profile */}
-              {route.params.userId && (
+              {route.params.userId ? (
                 <TouchableOpacity
                   onPress={() =>
                     route.params.nav.navigate('Ext User Profile', { user })
@@ -118,10 +119,20 @@ const RecipeScreen = ({
                       source={{ uri: user.user.profileImageUrl }}
                     />
                     <Text style={[defaultStyles.text, styles.username]}>
-                      {user.user.username}
+                      @{user.user.username}
                     </Text>
                   </View>
                 </TouchableOpacity>
+              ) : (
+                <View style={styles.userView}>
+                  <Image
+                    style={styles.userImg}
+                    source={{ uri: me.user.profileImageUrl }}
+                  />
+                  <Text style={[defaultStyles.text, styles.username]}>
+                    @{me.user.username}
+                  </Text>
+                </View>
               )}
               {/* Likes */}
               <View>
@@ -133,15 +144,13 @@ const RecipeScreen = ({
               {singleRecipe.name}
             </Text>
             {/* Cook Time */}
-            <View style={styles.timeView}>
+            <View style={styles.cookTimeView}>
               <MaterialIcons name="timer" size={18} color={colors.white} />
-              <Text style={styles.time}>{singleRecipe.time}</Text>
+              <Text style={styles.cookTime}>{singleRecipe.time}</Text>
             </View>
             {/* Ingredients: */}
-            <View style={styles.recipesContentSection}>
-              <Text style={[styles.recipesHeadings, styles.recipeSubHeading]}>
-                Ingredients
-              </Text>
+            <View style={[styles.recipesContentSection, styles.ingredientView]}>
+              <Text style={[styles.recipesHeadings]}>Ingredients</Text>
               {singleRecipe.ingredients.map((ingredient, i) => (
                 <Text key={i} style={styles.singleIngredient}>
                   - {ingredient}
@@ -150,20 +159,20 @@ const RecipeScreen = ({
             </View>
             {/* Directions: */}
             <View style={[styles.recipesContentSection, styles.directionView]}>
-              <Text style={[styles.recipesHeadings, styles.recipeSubHeading]}>
-                Directions
-              </Text>
+              <Text style={[styles.recipesHeadings]}>Directions</Text>
               {singleRecipe.directions.map((direction, i) => (
                 <View key={i} style={styles.singleDirectionView}>
-                  <Text style={styles.singleDirectionBold}>{i + 1}. </Text>
+                  <Text style={styles.singleDirectionNumber}>{i + 1}. </Text>
                   <Text style={styles.singleDirection}>{direction}</Text>
                 </View>
               ))}
             </View>
-            {/* Comments: */}
+            {/* COMMENTS: ------------------------------------------------- */}
             <View>
-              <Text style={styles.commentHeading}>Comments</Text>
-              <View>
+              <Text style={[styles.recipesHeadings, styles.commentsHeading]}>
+                Comments
+              </Text>
+              <View style={styles.commentFormBtnSection}>
                 <Controller
                   control={control}
                   render={({ onChange, value }) => (
@@ -241,7 +250,11 @@ const RecipeScreen = ({
                                 onPress={() => pressEditComment(comment)}
                                 style={styles.commentButton}
                               >
-                                <Feather name="edit" size={20} color="yellow" />
+                                <Feather
+                                  name="edit"
+                                  size={20}
+                                  color={colors.yellow}
+                                />
                               </TouchableOpacity>
                             </View>
                             {/* DELETE COMMENT */}
@@ -254,7 +267,7 @@ const RecipeScreen = ({
                                   style={styles.deleteCommentText}
                                   name="x-circle"
                                   size={20}
-                                  color="black"
+                                  color={colors.red}
                                 />
                               </TouchableOpacity>
                             </View>
@@ -272,7 +285,9 @@ const RecipeScreen = ({
                   )
                 })
               ) : (
-                <Text style={styles.singleComment}>There are no comments!</Text>
+                <View style={styles.noCommentsView}>
+                  <Text style={defaultStyles.text}>There are no comments!</Text>
+                </View>
               )}
               {/* End Comments View */}
             </View>
@@ -287,6 +302,7 @@ const mapState = (state) => ({
   singleRecipe: state.singleRecipe,
   user: state.user.user,
   authId: state.auth.id,
+  me: state.user.me,
 })
 
 const mapDispatch = (dispatch) => ({
@@ -312,6 +328,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
+    marginBottom: 20,
   },
   outerUserView: {
     flexDirection: 'row',
@@ -326,22 +343,110 @@ const styles = StyleSheet.create({
   username: {
     color: colors.pink,
     fontWeight: 'bold',
-    fontSize: 22,
+    fontSize: 20,
   },
   userImg: {
-    width: 45,
-    height: 45,
-    borderRadius: 75,
-    marginRight: 7,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 12,
   },
-  //COMMENTS SECTION
-  commentHeading: {
+  recipeContent: {
+    margin: 20,
+  },
+  recipesContentSection: {
+    marginBottom: 20,
+    borderBottomWidth: 0.25,
+    paddingVertical: 15,
+    borderBottomColor: colors.lightBorder,
+  },
+  recipeTitle: {
+    fontFamily: 'CoveredByYourGrace_400Regular',
+    letterSpacing: 2,
+    fontSize: 32,
+    marginBottom: 18,
+  },
+  recipesHeadings: {
     color: colors.white,
     fontWeight: 'bold',
     fontSize: 22,
     letterSpacing: 2,
+  },
+  ingredientView: {
+    paddingBottom: 35,
+  },
+  singleIngredient: {
+    marginTop: 16,
+    fontSize: 16,
+    color: colors.white,
+  },
+  directionView: {
+    borderBottomWidth: 2,
+    paddingBottom: 35,
+  },
+  singleDirectionView: {
+    flexDirection: 'row',
+    marginTop: 18,
+  },
+  singleDirection: {
+    fontSize: 16,
+    color: colors.white,
+  },
+  singleDirectionNumber: {
+    marginRight: 5,
+    fontSize: 16,
+    color: colors.white,
+    fontWeight: 'bold',
+  },
+  cookTimeView: {
+    flexDirection: 'row',
+    paddingBottom: 20,
+    marginBottom: 22,
+    borderBottomWidth: 0.25,
+    borderBottomColor: colors.lightBorder,
+  },
+  cookTime: {
+    color: colors.white,
+    marginLeft: 5,
+  },
+  // COMMENTS ------------------------------------
+  commentsHeading: {
+    // comments heading is also taking from recipesHeadings
+    marginTop: 20,
     marginBottom: 10,
   },
+  commentFormBtnSection: {
+    borderBottomWidth: 0.25,
+    borderBottomColor: colors.lightBorder,
+  },
+  commentFormInput: {
+    backgroundColor: colors.light,
+    borderRadius: 20,
+    minHeight: 90,
+    paddingHorizontal: 20,
+    marginVertical: 16,
+    paddingTop: 15,
+    paddingBottom: 15,
+    fontSize: 16,
+    color: colors.white,
+  },
+  submitBtn: {
+    backgroundColor: colors.pink,
+    borderRadius: 75,
+    paddingVertical: 8,
+    paddingHorizontal: 30,
+    width: '35%',
+    marginTop: 10,
+    marginBottom: 30,
+    alignSelf: 'center',
+  },
+  submitBtnText: {
+    textAlign: 'center',
+    color: colors.white,
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  // single comments -------
   commentUserView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -356,44 +461,23 @@ const styles = StyleSheet.create({
   commentUsername: {
     color: colors.blue,
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 16,
   },
   commentView: {
     flexDirection: 'column',
-    marginBottom: 10,
     borderBottomWidth: 0.3,
-    borderColor: colors.lightGray,
+    borderColor: colors.lightBorder,
+    paddingTop: 22,
+    paddingBottom: 12,
   },
   singleComment: {
     fontSize: 15,
     color: colors.white,
     marginBottom: 10,
   },
-  commentFormInput: {
-    backgroundColor: colors.light,
-    borderRadius: 10,
-    height: 70,
-    paddingHorizontal: 20,
-    marginVertical: 10,
-    paddingTop: 10,
-    paddingBottom: 15,
-    fontSize: 16,
-    color: colors.white,
-  },
-  submitBtn: {
-    backgroundColor: colors.pink,
-    borderRadius: 75,
-    paddingVertical: 10,
-    marginBottom: 30,
-    width: '30%',
-    height: 40,
-    alignSelf: 'center',
-  },
-  submitBtnText: {
-    textAlign: 'center',
-    color: colors.white,
-    fontSize: 16,
-    fontWeight: 'bold',
+  noCommentsView: {
+    paddingVertical: 20,
+    alignItems: 'center',
   },
   deleteCommentView: {
     flex: 1,
@@ -401,9 +485,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginRight: 5,
   },
-  deleteCommentText: {
-    color: colors.red,
-  },
+  // deleteCommentText: {
+  // 	color: colors.red
+  // },
   commentBtnView: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
@@ -418,60 +502,5 @@ const styles = StyleSheet.create({
     color: colors.lightGray,
     fontSize: 11,
     marginBottom: 3,
-  },
-  //COMMENTS AREA END
-  recipeContent: {
-    margin: 20,
-  },
-  recipesContentSection: {
-    marginBottom: 20,
-    borderBottomWidth: 0.25,
-    paddingBottom: 25,
-    borderBottomColor: colors.white,
-  },
-  recipeTitle: {
-    fontFamily: 'CoveredByYourGrace_400Regular',
-    letterSpacing: 2,
-    fontSize: 24,
-    marginBottom: 18,
-  },
-  recipesHeadings: {
-    color: colors.white,
-    fontWeight: 'bold',
-    fontSize: 20,
-    letterSpacing: 2,
-  },
-  singleIngredient: {
-    marginTop: 5,
-    fontSize: 15,
-    color: colors.white,
-  },
-  directionView: {
-    borderBottomWidth: 2,
-  },
-  singleDirectionView: {
-    flexDirection: 'row',
-  },
-  singleDirection: {
-    marginTop: 5,
-    fontSize: 15,
-    color: colors.white,
-  },
-  singleDirectionBold: {
-    marginTop: 5,
-    fontSize: 16,
-    color: colors.white,
-    fontWeight: 'bold',
-  },
-  timeView: {
-    flexDirection: 'row',
-    paddingBottom: 20,
-    marginBottom: 22,
-    borderBottomWidth: 0.25,
-    borderBottomColor: colors.white,
-  },
-  time: {
-    color: colors.white,
-    marginLeft: 5,
   },
 })

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {
   View,
   Text,
@@ -7,6 +7,10 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  RefreshControl,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { FontAwesome } from '@expo/vector-icons'
@@ -16,8 +20,14 @@ import { getThreadMessages, postNewMessage } from '../redux'
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
 
-// to make the new message nav issue work:
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout)
+  })
+}
 
+// to make the new message nav issue work:
+// ---------------------------------------
 // change getThreadMessages slice to utilize a username instead of other users ID
 
 // don't rely on otherUser info to be passed down through route, just fetch it with gotUser() -- but that GET route wants a user's id so that will also need to be refactor to accept a username OR make another getUserByUsername route.........
@@ -29,10 +39,20 @@ const SingleThreadScreen = ({
   singleThreadMessages,
   auth,
 }) => {
+  const [refreshing, setRefreshing] = React.useState(false)
   const [messageInput, setMessageInput] = useState('')
 
   const threadId = route.params.thread.id
   const otherUser = route.params.thread.user
+
+  // used for scroll to bottom after sending message
+  const scrollViewRef = useRef()
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+    wait(1000).then(() => setRefreshing(false))
+    getThreadMessages(threadId)
+  }, [])
 
   useEffect(() => {
     getThreadMessages(threadId)
@@ -47,65 +67,85 @@ const SingleThreadScreen = ({
     }
     postNewMessage(newMessageData)
     setMessageInput('')
+    Keyboard.dismiss()
   }
 
   return (
-    <View style={[defaultStyles.container, styles.container]}>
-      {/* TOP ROW USER INFO */}
-      <View style={styles.otherUserRow}>
-        <Image
-          source={{ uri: otherUser.profileImageUrl }}
-          style={styles.profileImage}
-        />
-        <View>
-          <Text style={defaultStyles.text}>
-            {otherUser.firstName} {otherUser.lastName}
-          </Text>
-          <Text style={styles.username}>@{otherUser.username}</Text>
+    <KeyboardAvoidingView
+      style={[defaultStyles.container, styles.container]}
+      behavior="padding"
+      keyboardVerticalOffset={80}
+      enabled={Platform.OS === 'ios' ? true : false}
+    >
+      <View style={[defaultStyles.container, styles.container]}>
+        {/* TOP ROW USER INFO */}
+        <View style={styles.otherUserRow}>
+          <Image
+            source={{ uri: otherUser.profileImageUrl }}
+            style={styles.profileImage}
+          />
+          <View>
+            <Text style={defaultStyles.text}>
+              {otherUser.firstName} {otherUser.lastName}
+            </Text>
+            <Text style={styles.username}>@{otherUser.username}</Text>
+          </View>
+        </View>
+        {/* CHAT MESSAGES */}
+        {singleThreadMessages && (
+          <FlatList
+            ref={scrollViewRef}
+            onContentSizeChange={() =>
+              scrollViewRef.current.scrollToEnd({ animated: true })
+            }
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={colors.white}
+              />
+            }
+            data={singleThreadMessages}
+            keyExtractor={(message) => message.id.toString()}
+            renderItem={({ item }) => (
+              <View
+                style={
+                  item.sentTo === otherUser.id
+                    ? [styles.msgBubble, styles.msgBubbleRight]
+                    : styles.msgBubble
+                }
+              >
+                <Text style={[defaultStyles.text, styles.msgText]}>
+                  {item.body}
+                </Text>
+              </View>
+            )}
+          />
+        )}
+        {/* MESSAGE INPUT */}
+        <View style={styles.sendMessageRow}>
+          <TextInput
+            placeholder="Enter Message"
+            placeholderTextColor={colors.lightGray}
+            style={[styles.formInput]}
+            clearButtonMode="always"
+            multiline={true}
+            onChangeText={(val) => {
+              setMessageInput(val)
+            }}
+            value={messageInput}
+          />
+          <TouchableOpacity onPress={handleSendMessage}>
+            <FontAwesome
+              name="send"
+              size={24}
+              color={colors.white}
+              style={styles.sendMsgBtn}
+            />
+          </TouchableOpacity>
         </View>
       </View>
-      {/* CHAT MESSAGES */}
-      {singleThreadMessages && (
-        <FlatList
-          data={singleThreadMessages}
-          keyExtractor={(message) => message.id.toString()}
-          renderItem={({ item }) => (
-            <View
-              style={
-                item.sentTo === otherUser.id
-                  ? [styles.msgBubble, styles.msgBubbleRight]
-                  : styles.msgBubble
-              }
-            >
-              <Text style={[defaultStyles.text, styles.msgText]}>
-                {item.body}
-              </Text>
-            </View>
-          )}
-        />
-      )}
-      <View style={styles.sendMessageRow}>
-        <TextInput
-          placeholder="Enter Message"
-          placeholderTextColor={colors.lightGray}
-          style={[styles.formInput]}
-          clearButtonMode="always"
-          multiline={true}
-          onChangeText={(val) => {
-            setMessageInput(val)
-          }}
-          value={messageInput}
-        />
-        <TouchableOpacity onPress={handleSendMessage}>
-          <FontAwesome
-            name="send"
-            size={24}
-            color={colors.white}
-            style={styles.sendMsgBtn}
-          />
-        </TouchableOpacity>
-      </View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -128,7 +168,7 @@ const styles = StyleSheet.create({
   otherUserRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomColor: colors.darkGray,
+    borderBottomColor: colors.white,
     borderBottomWidth: 0.25,
     backgroundColor: colors.mainFaded,
     marginBottom: 20,
@@ -146,13 +186,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   msgBubble: {
-    // flex: -1,
     backgroundColor: '#26384a',
     padding: 15,
     paddingHorizontal: 20,
     margin: 10,
     borderRadius: 30,
     maxWidth: '70%',
+    alignSelf: 'flex-start',
   },
   msgBubbleRight: {
     alignSelf: 'flex-end',
@@ -164,8 +204,13 @@ const styles = StyleSheet.create({
   sendMessageRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginVertical: 20,
+    // same can be accomplished with paddingVertical but
+    // this gives better exp w keyboard:
+    paddingTop: 30,
+    marginBottom: 30,
     width: '100%',
+    borderTopWidth: 0.25,
+    borderTopColor: colors.lightBorder,
   },
   formInput: {
     backgroundColor: colors.light,
@@ -173,7 +218,6 @@ const styles = StyleSheet.create({
     minHeight: 45,
     maxHeight: 100,
     width: '70%',
-    marginBottom: 10,
     paddingTop: 15,
     paddingBottom: 15,
     paddingHorizontal: 20,

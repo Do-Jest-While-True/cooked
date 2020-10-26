@@ -4,6 +4,7 @@ import { URL } from './serverUrl'
 // ACTION TYPE
 const GET_ALL_THREADS = 'GET_ALL_THREADS'
 const POST_NEW_THREAD = 'POST_NEW_THREAD'
+const DELETE_THREAD = 'DELETE_THREAD'
 
 // ACTION CREATOR
 const gotAllThreads = (threads) => ({
@@ -14,6 +15,11 @@ const gotAllThreads = (threads) => ({
 const postedNewThread = (thread) => ({
   type: POST_NEW_THREAD,
   thread,
+})
+
+const deletedThread = (threadId) => ({
+  type: DELETE_THREAD,
+  threadId,
 })
 
 // THUNK CREATOR
@@ -53,6 +59,15 @@ export const postNewThread = (myId, username) => async (dispatch) => {
   }
 }
 
+export const deleteThread = (threadId) => async (dispatch) => {
+  try {
+    await axios.delete(`${URL}/api/directMessage/deleteThread/${threadId}`)
+    dispatch(deletedThread(threadId))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 // Initial State
 const initialState = []
 
@@ -63,6 +78,8 @@ export default function (state = initialState, action) {
       return action.threads
     case POST_NEW_THREAD:
       return [action.thread, ...state]
+    case DELETE_THREAD:
+      return state.filter((thread) => thread.id !== action.threadId)
     default:
       return state
   }

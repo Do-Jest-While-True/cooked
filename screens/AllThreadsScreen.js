@@ -7,14 +7,23 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  RefreshControl,
 } from 'react-native'
+import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { connect } from 'react-redux'
 import { Entypo } from '@expo/vector-icons'
 
+import SwipeDeleteBtn from '../components/SwipeDeleteBtn'
 import { getAllThreads, postNewThread } from '../redux'
 
 import colors from '../config/colors'
 import defaultStyles from '../config/defaultStyles'
+
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout)
+  })
+}
 
 const AllThreadsScreen = ({
   directMessages,
@@ -23,9 +32,16 @@ const AllThreadsScreen = ({
   auth,
   postNewThread,
 }) => {
+  const [refreshing, setRefreshing] = React.useState(false)
   const [displayNewMsgForm, setDisplayNewMsgForm] = useState(false)
   const [emptyWarning, setEmptyWarning] = useState(false)
   const [usernameInput, setUsernameInput] = useState('')
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+    wait(1000).then(() => setRefreshing(false))
+    getThreads()
+  }, [])
 
   useEffect(() => {
     getThreads()
@@ -39,17 +55,28 @@ const AllThreadsScreen = ({
     }
   }
 
+  // needs a 500 frontend message
   const handleStartMessage = () => {
+    // prevent no input:
     if (!usernameInput) {
       return setEmptyWarning(true)
     }
+    // prevent duplicate thread and jump to existing if exists
+    let existingThreadWithUser = directMessages.find(
+      (thread) => thread.user.username === usernameInput
+    )
+    if (existingThreadWithUser) {
+      navigation.navigate('Chat', { thread: existingThreadWithUser })
+      existingThreadWithUser = null
+      setUsernameInput('')
+      setEmptyWarning(false)
+      return
+    }
 
+    // post and render new thread:
     postNewThread(auth.id, usernameInput)
 
-    // let thread = directMessages[0];
-
-    // navigation.navigate('Chat', { thread });
-
+    // reset vars
     setUsernameInput('')
     setEmptyWarning(false)
   }
@@ -97,31 +124,43 @@ const AllThreadsScreen = ({
       )}
       {/* MESSAGE LIST: */}
       <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.white}
+          />
+        }
         data={directMessages}
         keyExtractor={(thread) => thread.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.singleThreadView}
-            onPress={() => handleNavToSingleThread(item)}
+          <Swipeable
+            renderRightActions={() => <SwipeDeleteBtn threadId={item.id} />}
+            onSwipeableRightOpen={() => console.log('delete opened')}
           >
-            <Image
-              source={{ uri: item.user.profileImageUrl }}
-              style={styles.profileImage}
-            />
-            <View>
-              <Text style={defaultStyles.text}>
-                {item.user.firstName} {item.user.lastName}
-              </Text>
-              <Text style={[defaultStyles.text, styles.username]}>
-                @{item.user.username}
-              </Text>
-              <Text style={defaultStyles.smallText}>
-                {item.messages.length} message
-                {(item.messages.length < 1 && 's') ||
-                  (item.messages.length > 1 && 's')}
-              </Text>
-            </View>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.singleThreadView}
+              onPress={() => handleNavToSingleThread(item)}
+            >
+              <Image
+                source={{ uri: item.user.profileImageUrl }}
+                style={styles.profileImage}
+              />
+              <View>
+                <Text style={defaultStyles.text}>
+                  {item.user.firstName} {item.user.lastName}
+                </Text>
+                <Text style={[defaultStyles.text, styles.username]}>
+                  @{item.user.username}
+                </Text>
+                <Text style={defaultStyles.smallText}>
+                  {item.messages.length} message
+                  {(item.messages.length < 1 && 's') ||
+                    (item.messages.length > 1 && 's')}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </Swipeable>
         )}
       />
     </View>
@@ -156,7 +195,7 @@ const styles = StyleSheet.create({
   newMsgFormView: {
     flexDirection: 'row',
     justifyContent: 'center',
-    borderBottomColor: colors.lightGray,
+    borderBottomColor: colors.lightBorder,
     borderBottomWidth: 0.25,
     // THIS IS TEMPORARY -- NOT DYNAMIC:
     paddingLeft: 45,
@@ -190,8 +229,8 @@ const styles = StyleSheet.create({
     paddingVertical: 9,
     borderTopWidth: 0.25,
     borderBottomWidth: 0.25,
-    borderTopColor: colors.lightGray,
-    borderBottomColor: colors.lightGray,
+    borderTopColor: colors.lightBorder,
+    borderBottomColor: colors.lightBorder,
   },
   profileImage: {
     width: 80,

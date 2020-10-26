@@ -1,5 +1,13 @@
 import React, { useState } from 'react'
-import { StyleSheet, SafeAreaView, ScrollView, View, Text } from 'react-native'
+import {
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  View,
+  Text,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { useForm, Controller } from 'react-hook-form'
 import { connect } from 'react-redux'
@@ -55,141 +63,148 @@ const AuthScreens = ({ name, getUser, auth, error }) => {
   // console.log('error---->', error);
 
   return (
-    <SafeAreaView style={defaultStyles.container}>
-      <ScrollView>
-        <View style={styles.formContainer}>
-          {name === 'signup' ? (
-            <React.Fragment>
-              {/* FIRST NAME ----------------------------------------- */}
-              {firstNameFieldWarning && (
-                <Text style={[defaultStyles.text, styles.warning]}>
-                  Please enter your first name!
-                </Text>
-              )}
-              <Controller
-                control={control}
-                render={({ onChange, value }) => (
-                  <TextInput
-                    style={styles.formInput}
-                    placeholder="First Name"
-                    placeholderTextColor={colors.lightGray}
-                    onChangeText={(value) => onChange(value)}
-                    value={value}
-                  />
+    <KeyboardAvoidingView
+      style={defaultStyles.container}
+      behavior="padding"
+      keyboardVerticalOffset={100}
+      enabled={Platform.OS === 'ios' ? true : false}
+    >
+      <SafeAreaView style={defaultStyles.container}>
+        <ScrollView>
+          <View style={styles.formContainer}>
+            {name === 'signup' ? (
+              <React.Fragment>
+                {/* FIRST NAME ----------------------------------------- */}
+                {firstNameFieldWarning && (
+                  <Text style={[defaultStyles.text, styles.warning]}>
+                    Please enter your first name!
+                  </Text>
                 )}
-                name="firstName"
-                defaultValue=""
-              />
-              {/* LAST NAME ----------------------------------------- */}
-              {lastNameFieldWarning && (
-                <Text style={[defaultStyles.text, styles.warning]}>
-                  Please enter your last name!
-                </Text>
-              )}
-              <Controller
-                control={control}
-                render={({ onChange, value }) => (
-                  <TextInput
-                    style={styles.formInput}
-                    placeholder="Last Name"
-                    placeholderTextColor={colors.lightGray}
-                    onChangeText={(value) => onChange(value)}
-                    value={value}
-                  />
+                <Controller
+                  control={control}
+                  render={({ onChange, value }) => (
+                    <TextInput
+                      style={styles.formInput}
+                      placeholder="First Name"
+                      placeholderTextColor={colors.lightGray}
+                      onChangeText={(value) => onChange(value)}
+                      value={value}
+                    />
+                  )}
+                  name="firstName"
+                  defaultValue=""
+                />
+                {/* LAST NAME ----------------------------------------- */}
+                {lastNameFieldWarning && (
+                  <Text style={[defaultStyles.text, styles.warning]}>
+                    Please enter your last name!
+                  </Text>
                 )}
-                name="lastName"
-                defaultValue=""
-              />
-              {/* USERNAME ----------------------------------------- */}
-              {usernameFieldWarning && (
-                <Text style={[defaultStyles.text, styles.warning]}>
-                  Please enter your username!
-                </Text>
-              )}
-              <Controller
-                control={control}
-                render={({ onChange, value }) => (
-                  <TextInput
-                    style={styles.formInput}
-                    placeholder="Username"
-                    placeholderTextColor={colors.lightGray}
-                    onChangeText={(value) => onChange(value)}
-                    value={value}
-                    clearButtonMode="always"
-                  />
+                <Controller
+                  control={control}
+                  render={({ onChange, value }) => (
+                    <TextInput
+                      style={styles.formInput}
+                      placeholder="Last Name"
+                      placeholderTextColor={colors.lightGray}
+                      onChangeText={(value) => onChange(value)}
+                      value={value}
+                    />
+                  )}
+                  name="lastName"
+                  defaultValue=""
+                />
+                {/* USERNAME ----------------------------------------- */}
+                {usernameFieldWarning && (
+                  <Text style={[defaultStyles.text, styles.warning]}>
+                    Please enter your username!
+                  </Text>
                 )}
-                name="username"
-                defaultValue=""
-              />
-            </React.Fragment>
-          ) : null}
-          {/* EMAIL ----------------------------------------- */}
-          {/* empty email warning */}
-          {emailFieldWarning && (
-            <Text style={[defaultStyles.text, styles.warning]}>
-              Please enter a valid email address!
-            </Text>
-          )}
-          {/* non-unique email warning */}
-          {/* {auth && <Text style={[ defaultStyles.text, styles.warning ]}>{auth}</Text>} */}
-          <Controller
-            control={control}
-            render={({ onChange, value }) => (
-              <TextInput
-                style={styles.formInput}
-                placeholder="Email"
-                placeholderTextColor={colors.lightGray}
-                onChangeText={(value) => onChange(value)}
-                value={value.toLowerCase()}
-                clearButtonMode="always"
-              />
-            )}
-            name="email"
-            defaultValue=""
-          />
-          {/* PASSWORD ----------------------------------------- */}
-          {passwordFieldWarning && (
-            <Text style={[defaultStyles.text, styles.warning]}>
-              Password must be at least 8 characters!
-            </Text>
-          )}
-          <Controller
-            control={control}
-            render={({ onChange, value }) => (
-              <TextInput
-                style={styles.formInput}
-                placeholder="Password"
-                placeholderTextColor={colors.lightGray}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-                clearButtonMode="always"
-                secureTextEntry={true}
-                onSubmitEditing={onSubmit}
-              />
-            )}
-            name="password"
-            defaultValue=""
-          />
-          {/* WORKING ON IT MESSAGE ----------------------------------------- */}
-          {auth.isLoggingIn && (
-            <Text style={[defaultStyles.text, styles.loggingInMsg]}>
-              Working on it...
-            </Text>
-          )}
-          {/* LOGIN / SIGN UP BTN ----------------------------------------- */}
-          <View style={styles.submitBtnView}>
-            <TouchableOpacity
-              style={styles.submitBtn}
-              onPress={handleSubmit(onSubmit)}
-            >
-              <Text style={styles.submitBtnText}>
-                {name === 'signup' ? 'Sign Up' : 'Login'}
+                <Controller
+                  control={control}
+                  render={({ onChange, value }) => (
+                    <TextInput
+                      style={styles.formInput}
+                      placeholder="Username"
+                      placeholderTextColor={colors.lightGray}
+                      onChangeText={(value) => onChange(value)}
+                      value={value}
+                      clearButtonMode="always"
+                    />
+                  )}
+                  name="username"
+                  defaultValue=""
+                />
+              </React.Fragment>
+            ) : null}
+            {/* EMAIL ----------------------------------------- */}
+            {/* empty email warning */}
+            {emailFieldWarning && (
+              <Text style={[defaultStyles.text, styles.warning]}>
+                Please enter a valid email address!
               </Text>
-            </TouchableOpacity>
+            )}
+            {/* non-unique email warning */}
+            {/* {auth && <Text style={[ defaultStyles.text, styles.warning ]}>{auth}</Text>} */}
+            <Controller
+              control={control}
+              render={({ onChange, value }) => (
+                <TextInput
+                  style={styles.formInput}
+                  placeholder="Email"
+                  placeholderTextColor={colors.lightGray}
+                  onChangeText={(value) => onChange(value)}
+                  value={value.toLowerCase()}
+                  clearButtonMode="always"
+                />
+              )}
+              name="email"
+              defaultValue=""
+            />
+            {/* PASSWORD ----------------------------------------- */}
+            {passwordFieldWarning && (
+              <Text style={[defaultStyles.text, styles.warning]}>
+                Password must be at least 8 characters!
+              </Text>
+            )}
+            <Controller
+              control={control}
+              render={({ onChange, value }) => (
+                <TextInput
+                  style={styles.formInput}
+                  placeholder="Password"
+                  placeholderTextColor={colors.lightGray}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                  clearButtonMode="always"
+                  secureTextEntry={true}
+                  onSubmitEditing={onSubmit}
+                />
+              )}
+              name="password"
+              defaultValue=""
+            />
+            {/* WORKING ON IT MESSAGE ----------------------------------------- */}
+            {auth.isLoggingIn && (
+              <Text style={[defaultStyles.text, styles.loggingInMsg]}>
+                Working on it...
+              </Text>
+            )}
+            {/* LOGIN / SIGN UP BTN ----------------------------------------- */}
+            <View style={styles.submitBtnView}>
+              <TouchableOpacity
+                style={styles.submitBtn}
+                onPress={handleSubmit(onSubmit)}
+              >
+                <Text style={styles.submitBtnText}>
+                  {name === 'signup' ? 'Sign Up' : 'Login'}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -221,7 +236,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.main,
     marginTop: '20%',
-    minHeight: 950,
   },
   formInput: {
     backgroundColor: colors.light,
