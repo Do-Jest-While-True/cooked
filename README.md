@@ -2,17 +2,17 @@
 
 Cook'd is a social media mobile application revolving around recipes. Cook'd allows home cooks to share their recipes with the world and find cooking inspiration by following and exploring the work of others.
 
+### [Video Walkthrough](https://www.youtube.com/watch?v=2qv1BzJ4XH4&feature=youtu.be)
+
 ### Expo Link: <https://expo.io/@cooked-capstone/projects/cooked>
 
 ![Expo QR Code](./assets/readme/expo.png)
 
-### [Video Walkthrough](https://www.youtube.com/watch?v=2qv1BzJ4XH4&feature=youtu.be)
-
 ## Tech Stack
 
-Front-end built on React Native with Redux state management
-Backend built on Node.js, Express.js, Sequelize, & PostgreSQL
-Published to Expo. Server deployed to Heroku
+- Front-end built on React Native with Redux state management
+- Backend built on Node.js, Express.js, Sequelize, & PostgreSQL
+- Published to Expo. Server deployed to Heroku
 
 <https://github.com/Do-Jest-While-True/cooked-server>
 
